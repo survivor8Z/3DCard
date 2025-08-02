@@ -125,6 +125,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "CanclSelect",
+                    "type": "Button",
+                    "id": "36bedfdb-9ad8-48fe-b12a-81674ee0b37d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -136,6 +145,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0ea8aa88-ff11-4122-a361-94b26ef8381b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CanclSelect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

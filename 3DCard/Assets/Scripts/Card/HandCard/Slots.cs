@@ -30,14 +30,26 @@ public class Slots : MonoBehaviour
     private void SetWidth()
     {
         theRectTransform.sizeDelta 
-            = new Vector2(width
+            = new Vector2(width+hoveredAddWidth
             , theRectTransform.sizeDelta.y);
+    }
+    public void ResetSlots()
+    {
+        for(int i=0;i<slotsList.Count;i++)
+        {
+            slotsList[i].transform.SetSiblingIndex(i);
+        }
     }
 
     //ÊÂ¼þÏìÓ¦
 
     private void OnHandCardHovered(int index)
     {
+        if(handCardDeck.selectedCard!=null && handCardDeck.selectedCard.index == index)
+        {
+            hoveredAddWidth = 0f;
+            return;
+        }
         hoveredAddWidth = 100f;
     }
     private void OnHandCardHoveredExit(int index)

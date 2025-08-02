@@ -27,6 +27,7 @@ public class HandCardVisual : MonoBehaviour
 
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardSelected, OnHandCardClick);
     }
     private void Update()
     {
@@ -39,15 +40,24 @@ public class HandCardVisual : MonoBehaviour
     {
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardSelected, OnHandCardClick);
+
 
         tween.Kill();
+        transform.DOKill();
     }
 
     private void SetRotation()
     {
-
+        if(theHandCard.isSelected)
+        {
+            //如果卡牌被选中,则不旋转
+            theRectTransform.localRotation = Quaternion.identity;
+            transform.LookAt(2 * transform.position - Camera.main.transform.position, Camera.main.transform.up);
+            return;
+        }
         //卡牌朝向摄像机
-        Vector3 direction = Camera.main.transform.position - transform.position;
+        //Vector3 direction = Camera.main.transform.position - transform.position;
         transform.LookAt(2 * transform.position - Camera.main.transform.position, Camera.main.transform.up);
 
         //卡牌沿圆形排列
@@ -65,11 +75,11 @@ public class HandCardVisual : MonoBehaviour
     Vector3 velocity;
     private void SetPosition()
     {
-        //theRectTransform.position = theHandCard.slotRectTrans.position
-        //    +Camera.main.transform.up * curveParameters.positioning.Evaluate(k) * curveParameters.positioningInfluence;
-        
-        
 
+        if (theHandCard.isSelected)
+        {
+            return;
+        }
         theRectTransform.position = Vector3.SmoothDamp(
             theRectTransform.position,
             theHandCard.slotRectTrans.position
@@ -84,6 +94,11 @@ public class HandCardVisual : MonoBehaviour
     private Tween tween;
     private void OnHandCardHovered(int index)
     {
+        if(theHandCard.isSelected)
+        {
+            //如果卡牌被选中,则不缩放
+            return;
+        }
         //缩放
         if (tween != null && tween.IsActive() && tween.IsPlaying())
         {
@@ -108,6 +123,11 @@ public class HandCardVisual : MonoBehaviour
     }
     private void OnHandCardHoveredExit(int index)
     {
+        if (theHandCard.isSelected)
+        {
+            //如果卡牌被选中,则不缩放
+            return;
+        }
         //缩放
         if (tween != null && tween.IsActive() && tween.IsPlaying())
         {
@@ -121,5 +141,35 @@ public class HandCardVisual : MonoBehaviour
         transform.SetSiblingIndex(originalIndex);
 
     }
-    
+    private void OnHandCardClick(int index)
+    {
+        if(tween != null && tween.IsActive() && tween.IsPlaying())
+        {
+            tween.Kill();
+        }
+        
+        if (index == theHandCard.index)
+        {
+            //if (!theHandCard.isSelected)
+            //{
+            //    transform.SetParent(theHandCard.handCardDeck.transform, true);
+            //    return;
+            //}
+            //transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
+            //transform.SetParent(theHandCard.handCardDeck.handCardSelectedToPos, true);
+            //transform.DOLocalMove(Vector3.zero,
+            //    0.2f
+            //).SetEase(Ease.OutBack);
+            //if (theHandCard.isDragging)
+            //{
+            //    return;
+            //}
+            if (theHandCard.isSelected)
+            {
+                transform.DOMove(theHandCard.selectedToPos.position,0.2f).SetEase(Ease.OutBack);
+                transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
+                //TODO:如果在InteractableSceneObj中,还需调整旋转
+            }
+        }
+    }
 }

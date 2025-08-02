@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 
 public class HandCardDeck : MonoBehaviour
 {
+    public InteractableObject currentPointInteractableObject;//当前指向的可交互物体
 
     public List<HandCardBase> handCards = new List<HandCardBase>();
     public Transform circleCenter;
@@ -17,32 +18,31 @@ public class HandCardDeck : MonoBehaviour
     public HandCardBase selectedCard;
     public int CurrentHandCardCount => handCards.Count;
 
-    [SerializeField]private Transform upMax, downMax;
-    [SerializeField]private Vector2 mousePosition;
-    [SerializeField]private float minY;
-    [SerializeField]private float k = 1;
+    public Vector2 mousePositionViewport;
+   
 
     private RectTransform theRectTransform;
-    
 
-    [SerializeField]private Slots slots;//槽位盘
+    //写到HandCardDeckVisual里了
+    //public Transform handCardSelectedToPos;
+    public HandCardDeckVisual handCardDeckVisual;
+    
+    public Slots slots;//槽位盘
     [SerializeField]private GameObject slotPre;
     [SerializeField]private GameObject cardPre;
 
     private void Awake()
     {
         theRectTransform = GetComponent<RectTransform>();
+        handCardDeckVisual = GetComponent<HandCardDeckVisual>();
     }
     private void Start()
     {
-        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
-        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
-        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardDraged, OnHandCardDraged);
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardPointUp, OnHandCardClick);
     }
     private void Update()
     {
-        SetDeckPos();
-
+        
         //test
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -56,28 +56,12 @@ public class HandCardDeck : MonoBehaviour
     }
     private void OnDestroy()
     {
-        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
-        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
-        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardDraged, OnHandCardDraged);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardPointUp, OnHandCardClick);
     }
 
 
 
-    //根据鼠标位置设置手牌整体升降,通过设置Slots间接控制实现缓动
-    private void SetDeckPos()
-    {
-        //在有选中的时候
-        if (false)
-        {
-
-            return;
-        }
-
-        if (mousePosition.y > 0.6) k = 1;
-        else if (mousePosition.y > minY) k = Mathf.Lerp(0, 1, (mousePosition.y - minY)/(0.6f - minY));
-        else k = 0;
-        slots.transform.position = Vector3.Lerp(downMax.position, upMax.position, k);
-    }
+    
 
     [ContextMenu("Add Card")]
     public void AddCard()//测试
@@ -98,6 +82,7 @@ public class HandCardDeck : MonoBehaviour
         theHandCard.handCardDeck = this;
         theHandCard.slotRectTrans = slotObj.GetComponent<RectTransform>();
         theHandCard.index = handCards.Count;
+
     }
 
     /// <summary>
@@ -126,26 +111,60 @@ public class HandCardDeck : MonoBehaviour
         }
     }
 
+    public void CardCombinationPlay()
+    {
+        Debug.Log("CardCombinationPlay");
+        DelTheCard(selectedCard.index); // 删除选中的卡牌
+        DelTheCard(dragedCard.index); // 删除拖拽的卡牌
+    }
+
     //事件响应
-    private void OnHandCardHovered(int index)
+    public void OnHandCardClick(int index)
     {
-        //在牌哪里写了
-        //hoveredCard = handCards[index-1];
+        if (index <= 0 || index > handCards.Count) return;
+        HandCardBase theHandCard = handCards[index - 1];
+        if (theHandCard == selectedCard&&theHandCard.isSelected)
+        {
+            
+            theHandCard.isSelected = false; // 清除选中状态
+            selectedCard.transform.SetParent(transform);
+            selectedCard = null; // 清除选中引用
+        }
+        else
+        {
+            if (selectedCard != null)
+            {
+                selectedCard.isSelected = false;
+            }
+
+            theHandCard.isSelected = true; // 设置为选中状态
+            selectedCard = theHandCard; // 更新选中引用
+
+            EventCenter.Instance.EventTrigger(E_EventType.E_HandCardSelected, index);
+
+            //TODO:更新slot
+            Slot theSlot = slots.slotsList[index - 1];
+            slots.slotsList.RemoveAt(index - 1);
+            slots.slotsList.Add(theSlot);
+
+            handCards.RemoveAt(index - 1);
+            handCards.Add(theHandCard);
+            
+            ResetCardIndex();
+            slots.ResetSlots();
+
+        }
+
 
     }
-    private void OnHandCardHoveredExit(int index)
-    {
-        //hoveredCard = null;
-    }
 
-    private void OnHandCardDraged(int index)
-    {
-        
-    }
+
+    
+
 
     //输入函数
     void OnMousePosition(InputValue value)
     {
-        mousePosition = new Vector2(value.Get<Vector2>().x / Screen.width, value.Get<Vector2>().y / Screen.height);
+        mousePositionViewport = new Vector2(value.Get<Vector2>().x / Screen.width, value.Get<Vector2>().y / Screen.height);
     }
 }

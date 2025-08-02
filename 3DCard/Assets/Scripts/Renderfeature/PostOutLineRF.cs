@@ -21,7 +21,7 @@ public class PostOutLineRF : ScriptableRendererFeature
         private RTHandle rt;
         public CustomRenderPass()
         {
-            renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+            //renderPassEvent = m_renderPassEvent;
             m_FilteringSettings = new FilteringSettings(RenderQueueRange.all);
             m_Block = new MaterialPropertyBlock();
         }
@@ -80,13 +80,14 @@ public class PostOutLineRF : ScriptableRendererFeature
 
     CustomRenderPass m_Pass;
     [SerializeField] Material m_Edge;
-
+    [SerializeField] RenderPassEvent m_renderPassEvent;
     private bool isValid => m_Edge && m_Edge.shader && m_Edge.shader.isSupported;
     public override void Create()
     {
         if (!isValid) return;
         m_Pass = new CustomRenderPass();
         m_Pass.m_EdgeDetect = m_Edge;
+        m_Pass.renderPassEvent = m_renderPassEvent; // 设置渲染事件
     }
 
     //基本上可以说是每帧调用

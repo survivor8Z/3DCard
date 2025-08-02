@@ -147,6 +147,15 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CanclSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""36bedfdb-9ad8-48fe-b12a-81674ee0b37d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -158,6 +167,17 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ea8aa88-ff11-4122-a361-94b26ef8381b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CanclSelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -235,6 +255,7 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
         // Card
         m_Card = asset.FindActionMap("Card", throwIfNotFound: true);
         m_Card_MousePosition = m_Card.FindAction("MousePosition", throwIfNotFound: true);
+        m_Card_CanclSelect = m_Card.FindAction("CanclSelect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -359,11 +380,13 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Card;
     private List<ICardActions> m_CardActionsCallbackInterfaces = new List<ICardActions>();
     private readonly InputAction m_Card_MousePosition;
+    private readonly InputAction m_Card_CanclSelect;
     public struct CardActions
     {
         private @Inputsystem m_Wrapper;
         public CardActions(@Inputsystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @MousePosition => m_Wrapper.m_Card_MousePosition;
+        public InputAction @CanclSelect => m_Wrapper.m_Card_CanclSelect;
         public InputActionMap Get() { return m_Wrapper.m_Card; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -376,6 +399,9 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
+            @CanclSelect.started += instance.OnCanclSelect;
+            @CanclSelect.performed += instance.OnCanclSelect;
+            @CanclSelect.canceled += instance.OnCanclSelect;
         }
 
         private void UnregisterCallbacks(ICardActions instance)
@@ -383,6 +409,9 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
+            @CanclSelect.started -= instance.OnCanclSelect;
+            @CanclSelect.performed -= instance.OnCanclSelect;
+            @CanclSelect.canceled -= instance.OnCanclSelect;
         }
 
         public void RemoveCallbacks(ICardActions instance)
@@ -454,5 +483,6 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
     public interface ICardActions
     {
         void OnMousePosition(InputAction.CallbackContext context);
+        void OnCanclSelect(InputAction.CallbackContext context);
     }
 }
