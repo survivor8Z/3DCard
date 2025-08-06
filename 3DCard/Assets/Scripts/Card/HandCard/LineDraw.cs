@@ -24,7 +24,13 @@ public class LineDraw : MonoBehaviour
 
     private void DrawLine()
     {
-        if (handCardDeck.dragedCard == null)
+        if (handCardDeck.dragedCard!=null 
+            && handCardDeck.dragedCard.cardSO.cardType == E_CardType.E_Entity 
+            && handCardDeck.dragedCard.handCardDeck.player.playerMove.inSceneObj is Table)
+        {
+            return;
+        }
+            if (handCardDeck.dragedCard == null)
         {
             lineRenderer.positionCount = 0; // No line to draw
             return;

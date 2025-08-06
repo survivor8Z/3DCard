@@ -14,13 +14,15 @@ public class Player : MonoBehaviour
             return new Vector2Int((int)(RelativePos.x),(int)(RelativePos.z));
         }
     }
-    
+
+    public PlayerInteract playerInteract;
     public PlayerMove playerMove;
     public PlayerTurn playerTurn;
     public CameraController cameraController;
 
     private void Awake()
     {
+        playerInteract = GetComponent<PlayerInteract>();
         playerMove = GetComponent<PlayerMove>();
         playerTurn = GetComponent<PlayerTurn>();
         cameraController = GetComponent<CameraController>();

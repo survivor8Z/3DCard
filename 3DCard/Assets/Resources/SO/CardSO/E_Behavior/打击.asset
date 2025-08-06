@@ -16,3 +16,4 @@ MonoBehaviour:
   cardID: 2001
   cardType: 2
   cardDescription: "\u9020\u6210x\u70B9\u7269\u7406\u4F24\u5BB3"
+  cardSO: {fileID: 0}

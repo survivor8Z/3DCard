@@ -27,11 +27,17 @@ public class HandCardDeckVisual : MonoBehaviour
     {
         EventCenter.Instance.AddEventListener<InteractableSceneObj>(E_EventType.E_PlayerEnterInteractableSceneObj, OnPlayerEnterInteractableSceneObj);
         EventCenter.Instance.AddEventListener<InteractableSceneObj>(E_EventType.E_PlayerExitInteractableSceneObj, OnPlayerExitInteractableSceneObj);
+
+        //EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardStartDrag, OnHandCardStartDrag);
+        //EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
     }
     private void OnDisable()
     {
         EventCenter.Instance.RemoveEventListener<InteractableSceneObj>(E_EventType.E_PlayerEnterInteractableSceneObj, OnPlayerEnterInteractableSceneObj);
         EventCenter.Instance.RemoveEventListener<InteractableSceneObj>(E_EventType.E_PlayerExitInteractableSceneObj, OnPlayerExitInteractableSceneObj);
+
+        //EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardStartDrag, OnHandCardStartDrag);
+        //EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
     }
     private void Update()
     {
@@ -40,16 +46,15 @@ public class HandCardDeckVisual : MonoBehaviour
     //根据鼠标位置设置手牌整体升降,通过设置Slots间接控制实现缓动
     private void SetDeckPos()
     {
-        if (playerMove.isInSceneObj)
+        if (playerMove.inSceneObj!=null)
         {
-
             handCardDeck.slots.transform.position = otherVCStateSlotsTransform.position;
             return;
         }
 
         handCardDeck.slots.transform.position = firstVCStateSlotsTransform.position;
         //在有选中的时候
-        if (handCardDeck.hoveredCard != null)
+        if (handCardDeck.hoveredCard != null&&handCardDeck.dragedCard==null)
         {
             return;
         }
@@ -68,4 +73,12 @@ public class HandCardDeckVisual : MonoBehaviour
     {
         handCardSelectedToPos = firstVCStatePickPointTransform;
     }
+    //public void OnHandCardStartDrag(int index)
+    //{
+        
+    //}
+    //public void OnHandCardEndDrag(int index)
+    //{
+        
+    //}
 }

@@ -11,23 +11,26 @@ public class Slot : MonoBehaviour
     {
         layoutElement = GetComponent<LayoutElement>();
     }
-    private void Start()
+    private void OnEnable()
     {
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardDel, Deleted);
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardLeaveHandCardDeck, Deleted);
     }
 
+    //TODO:对象池之后再说
     public void Deleted(int index)
     {
         if (this.index != index) return;
         Destroy(gameObject);
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardDel, Deleted);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardLeaveHandCardDeck, Deleted);
     }
 
     //事件响应

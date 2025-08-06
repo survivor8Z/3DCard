@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class HandCardVisual : MonoBehaviour
 {
@@ -15,19 +16,27 @@ public class HandCardVisual : MonoBehaviour
 
     [SerializeField]private int originalIndex=>theHandCard.index;
     private SortingGroup sortingGroup;
+    [SerializeField]private Image mainImage;//for test
+
     private void Awake()
     {
+        theHandCard = GetComponent<HandCardBase>();
         theRectTransform = GetComponent<RectTransform>();
         sortingGroup = GetComponent<SortingGroup>();
     }
     private void Start()
     {
-        //originalIndex = transform.GetSiblingIndex();
         sortingGroup.sortingOrder = theHandCard.index;
-
+    }
+    private void OnEnable()
+    {
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
-        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardSelected, OnHandCardClick);
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardSelected, OnHandCardClick);//这个事件是在handcardDeck中处理完后再触发
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardStartDrag, OnHandCardStartDrag);
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
+
+        EventCenter.Instance.AddEventListener<HandCardBase>(E_EventType.E_HandCardToTableCard, OnTranslateToTableCard);
     }
     private void Update()
     {
@@ -35,27 +44,41 @@ public class HandCardVisual : MonoBehaviour
         SetRotation();
     }
 
-
-    private void OnDestroy()
+    private void OnDisable()
     {
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardSelected, OnHandCardClick);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardStartDrag, OnHandCardStartDrag);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
 
+        EventCenter.Instance.RemoveEventListener<HandCardBase>(E_EventType.E_HandCardToTableCard, OnTranslateToTableCard);
 
         tween.Kill();
         transform.DOKill();
+    }
+
+    private void OnDestroy()
+    {
+        
     }
 
     private void SetRotation()
     {
         if(theHandCard.isSelected)
         {
-            //如果卡牌被选中,则不旋转
+            if (theHandCard.handCardDeck.player.playerMove.inSceneObj != null) return;
             theRectTransform.localRotation = Quaternion.identity;
             transform.LookAt(2 * transform.position - Camera.main.transform.position, Camera.main.transform.up);
             return;
         }
+
+        if(theHandCard.isDragging&&theHandCard.cardSO.cardType == E_CardType.E_Entity && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
+        {
+            transform.rotation = theHandCard.handCardDeck.player.playerMove.inSceneObj.pickPoint.rotation;
+            return;
+        }
+
         //卡牌朝向摄像机
         //Vector3 direction = Camera.main.transform.position - transform.position;
         transform.LookAt(2 * transform.position - Camera.main.transform.position, Camera.main.transform.up);
@@ -71,8 +94,10 @@ public class HandCardVisual : MonoBehaviour
 
     }
 
-    
-    Vector3 velocity;
+    /// <summary>
+    /// 只是用来平滑位置跟随的
+    /// </summary>
+    public Vector3 followVelocity;
     private void SetPosition()
     {
 
@@ -80,17 +105,30 @@ public class HandCardVisual : MonoBehaviour
         {
             return;
         }
+
+        if(theHandCard.isDragging&&theHandCard.cardSO.cardType == E_CardType.E_Entity && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
+        {
+            theRectTransform.position = Vector3.SmoothDamp(
+            theRectTransform.position,
+            table.dragPoint.position,
+            ref followVelocity,
+            0.1f
+        );
+
+            return;
+        }
+
         theRectTransform.position = Vector3.SmoothDamp(
             theRectTransform.position,
             theHandCard.slotRectTrans.position
             + Camera.main.transform.up * curveParameters.positioning.Evaluate(k) * curveParameters.positioningInfluence,
-            ref velocity,
+            ref followVelocity,
             0.1f
         );
     }
 
 
-    //事件响应
+    #region 事件响应
     private Tween tween;
     private void OnHandCardHovered(int index)
     {
@@ -150,26 +188,64 @@ public class HandCardVisual : MonoBehaviour
         
         if (index == theHandCard.index)
         {
-            //if (!theHandCard.isSelected)
-            //{
-            //    transform.SetParent(theHandCard.handCardDeck.transform, true);
-            //    return;
-            //}
-            //transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
-            //transform.SetParent(theHandCard.handCardDeck.handCardSelectedToPos, true);
-            //transform.DOLocalMove(Vector3.zero,
-            //    0.2f
-            //).SetEase(Ease.OutBack);
-            //if (theHandCard.isDragging)
-            //{
-            //    return;
-            //}
             if (theHandCard.isSelected)
             {
                 transform.DOMove(theHandCard.selectedToPos.position,0.2f).SetEase(Ease.OutBack);
                 transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
-                //TODO:如果在InteractableSceneObj中,还需调整旋转
+                //如果在InteractableSceneObj中,还需调整旋转
+                if (theHandCard.handCardDeck.player.playerMove.inSceneObj != null)
+                {
+                    transform.DORotateQuaternion(
+                        theHandCard.handCardDeck.player.playerMove.inSceneObj.pickPoint.rotation,
+                        0.2f
+                    ).SetEase(Ease.OutBack);
+                }
             }
         }
     }
+
+    private void OnHandCardStartDrag(int index)
+    {
+        if (theHandCard.isSelected)
+        {
+            //如果卡牌被选中,则不缩放
+            return;
+        }
+        //缩放
+        if (tween != null && tween.IsActive() && tween.IsPlaying())
+        {
+            tween.Kill();
+        }
+        tween = theRectTransform.DOScale(
+            Vector3.one,
+            0.2f
+        ).SetEase(Ease.OutBack);
+        transform.SetSiblingIndex(originalIndex);
+    }
+    private void OnHandCardEndDrag(int index)
+    {
+        if (theHandCard.isSelected)
+        {
+            //如果卡牌被选中,则不缩放
+            return;
+        }
+        //缩放
+        if (tween != null && tween.IsActive() && tween.IsPlaying())
+        {
+            tween.Kill();
+        }
+        tween = theRectTransform.DOScale(
+            Vector3.one,
+            0.2f
+        ).SetEase(Ease.OutBack);
+        transform.SetSiblingIndex(originalIndex);
+    }
+
+    //因为所有的手牌都监听了这个事件,还是需要比较index
+    private void OnTranslateToTableCard(HandCardBase theHandCardBase)
+    {
+        if (theHandCardBase != theHandCard) return;
+        this.enabled = false;
+    }
+    #endregion
 }

@@ -10,8 +10,9 @@ public class PlayerMove : MonoBehaviour
     public Room theRoom;
     public Vector3 toPos;
     public bool isToSceneObj = false;
-    public bool isInSceneObj = false;
+    //public bool isInSceneObj = false;
     public InteractableSceneObj toSceneObj=null;
+    public InteractableSceneObj inSceneObj=null;
     
     private void Start()
     {
@@ -54,7 +55,7 @@ public class PlayerMove : MonoBehaviour
         bool isForward = value.Get<float>() > 0;
         
 
-        if (isInSceneObj)
+        if (inSceneObj!=null)
         {
             if (isForward)
             {
@@ -65,7 +66,7 @@ public class PlayerMove : MonoBehaviour
                 toSceneObj.Exit();
                 if(toSceneObj.EnterLevel == 0)
                 {
-                    isInSceneObj = false;
+                    inSceneObj = null;
                 }
             }
             return;
@@ -78,7 +79,7 @@ public class PlayerMove : MonoBehaviour
                 if (isForward)
                 {
                     toSceneObj.Enter();
-                    isInSceneObj = true;
+                    inSceneObj = toSceneObj;
                 }
                 else
                 {

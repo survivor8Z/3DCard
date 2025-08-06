@@ -25,7 +25,7 @@ public class CreateCardAsset : Editor
         Debug.Log("Loaded Excel package: " + package.Workbook.Worksheets.Count + " worksheets found.");
 
         //sheet1创建卡牌SO资源
-        CreateCardSOAsset(package.Workbook.Worksheets[0]);
+        CreateCardSOAsset(package.Workbook.Worksheets[1]);
         ////sheet2创建卡牌组合SO资源
         //CreateCardInteractSOAsset(package.Workbook.Worksheets[1]);
     }
@@ -51,7 +51,7 @@ public class CreateCardAsset : Editor
         }
     }
 
-    private static void CreateCardInteractSOAsset(ExcelWorksheet worksheet)
+    private static void CreateCardPlaySOAsset(ExcelWorksheet worksheet)
     {
 
     }

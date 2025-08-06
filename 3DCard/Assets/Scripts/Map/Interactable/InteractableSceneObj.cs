@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public class InteractableSceneObj : InteractableObject
 {
+
     public Transform pickPoint;
     //进入的层级
     public int EnterLevel = 0;

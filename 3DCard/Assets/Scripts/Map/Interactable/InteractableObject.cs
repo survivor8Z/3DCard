@@ -5,8 +5,8 @@ using UnityEngine;
 public class InteractableObject : MonoBehaviour
 {
     public List<Vector2Int> obstacleCoor = new List<Vector2Int>();//ÔÚ±à¼­Æ÷Àï¸ã°É
-    
 
+    public int id;
 
 
 

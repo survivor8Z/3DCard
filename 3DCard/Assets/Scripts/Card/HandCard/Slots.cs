@@ -18,14 +18,24 @@ public class Slots : MonoBehaviour
         theRectTransform = GetComponent<RectTransform>();
         handCardDeck = GetComponentInParent<HandCardDeck>();
     }
-    private void Start()
+    private void OnEnable()
     {
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
     }
+    
     private void Update()
     {
         SetWidth();
+    }
+
+    private void OnDisable()
+    {
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHovered, OnHandCardHovered);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardHoveredExit, OnHandCardHoveredExit);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
+
     }
     private void SetWidth()
     {
@@ -53,6 +63,11 @@ public class Slots : MonoBehaviour
         hoveredAddWidth = 100f;
     }
     private void OnHandCardHoveredExit(int index)
+    {
+        hoveredAddWidth = 0;
+    }
+
+    private void OnHandCardEndDrag(int index)
     {
         hoveredAddWidth = 0;
     }

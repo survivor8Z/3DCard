@@ -10,9 +10,11 @@ public class Room : MonoBehaviour
     public HashSet<Vector2Int> unWalkableAreas = new HashSet<Vector2Int>();
     public List<InteractableObject> roomInteractableObjects = new List<InteractableObject>();
 
-    private void Awake()
+    public Table table;
+
+    private void Start()
     {
-        Init();    
+        Init();
     }
     private void Init()
     {

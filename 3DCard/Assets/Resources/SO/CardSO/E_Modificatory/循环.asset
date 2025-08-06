@@ -16,3 +16,4 @@ MonoBehaviour:
   cardID: 1001
   cardType: 1
   cardDescription: "\u6253\u51FA\u7684\u5361\u724C\u4E0D\u4F1A\u6D88\u8017"
+  cardSO: {fileID: 0}

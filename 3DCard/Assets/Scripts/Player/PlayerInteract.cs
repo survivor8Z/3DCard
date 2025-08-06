@@ -19,8 +19,15 @@ public class PlayerInteract : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             Interact();
+        }else if (Input.GetMouseButtonDown(1))
+        {
+            handCardDeck.isCancel = true;
+            handCardDeck.ResetCardState();
+        }else if(Input.GetMouseButtonDown(0))
+        {
+            handCardDeck.isCancel = false;
         }
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -41,19 +48,25 @@ public class PlayerInteract : MonoBehaviour
 
     public void Interact()
     {
+        int pointInteractableObjectID = pointInteractableObject==null?0: pointInteractableObject.id;
+
         if (handCardDeck.dragedCard != null && handCardDeck.selectedCard != null)
         {
-            handCardDeck.CardCombinationPlay();
+            handCardDeck.TryCardCombinationPlay(new CardCombinationPlayID(handCardDeck.dragedCard.cardSO.cardID,
+                                                                          handCardDeck.selectedCard.cardSO.cardID,
+                                                                          pointInteractableObjectID));
             return;
         }
         if (handCardDeck.dragedCard != null)
         {
-            handCardDeck.dragedCard.CardDragPlay();
+            handCardDeck.dragedCard.TryCardDragPlay(new CardDragedPlayID(handCardDeck.dragedCard.cardSO.cardID,
+                                                                         pointInteractableObjectID));
             return;
         }
-        if (handCardDeck.hoveredCard == null && handCardDeck.selectedCard != null && handCardDeck.selectedCard.CanSelectedPlayCard())
+        if (handCardDeck.hoveredCard == null && handCardDeck.selectedCard != null&&handCardDeck.hoveredCard==null)
         {
-            handCardDeck.selectedCard.CardSelectedPlay();
+            handCardDeck.selectedCard.TryCardSelectedPlay(new CardSelectedPlayID(handCardDeck.selectedCard.cardSO.cardID,
+                                                                                 pointInteractableObjectID));
             return;
         }
         //下面是没有选中以及拖拽卡牌时
@@ -61,7 +74,7 @@ public class PlayerInteract : MonoBehaviour
         {
             if(pointInteractableObject is TableCardDeck tableCardDeck)
             {
-                //TODO:显示牌堆界面
+                //显示牌堆界面
             }
             
         }
@@ -77,12 +90,20 @@ public class PlayerInteract : MonoBehaviour
         {
             //画线debug
             Debug.DrawLine(Camera.main.transform.position, hit.point, Color.red);
-            if (hitObject!=null||hit.collider.gameObject == hitObject)
+
+            if(pointInteractableObject is Table table)
             {
+                table.UpdateTablePoint(hit.point + Vector3.up);
+            }
+
+            if (hitObject!=null&&hit.collider.gameObject == hitObject)
+            {
+                //相同的就不更新
                 return; 
             }
             hitObject = hit.collider.gameObject;
-            InteractableObject interactableObject = hit.collider.GetComponent<InteractableObject>();
+            pointInteractableObject = hitObject.GetComponent<InteractableObject>();
+            
         }
         else
         {
@@ -90,6 +111,9 @@ public class PlayerInteract : MonoBehaviour
             pointInteractableObject = null;
         }
     }
-
+    //public void Test()
+    //{
+    //    handCardDeck.dragedCard.DragedFuncDic.Add(new CardDragedPlayID(0, 0), 1);
+    //}
     
 }

@@ -14,6 +14,8 @@ public enum E_EventType
     //传入index
     E_HandCardDel,
     //传入index
+    E_HandCardLeaveHandCardDeck,
+    //传入index
     E_HandCardSelected,
     //传入index
     E_HandCardStartDrag,
@@ -25,6 +27,25 @@ public enum E_EventType
     E_HandCardPointDown,
     //传入index
     E_HandCardPointUp,
+    
+
+
+
+
+
+
+
+
+    //传入HandCardBase
+    E_HandCardToTableCard,
+    //传入TableCardBase
+    E_TableCardToHandCard,
+
+
+
+
+
+
 
 
 

@@ -7,7 +7,11 @@ public class Table : InteractableSceneObj
 {
     public CinemachineVirtualCamera theVC;
 
-    
+    public Transform dragPoint ;
+    public Transform tableCardTransformParent;
+    public float dragPointK;//调整系数
+
+
     public override void Enter()
     {
         if (EnterLevel == EnterMaxLevel) return;
@@ -43,5 +47,9 @@ public class Table : InteractableSceneObj
                 VCMgr.Instance.SetCurrentVC(theVC);
                 break;
         }
+    }
+    public void UpdateTablePoint(Vector3 pos)
+    {
+        dragPoint.position = pos+Vector3.down*dragPointK;
     }
 }

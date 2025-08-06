@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: "\u706F"
   m_EditorClassIdentifier: 
   cardName: "\u706F"
-  cardID: 1
+  cardID: 2
   cardType: 0
   cardDescription: "\u80FD\u591F\u7167\u4EAE\u9ED1\u6697"
+  cardSO: {fileID: 0}
