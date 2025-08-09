@@ -33,13 +33,14 @@ public class HandCardBase : CardBase
     //与TableCard转换相关
     public TableCardBase theTableCardBase; //如果是实体卡牌,则有对应的TableCardBase..
 
+    public HandCardVisual theHandCardVisual;
 
     #region 生命周期函数
     private void Awake()
     {
         RegisterDragFunc();
 
-
+        theHandCardVisual = GetComponent<HandCardVisual>();
         theTableCardBase = GetComponent<TableCardBase>();
     }
 
@@ -56,6 +57,7 @@ public class HandCardBase : CardBase
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardLeaveHandCardDeck, TranslateToTableCard);
     }
     #endregion
+
 
 
     /// <summary>
@@ -166,7 +168,7 @@ public class HandCardBase : CardBase
     {
         for(int i = 0; i < cardDragedPlayIDs.Count; i++)
         {
-            Debug.Log($"Registering DragedFuncDic: {cardDragedPlayIDs[i]} with funcID {funcIDs[i]}");
+            //Debug.Log($"Registering DragedFuncDic: {cardDragedPlayIDs[i]} with funcID {funcIDs[i]}");
             AddDragedFuncDic(cardDragedPlayIDs[i], funcIDs[i]);
         }
     }

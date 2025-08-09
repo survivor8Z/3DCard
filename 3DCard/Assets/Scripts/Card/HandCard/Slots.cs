@@ -8,7 +8,8 @@ public class Slots : MonoBehaviour
     public List<Slot> slotsList;
     private HandCardDeck handCardDeck;
     private RectTransform theRectTransform;
-    private float width=>handCardDeck.CurrentHandCardCount*140;
+    //private float width=>handCardDeck.CurrentHandCardCount*140;
+    private float width=>slotsList.Count * 140f;
     [SerializeField]float hoveredAddWidth = 0f;
     [SerializeField]AnimationCurve widthCurve;
     [SerializeField]float widthInfluence;

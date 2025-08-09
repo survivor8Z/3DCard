@@ -7,11 +7,17 @@ public class Table : InteractableSceneObj
 {
     public CinemachineVirtualCamera theVC;
 
+    //拖拽位置相关
     public Transform dragPoint ;
     public Transform tableCardTransformParent;
     public float dragPointK;//调整系数
+    //下面是管理卡牌相关
+    public TableCardsControl tableCardsControl;
 
-
+    private void Awake()
+    {
+        tableCardsControl = GetComponent<TableCardsControl>();
+    }
     public override void Enter()
     {
         if (EnterLevel == EnterMaxLevel) return;

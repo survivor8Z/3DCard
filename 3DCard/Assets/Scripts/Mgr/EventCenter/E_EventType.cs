@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public enum E_EventType 
 {
+    #region 手牌
     //传入index
     E_HandCardHovered,
     //传入index
@@ -27,22 +28,30 @@ public enum E_EventType
     E_HandCardPointDown,
     //传入index
     E_HandCardPointUp,
-    
-
-
-
-
-
-
 
 
     //传入HandCardBase
     E_HandCardToTableCard,
+    #endregion
+
+
+    //传入index
+    E_HandCardSlotDel,
+
+
+
+
+
+
+    
+
+    //传入TableCardBase
+    E_TableCardAboutToHandCard,//这个是用来通知HandCardDeck来创建一个slot准备
     //传入TableCardBase
     E_TableCardToHandCard,
 
 
-
+    
 
 
 

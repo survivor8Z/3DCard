@@ -193,6 +193,7 @@ public class HandCardVisual : MonoBehaviour
                 transform.DOMove(theHandCard.selectedToPos.position,0.2f).SetEase(Ease.OutBack);
                 transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
                 //如果在InteractableSceneObj中,还需调整旋转
+                //TODO:因为不想和桌牌混淆所以不要水平放置
                 if (theHandCard.handCardDeck.player.playerMove.inSceneObj != null)
                 {
                     transform.DORotateQuaternion(
@@ -200,6 +201,7 @@ public class HandCardVisual : MonoBehaviour
                         0.2f
                     ).SetEase(Ease.OutBack);
                 }
+
             }
         }
     }

@@ -39,9 +39,12 @@ public class HandCardDeck : SerializedMonoBehaviour
     //用于取消
     public bool isCancel = false;
 
-    //用于与桌牌转换?
+    //用于与桌牌转换
     public Table table;
-    
+
+    //用于创建预槽位
+    public int currentIndex;
+
 
     #region 生命周期函数
     private void Awake()
@@ -158,33 +161,7 @@ public class HandCardDeck : SerializedMonoBehaviour
         dragedCard = null;
     }
     #endregion
-
-    //[ContextMenu("Add Card")]
-    //public void AddCard()//测试
-    //{
-    //    if(handCards.Count >= maxCount)
-    //    {
-    //        Debug.Log("HandCardDeck: AddCard: Hand card count exceeds max limit");
-    //        return;
-    //    }
-    //    GameObject slotObj = Instantiate(slotPre, slots.transform);
-    //    slotObj.name = "Slot" + (slots.transform.childCount);
-    //    GameObject card = Instantiate(cardPre, transform);
-    //    card.name = "Card" + (handCards.Count + 1);
-
-    //    HandCardBase theHandCard = card.GetComponent<HandCardBase>();
-    //    Slot theSlot = slotObj.GetComponent<Slot>();
-
-    //    handCards.Add(theHandCard);
-
-    //    slots.slotsList.Add(theSlot);
-    //    theSlot.index = handCards.Count;
-
-    //    theHandCard.handCardDeck = this;
-    //    theHandCard.slotRectTrans = slotObj.GetComponent<RectTransform>();
-    //    theHandCard.index = handCards.Count;
-
-    //}
+    
 
     /// <summary>
     /// 添加一张手牌,一般是与interactableObject交互添加
@@ -217,15 +194,66 @@ public class HandCardDeck : SerializedMonoBehaviour
 
     }
     /// <summary>
+    /// 提前就会创建一个slot,能否创建也已经在之前判断了
     /// 其他地方拿,不会删除(隐藏)那个gameobject,其他与AddCard一样
     /// </summary>
     /// <param name="cardSO"></param>
     public void AddCardWithTableCard(TableCardBase tableCardBase)
     {
-        GameObject slotObj = Instantiate(slotPre, slots.transform);
-        slotObj.name = "Slot" + (slots.transform.childCount);
         GameObject card = tableCardBase.gameObject;
+        card.name = "Card" + (handCards.Count + 1);
         //TODO:等写TableCardToHandCard的时候在说把,没写完
+        card.transform.SetParent(transform);
+
+
+    }
+    
+
+    /// <summary>
+    /// 插入一个Slot,返回其引用
+    /// </summary>
+    public Slot InsertASlot(int listIndex)
+    {
+        if (handCards.Count >= maxCount)
+        {
+            Debug.Log("Hand card count exceeds max limit");
+            return null;
+        }
+        GameObject slotObj = Instantiate(slotPre, slots.transform);
+        Slot theSlot = slotObj.GetComponent<Slot>();
+
+        slots.slotsList.Insert(listIndex,theSlot);
+        slotObj.transform.SetSiblingIndex(listIndex);//
+        ResetSlotsIndex();
+        return theSlot;
+    }
+
+    public void SetTheSlotPos(Slot slot,int insertSlotListIndex)
+    {
+        if(insertSlotListIndex == slots.slotsList.Count)
+        {
+            Debug.Log("SetTheSlotPos: insertSlotListIndex out of range");
+            return;
+        }
+
+        slot.transform.SetSiblingIndex(insertSlotListIndex);
+
+        (slots.slotsList[slot.index - 1], slots.slotsList[insertSlotListIndex])
+            = (slots.slotsList[insertSlotListIndex], slots.slotsList[slot.index - 1]);
+        //slots.slotsList.RemoveAt(slot.index - 1);
+        //slots.slotsList.Insert(insertSlotListIndex, slot);
+        ResetSlotsIndex();
+    }
+
+    /// <summary>
+    /// 移除一个Slot,这个slot是没有卡牌的,如果有卡牌,不调用这个方法
+    /// </summary>
+    /// <param name="slot"></param>
+    public void RemoveTheSlot(Slot slot)
+    {
+        slots.slotsList.RemoveAt(slot.index - 1);
+        EventCenter.Instance.EventTrigger(E_EventType.E_HandCardSlotDel, slot.index);
+        ResetSlotsIndex();
     }
 
     /// <summary>
@@ -263,14 +291,40 @@ public class HandCardDeck : SerializedMonoBehaviour
         ResetCardIndex();
     }
 
+    public void ResetSlotsIndex()
+    {
+        for(int i = 0;i < slots.slotsList.Count; i++)
+        {
+            slots.slotsList[i].index = i + 1;
+            slots.slotsList[i].name = "Slot" + (i + 1);
+        }   
+    }
+
     public void ResetCardIndex()
     {
         for(int i = 0; i < handCards.Count; i++)
         {
             handCards[i].index = i + 1;
+            handCards[i].name = "Card" + (i + 1);
             slots.slotsList[i].index = i + 1;
+            slots.slotsList[i].name = "Slot" + (i+1);
         }
     }
+
+    public void ResetCardIndexWithSlots()
+    {
+        if (slots.slotsList.Count != handCards.Count)
+        {
+            print("ResetCardIndexWithSlot: slots count not equal handCards count");
+            return;
+        }
+        for(int i = 0; i < slots.slotsList.Count; i++)
+        {
+            slots.slotsList[i].index = i + 1;
+            slots.slotsList[i].name = "Slot" + (i + 1);
+        }
+    }
+
 
     public void ResetCardState()
     {
@@ -286,9 +340,9 @@ public class HandCardDeck : SerializedMonoBehaviour
         }
     }
 
-    
 
-    //事件响应
+    #region 事件响应
+
     public void OnHandCardClick(int index)
     {
         if(isCancel)return;
@@ -297,7 +351,8 @@ public class HandCardDeck : SerializedMonoBehaviour
         if (theHandCard == selectedCard&&theHandCard.isSelected)
         {
             
-            theHandCard.isSelected = false; // 清除选中状态
+            theHandCard.isSelected = false; // 清除选中状态+
+
             selectedCard.transform.SetParent(transform);
             selectedCard = null; // 清除选中引用
         }
@@ -334,7 +389,7 @@ public class HandCardDeck : SerializedMonoBehaviour
     }
 
 
-    
+    #endregion
 
 
     //输入函数
