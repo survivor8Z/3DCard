@@ -38,7 +38,6 @@ public class HandCardBase : CardBase
     #region 生命周期函数
     private void Awake()
     {
-        RegisterDragFunc();
 
         theHandCardVisual = GetComponent<HandCardVisual>();
         theTableCardBase = GetComponent<TableCardBase>();
@@ -66,7 +65,8 @@ public class HandCardBase : CardBase
     public void Deleted(int index)
     {
         if (this.index != index) return;
-        Destroy(gameObject);//TODO:对象池之后再说
+        //Destroy(gameObject);//TODO:对象池之后再说
+        PoolMgr.Instance.PushObj(gameObject);
     }
 
     public void TranslateToTableCard(int index)
@@ -94,156 +94,29 @@ public class HandCardBase : CardBase
 
     #region 实际卡牌打出效果相关
     #region DragedPlay
-    [ShowInInspector]
-    private Dictionary<CardDragedPlayID, int> _dragedFuncDic = new();
-    public IReadOnlyDictionary<CardDragedPlayID, int> DragedFuncDic
+    public virtual void TryCardDragPlay(IInteractable pointInteractableObject)
     {
-        get
-        {
-            _dragedFuncDic ??= new Dictionary<CardDragedPlayID, int>();
-            return _dragedFuncDic;
-        }
-        protected set
-        {
-            _dragedFuncDic = value != null
-                ? new Dictionary<CardDragedPlayID, int>(value)
-                : new Dictionary<CardDragedPlayID, int>();
-        }
+        handCardDeck.dragedCard = null;
+        isDragging = false;
     }
-    protected void AddDragedFuncDic(CardDragedPlayID dragedPlayID,int funcID)
+    public void FailDragPlay()
     {
-        if(_dragedFuncDic.ContainsKey(dragedPlayID))
-        {
-            Debug.LogWarning($"DragedFuncDic already contains {dragedPlayID}, updating value.");
-            _dragedFuncDic[dragedPlayID] = funcID;
-            return;
-        }
-        _dragedFuncDic[dragedPlayID] = funcID;
-    }
-
-    protected void RemoveDragedFuncDic(CardDragedPlayID dragedPlayID)
-    {
-        if (_dragedFuncDic.ContainsKey(dragedPlayID))
-        {
-            _dragedFuncDic.Remove(dragedPlayID);
-        }
-        else
-        {
-            Debug.LogWarning($"DragedFuncDic does not contain {dragedPlayID}, cannot remove.");
-        }
-    }
-    private bool CanDragPlayCard(CardDragedPlayID cardDragedPlayID)
-    {
-        if (DragedFuncDic.ContainsKey(cardDragedPlayID))
-            return true;
-        return false;
-    }
-
-    /// <summary>
-    /// 给PlayerInteract调用
-    /// </summary>
-    public void TryCardDragPlay(CardDragedPlayID cardDragedPlayID)
-    {
-        Debug.Log("TryCardDragPlay");
-        if (CanDragPlayCard(cardDragedPlayID))
-        {
-            TrulyDragPlay(DragedFuncDic[cardDragedPlayID]);
-        }
-        else
-        {
-            //执行不能打出(特效音效等等)
-        }
-        handCardDeck.dragedCard = null; // 清除拖拽状态
-    }
-
-    //真正的拖拽打出效果,由子类实现
-    protected virtual void TrulyDragPlay(int funcID)
-    {
-
-    }
-    //用来给_dragedFuncDic初始化添加
-    [SerializeField]private List<CardDragedPlayID> cardDragedPlayIDs = new List<CardDragedPlayID>();
-    [SerializeField]private List<int> funcIDs = new List<int>();
-    private void RegisterDragFunc()
-    {
-        for(int i = 0; i < cardDragedPlayIDs.Count; i++)
-        {
-            //Debug.Log($"Registering DragedFuncDic: {cardDragedPlayIDs[i]} with funcID {funcIDs[i]}");
-            AddDragedFuncDic(cardDragedPlayIDs[i], funcIDs[i]);
-        }
+        //UNDONE
+        print("FailDragPlay");
     }
     #endregion
-    
-    
+
+
     #region SelectedPlay
-    [ShowInInspector]
-    private Dictionary<CardSelectedPlayID, int> _selectedFuncDic=new();
-    public IReadOnlyDictionary<CardSelectedPlayID, int> SelectedFuncDic
+    public virtual void TryCardSelectedPlay(IInteractable pointInteractableObject)
     {
-        get
-        {
-            _selectedFuncDic ??= new Dictionary<CardSelectedPlayID, int>();
-            return _selectedFuncDic;
-        }
-        protected set
-        {
-            _selectedFuncDic = value != null
-                ? new Dictionary<CardSelectedPlayID, int>(value)
-                : new Dictionary<CardSelectedPlayID, int>();
-        }
-    }
-    protected void AddSelectedFuncDic(CardSelectedPlayID selectedPlayID, int funcID)
-    {
-        if (_selectedFuncDic.ContainsKey(selectedPlayID))
-        {
-            Debug.LogWarning($"SelectedFuncDic already contains {selectedPlayID}, updating value.");
-            _selectedFuncDic[selectedPlayID] = funcID;
-            return;
-        }
-        _selectedFuncDic[selectedPlayID] = funcID;
-    }
-    protected void RemoveSelectedFuncDic(CardSelectedPlayID selectedPlayID)
-    {
-        if (_selectedFuncDic.ContainsKey(selectedPlayID))
-        {
-            _selectedFuncDic.Remove(selectedPlayID);
-        }
-        else
-        {
-            Debug.LogWarning($"SelectedFuncDic does not contain {selectedPlayID}, cannot remove.");
-        }
-    }
-
-    private bool CanSelectedPlayCard(CardSelectedPlayID cardSelectedPlayID)
-    {
-        if(SelectedFuncDic.ContainsKey(cardSelectedPlayID))
-            return true;
-        return false;
-    }
-    
-
-    /// <summary>
-    /// 给PlayerInteract调用
-    /// </summary>
-    public void TryCardSelectedPlay(CardSelectedPlayID cardSelectedPlayID)
-    {
-        Debug.Log("TryCardSelectedPlay");
-        if (CanSelectedPlayCard(cardSelectedPlayID))
-        {
-            TrulySelectedPlay(SelectedFuncDic[cardSelectedPlayID]);
-        }
-        else
-        {
-            //执行不能打出(特效音效等等)
-        }
-        
         handCardDeck.selectedCard = null;
         isSelected = false;
     }
-    //真正的选中打出效果,由子类实现
-    protected virtual void TrulySelectedPlay(int funcID)
+    public void FailSelectedPlay()
     {
-
+        //UNDONE
+        print("FailSelectedPlay");
     }
     #endregion
     #endregion
@@ -256,9 +129,13 @@ public class HandCardBase : CardBase
     {
         //if (isSelected) return;
         if (isDragging) return;
+
         EventCenter.Instance.EventTrigger(E_EventType.E_HandCardHovered, index);
         isHovered = true;
         handCardDeck.hoveredCard = this; // 设置当前悬停的手牌
+        //音效
+        MusicMgr.Instance.PlaySound("card#"+UnityEngine.Random.Range(7, 9).ToString(),
+                                    transform);
     }
 
     public void OnPointerExit(PointerEventData eventData)

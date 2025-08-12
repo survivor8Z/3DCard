@@ -7,6 +7,12 @@ public class MapMgr : SingletonMono<MapMgr>
     public GameObject roomPre;
     public List<Room> rooms = new List<Room>();//场景中的房间列表
     public Room currentRoom;
+
+    public void EnterANewRoom()
+    {
+
+    }
+
     private void Start()
     {
         

@@ -2,13 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractableObject : MonoBehaviour
+public class InteractableObject : MonoBehaviour,IInteractable
 {
     public List<Vector2Int> obstacleCoor = new List<Vector2Int>();//ÔÚ±à¼­Æ÷Àï¸ã°É
 
     public int id;
+    public int InteractableID
+    {
+        get
+        {
+            return id;
+        }
+    }
 
-
+    public virtual void React()
+    {
+        Debug.Log("InteractableObject React");
+    }
 
     private void OnDrawGizmos()
     {

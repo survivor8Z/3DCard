@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 11e298deb0182b846a0730e1b37b8b25
   m_currentHash:
     serializedVersion: 2
-    Hash: 8beaf335cfd57e67a941d085105960b6
+    Hash: 557c643c8e63d0c45150a29927769c3f
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -46,6 +46,13 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 352409187f5ed0d42876e93196d27f3a, type: 2}
   - {fileID: 11400000, guid: 10f7b9db24322f242b6758dc2d216155, type: 2}
+  - {fileID: 11400000, guid: 08ae5bbe39686f24f818acbdc06b87c2, type: 2}
+  - {fileID: 11400000, guid: ec80a412a6fdad54cb113348742f1e4d, type: 2}
+  - {fileID: 11400000, guid: 3df77c4be25aa5941b65880ea95b47f6, type: 2}
+  - {fileID: 11400000, guid: 7aec8d824a94e274591c920de31b8c2f, type: 2}
+  - {fileID: 11400000, guid: 5d0e415841128a14e93a9ce72cf1e26c, type: 2}
+  - {fileID: 11400000, guid: 4cb67fc58780dc44eb9536555ca4b3bb, type: 2}
+  - {fileID: 11400000, guid: 847e9dc54a8d9a9429c2d5d199828f5f, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -56,6 +63,20 @@ MonoBehaviour:
     - m_InheritedParent: 
       m_Id: 0a9fb374a2507d84e930f30d84186110
       m_ProfileName: Default
+      m_Values:
+      - m_Id: 3646b5a88720f9f45bea6e9df18d0cd0
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 26df769a45b9a024485c7a21f7940b13
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: c7662d84764cfcf419f9a82d27f7a819
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 8b9933b7b01507b45be817fcbe85e08e
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: 79f66737c0b236e4f91258fec1323f52
+        m_Value: http://[PrivateIpAddress]:[HostingServicePort]
+    - m_InheritedParent: 
+      m_Id: 855687a5d5eff4441993cae6ad1e8eb2
+      m_ProfileName: New Profile
       m_Values:
       - m_Id: 3646b5a88720f9f45bea6e9df18d0cd0
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
@@ -87,6 +108,10 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Card_Entity
+    - Card_Behavior
+    - Card_Condition
+    - Card_Modificatory
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 4201834a44241ed4e8eb54ed58d3ef49, type: 2}

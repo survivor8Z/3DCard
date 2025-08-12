@@ -100,6 +100,7 @@ public class TableCardBase : CardBase
 
         thehandCardBase.handCardDeck.handCards.Insert(thehandCardBase.index-1, thehandCardBase);
         thehandCardBase.handCardDeck.ResetCardIndex();
+        thehandCardBase.handCardDeck.ResetCardSlibing();
         //thehandCardBase.handCardDeck.ResetCardIndexWithSlots();
 
     }

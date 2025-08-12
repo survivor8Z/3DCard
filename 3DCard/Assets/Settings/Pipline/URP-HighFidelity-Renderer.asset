@@ -111,4 +111,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_Edge: {fileID: 2100000, guid: de06b743647f0be4fbbc7f49cfda6fc7, type: 2}
-  m_renderPassEvent: 500
+  m_renderPassEvent: 450

@@ -94,74 +94,53 @@ public class HandCardDeck : SerializedMonoBehaviour
     #endregion
 
     #region 实际卡牌打出效果相关
-    private Dictionary<CardCombinationPlayID, int> _combinationFuncDic;
-    public IReadOnlyDictionary<CardCombinationPlayID, int> CombinationFuncDic
-    {
-        get
-        {
-            _combinationFuncDic ??= new Dictionary<CardCombinationPlayID, int>();
-            return _combinationFuncDic;
-        }
-        protected set
-        {
-            _combinationFuncDic = value != null
-                ? new Dictionary<CardCombinationPlayID, int>(value)
-                : new Dictionary<CardCombinationPlayID, int>();
-        }
-    }
-
-    protected void AddCombinationFuncDic(CardCombinationPlayID combinationPlayID, int funcID)
-    {
-        if (_combinationFuncDic.ContainsKey(combinationPlayID))
-        {
-            Debug.LogWarning($"DragedFuncDic already contains {combinationPlayID}, updating value.");
-            _combinationFuncDic[combinationPlayID] = funcID;
-            return;
-        }
-        _combinationFuncDic[combinationPlayID] = funcID;
-    }
-
-    protected void RemoveCombinationFuncDic(CardCombinationPlayID combinationPlayID)
-    {
-        if (_combinationFuncDic.ContainsKey(combinationPlayID))
-        {
-            _combinationFuncDic.Remove(combinationPlayID);
-        }
-        else
-        {
-            Debug.LogWarning($"DragedFuncDic does not contain {combinationPlayID}, cannot remove.");
-        }
-    }
-
-
-    private bool CanCardCombinationPlay(CardCombinationPlayID cardCombinationPlayID)
-    {
-        if (CombinationFuncDic.ContainsKey(cardCombinationPlayID))
-            return true;
-        return false;
-    }
-
     /// <summary>
     /// 给PlayerInteract调用
     /// </summary>
-    public void TryCardCombinationPlay(CardCombinationPlayID cardCombinationPlayID)
+    public void TryCardCombinationPlay(IInteractable pointInteractableObject)
     {
-        if (CanCardCombinationPlay(cardCombinationPlayID))
+        switch (dragedCard)
         {
-            //执行打出
-        }
-        else
-        {
-            //执行不能打出(特效音效等等)
+            case IAttack attack:
+                if(pointInteractableObject is IDamageable damageable)
+                {
+                    if (selectedCard is IAddDamage addDamage)
+                    {
+                        attack.AttackWithAddDamage(damageable, addDamage);
+                    }
+                    else
+                    {
+                        FailCombinationPlay();
+                    }
+                }
+                else
+                {
+                    FailCombinationPlay();
+                }
+                break;
+            default:
+                FailCombinationPlay();
+                break;
         }
 
-        Debug.Log("TryCardCombinationPlay");
+
         selectedCard.isSelected = false; // 清除选中状态
         selectedCard = null;
         dragedCard = null;
     }
+
+
+
+
+
+
+    public void FailCombinationPlay()
+    {
+        //UNDONE
+        print("FailCombinationPlay");
+    }
     #endregion
-    
+
 
     /// <summary>
     /// 添加一张手牌,一般是与interactableObject交互添加
@@ -174,10 +153,20 @@ public class HandCardDeck : SerializedMonoBehaviour
             Debug.Log("HandCardDeck: AddCard: Hand card count exceeds max limit");
             return;
         }
-        GameObject slotObj = Instantiate(slotPre, slots.transform);
-        slotObj.name = "Slot" + (slots.transform.childCount);
-        GameObject card = Instantiate(cardPreDic[cardSO], transform);
-        card.name = "Card" + (handCards.Count + 1);
+        //GameObject slotObj = Instantiate(slotPre, slots.transform);
+        GameObject slotObj = PoolMgr.Instance.GetObjSync("Slot");
+        slotObj.transform.SetParent(slots.transform);
+        slotObj.transform.localPosition = Vector3.zero;
+        slotObj.transform.localScale = Vector3.one;
+        //slotObj.name = "Slot" + (slots.transform.childCount);
+
+        //GameObject card = Instantiate(cardPreDic[cardSO], transform);
+        GameObject card = PoolMgr.Instance.GetObjSync("HandCard_" + cardSO.cardEnglishName);
+
+        card.transform.position = slots.transform.position;
+        card.transform.SetParent(transform);
+        card.transform.localScale = Vector3.one;
+        //card.name = "Card" + (handCards.Count + 1);
 
         HandCardBase theHandCard = card.GetComponent<HandCardBase>();
         Slot theSlot = slotObj.GetComponent<Slot>();
@@ -193,20 +182,6 @@ public class HandCardDeck : SerializedMonoBehaviour
         theHandCard.index = handCards.Count;
 
     }
-    /// <summary>
-    /// 提前就会创建一个slot,能否创建也已经在之前判断了
-    /// 其他地方拿,不会删除(隐藏)那个gameobject,其他与AddCard一样
-    /// </summary>
-    /// <param name="cardSO"></param>
-    public void AddCardWithTableCard(TableCardBase tableCardBase)
-    {
-        GameObject card = tableCardBase.gameObject;
-        card.name = "Card" + (handCards.Count + 1);
-        //TODO:等写TableCardToHandCard的时候在说把,没写完
-        card.transform.SetParent(transform);
-
-
-    }
     
 
     /// <summary>
@@ -219,7 +194,11 @@ public class HandCardDeck : SerializedMonoBehaviour
             Debug.Log("Hand card count exceeds max limit");
             return null;
         }
-        GameObject slotObj = Instantiate(slotPre, slots.transform);
+        //GameObject slotObj = Instantiate(slotPre, slots.transform);
+        GameObject slotObj = PoolMgr.Instance.GetObjSync("Slot");
+        slotObj.transform.SetParent(slots.transform);
+        slotObj.transform.localPosition = Vector3.zero;
+        slotObj.transform.localScale = Vector3.one;
         Slot theSlot = slotObj.GetComponent<Slot>();
 
         slots.slotsList.Insert(listIndex,theSlot);
@@ -296,7 +275,7 @@ public class HandCardDeck : SerializedMonoBehaviour
         for(int i = 0;i < slots.slotsList.Count; i++)
         {
             slots.slotsList[i].index = i + 1;
-            slots.slotsList[i].name = "Slot" + (i + 1);
+            //slots.slotsList[i].name = "Slot" + (i + 1);
         }   
     }
 
@@ -305,9 +284,17 @@ public class HandCardDeck : SerializedMonoBehaviour
         for(int i = 0; i < handCards.Count; i++)
         {
             handCards[i].index = i + 1;
-            handCards[i].name = "Card" + (i + 1);
+            //handCards[i].name = "Card" + (i + 1);
             slots.slotsList[i].index = i + 1;
-            slots.slotsList[i].name = "Slot" + (i+1);
+            //slots.slotsList[i].name = "Slot" + (i+1);
+        }
+    }
+    public void ResetCardSlibing()
+    {
+        for (int i = 0; i < handCards.Count; i++)
+        {
+            handCards[i].transform.SetSiblingIndex(i+1);
+            slots.slotsList[i].transform.SetSiblingIndex(i);
         }
     }
 
@@ -321,7 +308,7 @@ public class HandCardDeck : SerializedMonoBehaviour
         for(int i = 0; i < slots.slotsList.Count; i++)
         {
             slots.slotsList[i].index = i + 1;
-            slots.slotsList[i].name = "Slot" + (i + 1);
+            //slots.slotsList[i].name = "Slot" + (i + 1);
         }
     }
 

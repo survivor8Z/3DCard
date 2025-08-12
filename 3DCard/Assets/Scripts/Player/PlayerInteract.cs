@@ -9,7 +9,7 @@ public class PlayerInteract : MonoBehaviour
     public HandCardDeck handCardDeck;
     //射线检测
     [SerializeField] private GameObject hitObject;
-    public InteractableObject pointInteractableObject;
+    public IInteractable pointInteractableObject;
     public LayerMask interactableLayerMask;
     public Vector3 MouseWorldPosition => Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
     public Vector2 MouseViewPortPosition => new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
@@ -52,7 +52,6 @@ public class PlayerInteract : MonoBehaviour
     #endregion
     public void Interact()
     {
-        int pointInteractableObjectID = pointInteractableObject==null?0: pointInteractableObject.id;
 
         //在桌子视角
         if (player.playerMove.inSceneObj is Table table)
@@ -70,13 +69,11 @@ public class PlayerInteract : MonoBehaviour
         {
             if (MouseViewPortPosition.y < PlayableMouseY)
             {
-
+                handCardDeck.ResetCardState();
                 return;
             }
 
-            handCardDeck.TryCardCombinationPlay(new CardCombinationPlayID(handCardDeck.dragedCard.cardSO.cardID,
-                                                                            handCardDeck.selectedCard.cardSO.cardID,
-                                                                            pointInteractableObjectID));
+            handCardDeck.TryCardCombinationPlay(pointInteractableObject);
             return;
         }
         //拖拽打出
@@ -84,12 +81,11 @@ public class PlayerInteract : MonoBehaviour
         {
             if (MouseViewPortPosition.y < PlayableMouseY)
             {
-
+                handCardDeck.ResetCardState();
                 return;
             }
 
-            handCardDeck.dragedCard.TryCardDragPlay(new CardDragedPlayID(handCardDeck.dragedCard.cardSO.cardID,
-                                                                            pointInteractableObjectID));
+            handCardDeck.dragedCard.TryCardDragPlay(pointInteractableObject);
             return;
         }
         //选择打出
@@ -98,12 +94,11 @@ public class PlayerInteract : MonoBehaviour
         {
             if (MouseViewPortPosition.y < PlayableMouseY)
             {
-
+                handCardDeck.ResetCardState();
                 return;
             }
 
-            handCardDeck.selectedCard.TryCardSelectedPlay(new CardSelectedPlayID(handCardDeck.selectedCard.cardSO.cardID,
-                                                                                    pointInteractableObjectID));
+            handCardDeck.selectedCard.TryCardSelectedPlay(pointInteractableObject);
             return;
         }
 
@@ -112,10 +107,10 @@ public class PlayerInteract : MonoBehaviour
         //下面是没有选中以及拖拽卡牌时
         if (pointInteractableObject != null)
         {
-            if(pointInteractableObject is TableCardMenuDeck tableCardDeck)
-            {
-                //显示牌堆界面
-            }
+            //if(pointInteractableObject is TableCardMenuDeck tableCardDeck)
+            //{
+            //    //显示牌堆界面
+            //}
             
         }
         
@@ -142,7 +137,7 @@ public class PlayerInteract : MonoBehaviour
                 return; 
             }
             hitObject = hit.collider.gameObject;
-            pointInteractableObject = hitObject.GetComponent<InteractableObject>();
+            pointInteractableObject = hitObject.GetComponent<InteractableObject>() as IInteractable;
             
         }
         else

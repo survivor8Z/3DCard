@@ -10,6 +10,7 @@ public class CreateCardAsset : Editor
     public enum ExcelTitleEnum
     {
         Name,
+        EnglishName,
         ID,
         Type,
         Description,
@@ -38,6 +39,7 @@ public class CreateCardAsset : Editor
             CardSO data = ScriptableObject.CreateInstance<CardSO>();
             //将读取的Excel数据赋值给相应的属性
             data.cardName = worksheet.Cells[i, startCol + (int)ExcelTitleEnum.Name].Text;
+            data.cardEnglishName = worksheet.Cells[i, startCol + (int)ExcelTitleEnum.EnglishName].Text; // Assuming English name is the same as card name
             data.cardID = int.Parse(worksheet.Cells[i, startCol + (int)ExcelTitleEnum.ID].Text);
             data.cardType = (E_CardType)System.Enum.Parse(typeof(E_CardType), worksheet.Cells[i, startCol + (int)ExcelTitleEnum.Type].Text);
             data.cardDescription = worksheet.Cells[i, startCol + (int)ExcelTitleEnum.Description].Text;

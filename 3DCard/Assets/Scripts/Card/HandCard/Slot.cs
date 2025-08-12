@@ -45,7 +45,8 @@ public class Slot : MonoBehaviour
     public void Deleted(int index)
     {
         if (this.index != index) return;
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        PoolMgr.Instance.PushObj(gameObject);
     }
     //ÊÂ¼şÏìÓ¦
     private void OnHandCardHovered(int index)

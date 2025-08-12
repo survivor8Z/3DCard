@@ -14,9 +14,8 @@ public enum E_CardType
 public class CardSO : ScriptableObject
 {
     public string cardName;
+    public string cardEnglishName;
     public int cardID;
     public E_CardType cardType;
     public string cardDescription;
-
-    public CardSO cardSO;
 }

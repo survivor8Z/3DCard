@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SO
+  m_EditorClassIdentifier: 
+  m_GroupName: SO
+  m_Data:
+    m_SerializedData: []
+  m_GUID: a36916870679a9c49bf7bde7b366555c
+  m_SerializeEntries:
+  - m_GUID: a1a28c2b43916b74d9478c523790b7df
+    m_Address: "\u6253\u51FB"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Behavior
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 637a44df85c421c49be08d7dd0d8a210
+    m_Address: "\u6295\u63B7"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Behavior
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 530e5ac70ac79f64ba9a43597cd0f5c3
+    m_Address: "\u6050\u60E7"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Condition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e16c28f76b16464b8cc3819aa5420d1
+    m_Address: null
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb0b5427bbd2b6d4f931de9fe608c50d
+    m_Address: "\u5FC3\u810F"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Entity
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c266fd1fabace684184dc947332dc5d4
+    m_Address: "\u6728\u65B9\u5757"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Entity
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50464280fcda6dc4baea86f9f672d351
+    m_Address: "\u706F"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Entity
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d9519fcc503cb341ae38bd122bdeb49
+    m_Address: "\u77F3\u5934"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Entity
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61bcb418cb295cb4f805f4b421a4cd58
+    m_Address: "\u95E8"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Entity
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97391dfc89f7f534da0dddb673632573
+    m_Address: "\u5FAA\u73AF"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card_Modificatory
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3443e50ea5e9364680d75cfbbdca8c6
+    m_Address: CurveParameters
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 1cda97fb84f9c824b88139327f41ea2f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: bc243a1a5b1f1d444a0f560eefed354f, type: 2}
+    - {fileID: 11400000, guid: 8970e4f9e752ec84ba48e559805725c6, type: 2}

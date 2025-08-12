@@ -2,29 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandCard_En_Rock : HandCardBase
+public class HandCard_En_Rock : HandCardBase,IAddDamage
 {
     
 
-    protected override void TrulyDragPlay(int funcID)
+    public override void TryCardDragPlay(IInteractable pointInteractableObject)
     {
-        switch(funcID)
+        switch(pointInteractableObject)
         {
-            case 1:
+            case Table:
                 PlaceCard();
                 break;
             default:
-                Debug.LogError("RockCard funcID not found: " + funcID);
+                FailDragPlay();
                 break;
         }
+
+        base.TryCardDragPlay(pointInteractableObject);
     }
 
-    protected override void TrulySelectedPlay(int funcID)
+    public override void TryCardSelectedPlay(IInteractable pointInteractableObject)
     {
-        
-    }
+        switch(pointInteractableObject)
+        {
+            default:
+                FailSelectedPlay();
+                break;
+        }
 
-    // funcID 1 ∑≈÷√ø®≈∆
+        base.TryCardSelectedPlay(pointInteractableObject);
+    }
+    
     public void PlaceCard()
     {
         Debug.Log("PlaceCard");
@@ -34,4 +42,11 @@ public class HandCard_En_Rock : HandCardBase
 
     }
 
+    int IAddDamage.AddDamage
+    {
+        get
+        {
+            return 1;
+        }
+    }
 }
