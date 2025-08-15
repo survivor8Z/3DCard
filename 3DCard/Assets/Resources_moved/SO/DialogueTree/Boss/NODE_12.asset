@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0603af8c89e1f764aa233053be14493a, type: 3}
+  m_Name: NODE_12
+  m_EditorClassIdentifier: 
+  graph: {fileID: 0}
+  position: {x: 1050, y: 1980}
+  ports:
+    keys:
+    - nextNode
+    - parentNode
+    values:
+    - _fieldName: nextNode
+      _node: {fileID: 11400000}
+      _typeQualifiedName: DialogueNodeBase, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: e08853806d9daaa438af4b053ade4f31, type: 2}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: parentNode
+      _node: {fileID: 11400000}
+      _typeQualifiedName: DialogueNodeBase, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: nextNode
+        node: {fileID: 11400000, guid: aed3b888e78a11046ac245406ae6a368, type: 2}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  parentNode: {fileID: 0}
+  conditionCheckName: IfWaitForLong
+  nextNode: {fileID: 0}
+  childNode: {fileID: 11400000, guid: e08853806d9daaa438af4b053ade4f31, type: 2}

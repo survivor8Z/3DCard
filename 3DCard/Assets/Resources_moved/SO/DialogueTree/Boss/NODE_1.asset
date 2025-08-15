@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9d45b6e0f68854c9b8d89af8708f43, type: 3}
+  m_Name: NODE_1
+  m_EditorClassIdentifier: 
+  graph: {fileID: 0}
+  position: {x: 0, y: 0}
+  ports:
+    keys:
+    - nextNode
+    - parentNode
+    values:
+    - _fieldName: nextNode
+      _node: {fileID: 11400000}
+      _typeQualifiedName: DialogueNodeBase, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: eb26ec3ea17fb9b419aa09f0b8ff82bd, type: 2}
+        reroutePoints: []
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: ff61dbdc4d93782408f15035f8c36efb, type: 2}
+        reroutePoints: []
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: bfc842f3156fea149be8cd055973bff2, type: 2}
+        reroutePoints: []
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: 0652fd5f3da88084c970820a48a41522, type: 2}
+        reroutePoints: []
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: a6cc2a5843b97c442a95a3fe5b87819f, type: 2}
+        reroutePoints: []
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: 579403eb30f4e5941bab432babffe091, type: 2}
+        reroutePoints: []
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: 882fdd1e42425c649a0fa836e946c3fb, type: 2}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: parentNode
+      _node: {fileID: 11400000}
+      _typeQualifiedName: DialogueNodeBase, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  parentNode: {fileID: 0}
+  childrenNodes:
+  - {fileID: 11400000, guid: eb26ec3ea17fb9b419aa09f0b8ff82bd, type: 2}
+  - {fileID: 11400000, guid: ff61dbdc4d93782408f15035f8c36efb, type: 2}
+  - {fileID: 11400000, guid: bfc842f3156fea149be8cd055973bff2, type: 2}
+  - {fileID: 11400000, guid: 0652fd5f3da88084c970820a48a41522, type: 2}
+  - {fileID: 11400000, guid: a6cc2a5843b97c442a95a3fe5b87819f, type: 2}
+  - {fileID: 11400000, guid: 579403eb30f4e5941bab432babffe091, type: 2}
+  - {fileID: 11400000, guid: 882fdd1e42425c649a0fa836e946c3fb, type: 2}
+  nextNode: {fileID: 0}

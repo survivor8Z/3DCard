@@ -148,6 +148,113 @@ public class AddressablesMgr : BaseManager<AddressablesMgr>
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+    /// <summary>
+    /// 同步加载单个资源
+    /// </summary>
+    public T LoadAsset<T>(string name)
+    {
+        string keyName = name + "_" + typeof(T).Name;
+        AsyncOperationHandle<T> handle;
+
+        // 如果资源已经在异步加载中或已完成，直接等待结果
+        if (resDic.ContainsKey(keyName))
+        {
+            handle = (AsyncOperationHandle<T>)resDic[keyName];
+            handle.WaitForCompletion();
+            return handle.Result;
+        }
+        else
+        {
+            // 如果资源还未加载，则进行同步加载
+            handle = Addressables.LoadAssetAsync<T>(name);
+            handle.WaitForCompletion();
+
+            // 成功加载后存入字典
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                resDic.Add(keyName, handle);
+                return handle.Result;
+            }
+            else
+            {
+                Debug.LogError($"同步加载资源失败: {name}");
+                return default;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 同步加载多个资源
+    /// </summary>
+    public IList<T> LoadAssets<T>(Addressables.MergeMode mode, params string[] keys)
+    {
+        List<string> list = new List<string>(keys);
+        string keyName = "";
+        foreach (string key in list)
+            keyName += key + "_";
+        keyName += typeof(T).Name;
+
+        AsyncOperationHandle<IList<T>> handle;
+
+        // 如果资源已经在异步加载中或已完成，直接等待结果
+        if (resDic.ContainsKey(keyName))
+        {
+            handle = (AsyncOperationHandle<IList<T>>)resDic[keyName];
+            handle.WaitForCompletion();
+            return handle.Result;
+        }
+        else
+        {
+            // 如果资源还未加载，则进行同步加载
+            handle = Addressables.LoadAssetsAsync<T>(list, null, mode);
+            handle.WaitForCompletion();
+
+            // 成功加载后存入字典
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                resDic.Add(keyName, handle);
+                return handle.Result;
+            }
+            else
+            {
+                Debug.LogError($"同步加载多个资源失败: {keyName}");
+                return null;
+            }
+        }
+    }
+
+    // 释放资源的方法，用于多个资源
+    public void Release<T>(params string[] keys)
+    {
+        //1.构建一个keyName  之后用于存入到字典中
+        List<string> list = new List<string>(keys);
+        string keyName = "";
+        foreach (string key in list)
+            keyName += key + "_";
+        keyName += typeof(T).Name;
+
+        if (resDic.ContainsKey(keyName))
+        {
+            //取出字典里面的对象
+            AsyncOperationHandle<IList<T>> handle = (AsyncOperationHandle<IList<T>>)resDic[keyName];
+            Addressables.Release(handle);
+            resDic.Remove(keyName);
+        }
+    }
+
+
+
     //清空资源
     public void Clear()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class TableCardBase : CardBase
+public class TableCardBase : CardBase,IInteractable
     , IPointerEnterHandler
     , IPointerExitHandler
     , IDragHandler
@@ -14,9 +14,8 @@ public class TableCardBase : CardBase
     , IPointerDownHandler
 {
     public Table table;
-    public TableCardVisual theTableCardVisual;
-    public HandCardBase thehandCardBase;
-    public Player player;
+    [HideInInspector]public TableCardVisual theTableCardVisual;
+    [HideInInspector]public HandCardBase thehandCardBase;
 
 
 
@@ -29,6 +28,13 @@ public class TableCardBase : CardBase
     //拖拽到手牌相关
     public Slot toSlot;
     
+    private int interactableID;
+    public int InteractableID => interactableID;
+
+    public void React()
+    {
+        
+    }
 
     #region 生命周期函数
     private void Awake()
@@ -52,25 +58,6 @@ public class TableCardBase : CardBase
         OnDragEvent -= table.tableCardsControl.OnTheTableCardDrag;
     }
     #endregion
-    //直接到TableCardControl写了
-    //public bool CanTableCardToHandCard()
-    //{
-    //    if(player.playerInteract.MouseViewPortPosition.y < 0.25f
-    //       && cardSO.cardType == E_CardType.E_Entity
-    //       && theHandCardBase.handCardDeck.cardPreList.Count < theHandCardBase.handCardDeck.maxCount
-    //        /*&& isDragging//这个用事件触发的*/)
-    //    {
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    ////TODO:需要做从桌牌到手牌的方法,不在表方法里写
-    //public void TableCardToHandCard()
-    //{
-    //    if (!CanTableCardToHandCard()) return;
-
-    //}
 
     protected void Init()
     {
@@ -106,14 +93,15 @@ public class TableCardBase : CardBase
     }
     #region ugui事件
 
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-
+        
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -142,5 +130,6 @@ public class TableCardBase : CardBase
     {
         
     }
+
     #endregion
 }

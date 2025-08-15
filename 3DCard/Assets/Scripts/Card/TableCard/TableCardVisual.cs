@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class TableCardVisual : MonoBehaviour
 {
-    [SerializeField]private TableCardBase thaTableCard;
+    private TableCardBase thaTableCard;
     public Vector3 toPos;//普通状态下要去的位置
-    public HandCardVisual theHandCardVisual;
+    [HideInInspector] public HandCardVisual theHandCardVisual;
 
 
     //用于初始化
     #region 生命周期函数
     private void Awake()
     {
-        
+        thaTableCard = GetComponent<TableCardBase>();
+        theHandCardVisual = GetComponent<HandCardVisual>();
     }
     private void Start()
     {

@@ -32,10 +32,6 @@ public class HandCardDeck : SerializedMonoBehaviour
     public Slots slots;//槽位盘
     [SerializeField]private GameObject slotPre;
 
-    public List<CardSO> cardSOs = new List<CardSO>(); //为了在编辑器里搞,awake时加到cardPreDic里
-    public List<GameObject> cardPreList = new List<GameObject>(); //为了在编辑器里搞,awake时加到cardPreDic里
-    [ShowInInspector]private Dictionary<CardSO,GameObject> cardPreDic = new();
-
     //用于取消
     public bool isCancel = false;
 
@@ -49,11 +45,6 @@ public class HandCardDeck : SerializedMonoBehaviour
     #region 生命周期函数
     private void Awake()
     {
-        for(int i= 0; i < cardSOs.Count; i++)
-        {
-            cardPreDic.Add(cardSOs[i], cardPreList[i]);
-        }
-
 
         theRectTransform = GetComponent<RectTransform>();
         handCardDeckVisual = GetComponent<HandCardDeckVisual>();
@@ -275,7 +266,7 @@ public class HandCardDeck : SerializedMonoBehaviour
         for(int i = 0;i < slots.slotsList.Count; i++)
         {
             slots.slotsList[i].index = i + 1;
-            //slots.slotsList[i].name = "Slot" + (i + 1);
+            slots.slotsList[i].layoutElement.flexibleWidth = 1f;
         }   
     }
 
@@ -284,9 +275,8 @@ public class HandCardDeck : SerializedMonoBehaviour
         for(int i = 0; i < handCards.Count; i++)
         {
             handCards[i].index = i + 1;
-            //handCards[i].name = "Card" + (i + 1);
             slots.slotsList[i].index = i + 1;
-            //slots.slotsList[i].name = "Slot" + (i+1);
+            slots.slotsList[i].layoutElement.flexibleWidth = 1f;
         }
     }
     public void ResetCardSlibing()
@@ -295,20 +285,7 @@ public class HandCardDeck : SerializedMonoBehaviour
         {
             handCards[i].transform.SetSiblingIndex(i+1);
             slots.slotsList[i].transform.SetSiblingIndex(i);
-        }
-    }
-
-    public void ResetCardIndexWithSlots()
-    {
-        if (slots.slotsList.Count != handCards.Count)
-        {
-            print("ResetCardIndexWithSlot: slots count not equal handCards count");
-            return;
-        }
-        for(int i = 0; i < slots.slotsList.Count; i++)
-        {
-            slots.slotsList[i].index = i + 1;
-            //slots.slotsList[i].name = "Slot" + (i + 1);
+            slots.slotsList[i].layoutElement.flexibleWidth = 1f;
         }
     }
 

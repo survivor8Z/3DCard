@@ -31,9 +31,9 @@ public class HandCardBase : CardBase
 
 
     //与TableCard转换相关
-    public TableCardBase theTableCardBase; //如果是实体卡牌,则有对应的TableCardBase..
+    [HideInInspector]public TableCardBase theTableCardBase; //如果是实体卡牌,则有对应的TableCardBase..
 
-    public HandCardVisual theHandCardVisual;
+    [HideInInspector]public HandCardVisual theHandCardVisual;
 
     #region 生命周期函数
     private void Awake()

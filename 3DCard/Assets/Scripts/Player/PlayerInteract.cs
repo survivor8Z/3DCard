@@ -9,7 +9,7 @@ public class PlayerInteract : MonoBehaviour
     public HandCardDeck handCardDeck;
     //射线检测
     [SerializeField] private GameObject hitObject;
-    public IInteractable pointInteractableObject;
+    public IInteractable pointInteractableObject;//不包含桌牌等卡牌
     public LayerMask interactableLayerMask;
     public Vector3 MouseWorldPosition => Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
     public Vector2 MouseViewPortPosition => new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
@@ -59,7 +59,6 @@ public class PlayerInteract : MonoBehaviour
             if (table.tableCardsControl.currentDragCard != null) return;
             
         }
-
 
 
         //手牌相关

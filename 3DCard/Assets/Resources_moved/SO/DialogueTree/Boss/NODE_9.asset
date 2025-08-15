@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4d23cc887dfc0e4e9bd822443654d86, type: 3}
+  m_Name: NODE_9
+  m_EditorClassIdentifier: 
+  graph: {fileID: 0}
+  position: {x: 700, y: 1440}
+  ports:
+    keys:
+    - nextNode
+    - parentNode
+    values:
+    - _fieldName: nextNode
+      _node: {fileID: 11400000}
+      _typeQualifiedName: DialogueNodeBase, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: 9da60ec7915ab6046bf4fe5a0ccaef2d, type: 2}
+        reroutePoints: []
+      - fieldName: parentNode
+        node: {fileID: 11400000, guid: 4b39072d2b81079448e6319c8131ffca, type: 2}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: parentNode
+      _node: {fileID: 11400000}
+      _typeQualifiedName: DialogueNodeBase, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: nextNode
+        node: {fileID: 11400000, guid: 579403eb30f4e5941bab432babffe091, type: 2}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  parentNode: {fileID: 0}
+  childrenNodes:
+  - {fileID: 11400000, guid: 9da60ec7915ab6046bf4fe5a0ccaef2d, type: 2}
+  - {fileID: 11400000, guid: 4b39072d2b81079448e6319c8131ffca, type: 2}
+  nextNode: {fileID: 0}

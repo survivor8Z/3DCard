@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour 
 {
     public int index;
-    private LayoutElement layoutElement;
+    public LayoutElement layoutElement;
     [SerializeField]private RectTransform theRectTransform;
 
     //for test

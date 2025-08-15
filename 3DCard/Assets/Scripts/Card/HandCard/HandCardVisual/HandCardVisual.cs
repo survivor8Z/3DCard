@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class HandCardVisual : MonoBehaviour
 {
-    [SerializeField] private CurveParameters curveParameters;
-    [SerializeField] private HandCardBase theHandCard;
+    [HideInInspector] public CurveParameters curveParameters;
+    private HandCardBase theHandCard;
     [SerializeField] private float k
         => theHandCard.index / (theHandCard.handCardDeck.CurrentHandCardCount + 1f);// 0-1之间的值,表示卡牌在手牌中的位置
     private RectTransform theRectTransform;
@@ -16,7 +16,6 @@ public class HandCardVisual : MonoBehaviour
 
     [SerializeField]private int originalIndex=>theHandCard.index;
     private SortingGroup sortingGroup;
-    [SerializeField]private Image mainImage;//for test
 
     private void Awake()
     {

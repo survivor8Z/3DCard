@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7437154ab62523d4c898129a526f2bee, type: 3}
+  m_Name: GlobalMatchConfig
+  m_EditorClassIdentifier: 
+  MatchList:
+  - matchTag: shake
+    Process:
+    - {fileID: 11400000, guid: c5249364feb17084bbe205b1896b3cc4, type: 2}
+  - matchTag: wave
+    Process:
+    - {fileID: 11400000, guid: 758f7ec91720ccb4eab4180fc6eee371, type: 2}
+  - matchTag: rotate
+    Process:
+    - {fileID: 11400000, guid: 843957efe1150424f8bd2f0f6e254b70, type: 2}
+  - matchTag: bounce
+    Process:
+    - {fileID: 11400000, guid: 44aa8150822c24e4c8ac994f90ae72b1, type: 2}
+  - matchTag: fade
+    Process:
+    - {fileID: 11400000, guid: 01bc7575bfe55eb48b94c6494abdbeb3, type: 2}
+  - matchTag: typewriter
+    Process:
+    - {fileID: 11400000, guid: 55f98608fa59d6d4ca1f58036b6d510e, type: 2}
+  - matchTag: twist
+    Process:
+    - {fileID: 11400000, guid: 140405bc67b795f45a19e9fa0721a983, type: 2}
+  - matchTag: scale
+    Process:
+    - {fileID: 11400000, guid: 54dc152cfd58f364cbaf0c1366e894a4, type: 2}
+  - matchTag: swing
+    Process:
+    - {fileID: 11400000, guid: 2f030dc9027717640a25bba79d5f75a1, type: 2}
+  - matchTag: rainbow
+    Process:
+    - {fileID: 11400000, guid: 250f1c0a058712c4ea148ef0d67e8afd, type: 2}

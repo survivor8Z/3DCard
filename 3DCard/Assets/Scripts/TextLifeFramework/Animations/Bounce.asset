@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10366abcc0aa1e54fa5f640707132a1f, type: 3}
+  m_Name: Bounce
+  m_EditorClassIdentifier: 
+  Enable: 1
+  TimeScale: 1
+  CharacterTimeOffset: 100
+  characterBehaviours:
+    List:
+    - {fileID: 8166283489369008821}
+--- !u!114 &8166283489369008821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582b716a6a444c3d9558ac393ac8c6dc, type: 3}
+  m_Name: LiteMotionBehaviour
+  m_EditorClassIdentifier: 
+  dataType: -3
+  behaviourType: 4
+  intensity: 10
+  characterTimeOffset: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 6.911166
+      outSlope: 6.911166
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.14469333
+      value: 0.99999964
+      inSlope: -0.029195266
+      outSlope: -0.029195266
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.10475645
+    - serializedVersion: 3
+      time: 0.319129
+      value: 0.014965832
+      inSlope: 1.4590722
+      outSlope: 1.4590722
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.15888159
+    - serializedVersion: 3
+      time: 0.5979677
+      value: 0.01286684
+      inSlope: 0.004680112
+      outSlope: 0.004680112
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24961472
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.03200449
+      outSlope: -0.03200449
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 1
+    m_PostInfinity: 1
+    m_RotationOrder: 4
+  randomSeed: 0
+  color: {r: 1, g: 1, b: 1, a: 1}
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  Pivot: {x: 0.5, y: 0.5}
+  Range: {x: 0, y: 1}
