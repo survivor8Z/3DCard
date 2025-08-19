@@ -80,4 +80,10 @@ public class MonoMgr : SingletonAutoMono<MonoMgr>
     {
         lateUpdateEvent?.Invoke();
     }
+
+    //下面是启动协程
+    public Coroutine StartGlobalCoroutine(IEnumerator coroutine)
+    {
+        return StartCoroutine(coroutine);
+    }
 }

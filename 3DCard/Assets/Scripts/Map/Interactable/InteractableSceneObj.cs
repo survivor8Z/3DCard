@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// 这个是用来场景交互的
+/// 这个是用来场景交互的,就是会调整摄像机视角之类的
 /// </summary>
 public class InteractableSceneObj : InteractableObject
 {

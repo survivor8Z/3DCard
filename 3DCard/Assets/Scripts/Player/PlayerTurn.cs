@@ -5,9 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerTurn : MonoBehaviour
 {
-    void OnTurn(InputValue value)
+    public void TurnLeft(InputAction.CallbackContext context)
     {
-        Turn(value.Get<float>() > 0);
+        if (context.performed)  
+            Turn(false);
+    }
+    public void TurnRight(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+            Turn(true);
     }
     void Turn(bool isTurnRight)
     {

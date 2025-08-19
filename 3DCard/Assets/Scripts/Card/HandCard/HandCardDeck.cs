@@ -36,7 +36,7 @@ public class HandCardDeck : SerializedMonoBehaviour
     public bool isCancel = false;
 
     //用于与桌牌转换
-    public Table table;
+    public Table table => MapMgr.Instance.currentRoom.table;
 
     //用于创建预槽位
     public int currentIndex;
@@ -149,7 +149,6 @@ public class HandCardDeck : SerializedMonoBehaviour
         slotObj.transform.SetParent(slots.transform);
         slotObj.transform.localPosition = Vector3.zero;
         slotObj.transform.localScale = Vector3.one;
-        //slotObj.name = "Slot" + (slots.transform.childCount);
 
         //GameObject card = Instantiate(cardPreDic[cardSO], transform);
         GameObject card = PoolMgr.Instance.GetObjSync("HandCard_" + cardSO.cardEnglishName);

@@ -28,7 +28,7 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
             ""id"": ""9386340e-5b1e-4caf-97ff-81affead89a0"",
             ""actions"": [
                 {
-                    ""name"": ""Turn"",
+                    ""name"": ""TurnLeft"",
                     ""type"": ""Button"",
                     ""id"": ""81360f0b-7d4d-4f15-88e7-9e7906a6a250"",
                     ""expectedControlType"": ""Button"",
@@ -37,9 +37,9 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""TurnRight"",
                     ""type"": ""Button"",
-                    ""id"": ""01913c0a-7fea-4e30-aa13-20ff2711f3c7"",
+                    ""id"": ""f7163e34-80fa-430e-968c-0c471ecb541e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -53,75 +53,27 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""HoldMoveFront"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a5058c5-bbe6-4d3f-939c-866477b1ce39"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""HoldMoveBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""036d6385-0e3c-4c0f-8386-524694a09823"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""AD"",
-                    ""id"": ""faaae289-da9f-4bf8-af6d-15fc829949d8"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Turn"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""bca02003-52f9-4cf1-86f7-3e12eb7e1ed9"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Turn"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""c73d5b4d-68c4-4fde-a335-8afdb77ac6b7"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Turn"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""WS"",
-                    ""id"": ""95fc1aa4-24f8-4bb0-96d5-b8cc8788057a"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""85da0012-89c9-453d-a3ec-40cd2a437e21"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""e7b36eb0-777f-4ae0-abff-621bd2225ec1"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": """",
                     ""id"": ""69c3bcc1-6203-4108-87dd-2411b2f572b8"",
@@ -130,6 +82,50 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd1b413f-2990-4f58-862d-24fe764feb6c"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldMoveFront"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b46a1ff-3546-47e5-90d7-75d9c787fbac"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldMoveBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e19f91a1-99c8-4d65-8339-7d8f036e8308"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a0d6af6-a314-425e-bcc1-06d0086b43d0"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -249,9 +245,11 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Turn = m_Player.FindAction("Turn", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_TurnLeft = m_Player.FindAction("TurnLeft", throwIfNotFound: true);
+        m_Player_TurnRight = m_Player.FindAction("TurnRight", throwIfNotFound: true);
         m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
+        m_Player_HoldMoveFront = m_Player.FindAction("HoldMoveFront", throwIfNotFound: true);
+        m_Player_HoldMoveBack = m_Player.FindAction("HoldMoveBack", throwIfNotFound: true);
         // Card
         m_Card = asset.FindActionMap("Card", throwIfNotFound: true);
         m_Card_MousePosition = m_Card.FindAction("MousePosition", throwIfNotFound: true);
@@ -317,16 +315,20 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Turn;
-    private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_TurnLeft;
+    private readonly InputAction m_Player_TurnRight;
     private readonly InputAction m_Player_MousePosition;
+    private readonly InputAction m_Player_HoldMoveFront;
+    private readonly InputAction m_Player_HoldMoveBack;
     public struct PlayerActions
     {
         private @Inputsystem m_Wrapper;
         public PlayerActions(@Inputsystem wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Turn => m_Wrapper.m_Player_Turn;
-        public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @TurnLeft => m_Wrapper.m_Player_TurnLeft;
+        public InputAction @TurnRight => m_Wrapper.m_Player_TurnRight;
         public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
+        public InputAction @HoldMoveFront => m_Wrapper.m_Player_HoldMoveFront;
+        public InputAction @HoldMoveBack => m_Wrapper.m_Player_HoldMoveBack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -336,28 +338,40 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @Turn.started += instance.OnTurn;
-            @Turn.performed += instance.OnTurn;
-            @Turn.canceled += instance.OnTurn;
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
+            @TurnLeft.started += instance.OnTurnLeft;
+            @TurnLeft.performed += instance.OnTurnLeft;
+            @TurnLeft.canceled += instance.OnTurnLeft;
+            @TurnRight.started += instance.OnTurnRight;
+            @TurnRight.performed += instance.OnTurnRight;
+            @TurnRight.canceled += instance.OnTurnRight;
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
+            @HoldMoveFront.started += instance.OnHoldMoveFront;
+            @HoldMoveFront.performed += instance.OnHoldMoveFront;
+            @HoldMoveFront.canceled += instance.OnHoldMoveFront;
+            @HoldMoveBack.started += instance.OnHoldMoveBack;
+            @HoldMoveBack.performed += instance.OnHoldMoveBack;
+            @HoldMoveBack.canceled += instance.OnHoldMoveBack;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @Turn.started -= instance.OnTurn;
-            @Turn.performed -= instance.OnTurn;
-            @Turn.canceled -= instance.OnTurn;
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
+            @TurnLeft.started -= instance.OnTurnLeft;
+            @TurnLeft.performed -= instance.OnTurnLeft;
+            @TurnLeft.canceled -= instance.OnTurnLeft;
+            @TurnRight.started -= instance.OnTurnRight;
+            @TurnRight.performed -= instance.OnTurnRight;
+            @TurnRight.canceled -= instance.OnTurnRight;
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
+            @HoldMoveFront.started -= instance.OnHoldMoveFront;
+            @HoldMoveFront.performed -= instance.OnHoldMoveFront;
+            @HoldMoveFront.canceled -= instance.OnHoldMoveFront;
+            @HoldMoveBack.started -= instance.OnHoldMoveBack;
+            @HoldMoveBack.performed -= instance.OnHoldMoveBack;
+            @HoldMoveBack.canceled -= instance.OnHoldMoveBack;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -476,9 +490,11 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnTurn(InputAction.CallbackContext context);
-        void OnMove(InputAction.CallbackContext context);
+        void OnTurnLeft(InputAction.CallbackContext context);
+        void OnTurnRight(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
+        void OnHoldMoveFront(InputAction.CallbackContext context);
+        void OnHoldMoveBack(InputAction.CallbackContext context);
     }
     public interface ICardActions
     {

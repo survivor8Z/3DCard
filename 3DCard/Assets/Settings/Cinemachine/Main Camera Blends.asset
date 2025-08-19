@@ -17,7 +17,7 @@ MonoBehaviour:
     m_To: FirstPersonVC
     m_Blend:
       m_Style: 1
-      m_Time: 1
+      m_Time: 0.6
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
@@ -28,7 +28,7 @@ MonoBehaviour:
     m_To: BirdViewVC
     m_Blend:
       m_Style: 1
-      m_Time: 1
+      m_Time: 0.6
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

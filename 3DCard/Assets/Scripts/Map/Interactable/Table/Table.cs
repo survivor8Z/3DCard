@@ -8,7 +8,7 @@ public class Table : InteractableSceneObj
     public CinemachineVirtualCamera theVC;
 
     //拖拽位置相关
-    public Transform dragPoint ;
+    public Transform dragPoint ;//之后可能限制一下位置
     public Transform tableCardTransformParent;
     public float dragPointK;//调整系数
     //下面是管理卡牌相关
@@ -57,5 +57,7 @@ public class Table : InteractableSceneObj
     public void UpdateTablePoint(Vector3 pos)
     {
         dragPoint.position = pos+Vector3.down*dragPointK;
+        //设置卡牌的父节点
+
     }
 }

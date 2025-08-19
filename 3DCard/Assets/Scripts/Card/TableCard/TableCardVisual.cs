@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class TableCardVisual : MonoBehaviour
 {
+    private TableCardsControl tableCardControl=>thaTableCard.table.tableCardsControl;
     private TableCardBase thaTableCard;
-    public Vector3 toPos;//普通状态下要去的位置
+    public Vector3 toPos;
     [HideInInspector] public HandCardVisual theHandCardVisual;
 
 
@@ -47,5 +48,9 @@ public class TableCardVisual : MonoBehaviour
             ref followVelocity,
             0.1f
         );
+    }
+    public void SetToPosition()
+    {
+
     }
 }

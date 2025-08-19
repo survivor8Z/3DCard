@@ -6,6 +6,6 @@ public class GameManager : SingletonMono<GameManager>
 {
     private void Start()
     {
-        MusicMgr.Instance.PlayBKMusic("factory_ambience");
+        //MusicMgr.Instance.PlayBKMusic("factory_ambience");
     }
 }

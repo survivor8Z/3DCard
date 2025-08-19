@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3678c4bb02be8674cb275427847ca801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxNum: 10
+  maxNum: 30
 --- !u!1001 &639944535463365301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -231,6 +231,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardView
       objectReference: {fileID: 0}
+    - target: {fileID: 7970216051554013916, guid: 1ba5da75b2b3a704d88d8657f82736c0,
+        type: 3}
+      propertyPath: cardSO
+      value: 
+      objectReference: {fileID: 11400000, guid: a1a28c2b43916b74d9478c523790b7df,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

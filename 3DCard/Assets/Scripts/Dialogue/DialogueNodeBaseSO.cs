@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using XNode;
 
-public abstract class DialogueNodeBase :Node
+public abstract class DialogueNodeBase :XNode.Node
 {
     [Input] public DialogueNodeBase parentNode;
 

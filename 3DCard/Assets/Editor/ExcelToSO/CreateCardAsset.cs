@@ -188,7 +188,7 @@ public class CreateCardAsset : Editor
         cardPrefab.AddComponent<SortingGroup>();
         cardPrefab.AddComponent<CanvasRenderer>();
 
-        cardPrefab.AddComponent<PoolObj>().maxNum = 10;
+        cardPrefab.AddComponent<PoolObj>().maxNum = 30;
 
         //设置CardView为子对象
         GameObject cardViewPrefab = AddressablesMgr.Instance.LoadAsset<GameObject>("CardView");
@@ -196,6 +196,9 @@ public class CreateCardAsset : Editor
         {
             GameObject instantiatedCardView 
                 = (GameObject)PrefabUtility.InstantiatePrefab(cardViewPrefab, cardPrefab.transform);
+            CardView theCardView = instantiatedCardView.GetComponent<CardView>();
+            theCardView.cardSO = cardSO;
+
         }
         else
         {

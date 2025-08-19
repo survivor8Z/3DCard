@@ -6,71 +6,125 @@ using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
-    //用于得到不可行走的格子信息
-    public Room theRoom;
-    public Vector3 toPos;
+    public RoomBase theRoom => MapMgr.Instance.currentRoom;
+    public Vector2Int toWorldCoor;
     public bool isToSceneObj = false;
-    //public bool isInSceneObj = false;
-    public InteractableSceneObj toSceneObj=null;
-    public InteractableSceneObj inSceneObj=null;
-    
-    private void Start()
+    public InteractableSceneObj toSceneObj = null;
+    public InteractableSceneObj inSceneObj = null;
+
+    // --- 计时器和间隔时间 ---
+    private float lastMoveTime;
+    private const float MOVE_INTERVAL = 0.15f; // 移动间隔，单位：秒
+    #region 生命周期函数
+    private void OnEnable()
     {
-        toPos = transform.position;
         EventCenter.Instance.AddEventListener<InteractableSceneObj>(E_EventType.E_PlayerEnterInteractableSceneObjFront, OnPlayerEnterInteractableSceneObjFront);
         EventCenter.Instance.AddEventListener<InteractableSceneObj>(E_EventType.E_PlayerExitInteractableSceneObjFront, OnPlayerExitInteractableSceneObjFront);
     }
 
-    private void OnDestroy()
+    private void Start()
+    {
+        toWorldCoor = MapMgr.Instance.WorldPosToWorldCoor(transform.position);
+    }
+    private void Update()
+    {
+        // 只有当isFrontMove或isBackMove为真，且满足移动间隔时间时才执行移动
+        if (isFrontMove && Time.time - lastMoveTime >= MOVE_INTERVAL)
+        {
+            MoveInternal(true);
+            lastMoveTime = Time.time; // 更新计时器
+        }
+        else if (isBackMove && Time.time - lastMoveTime >= MOVE_INTERVAL)
+        {
+            MoveInternal(false);
+            lastMoveTime = Time.time; // 更新计时器
+        }
+    }
+    private void OnDisable()
     {
         EventCenter.Instance.RemoveEventListener<InteractableSceneObj>(E_EventType.E_PlayerEnterInteractableSceneObjFront, OnPlayerEnterInteractableSceneObjFront);
         EventCenter.Instance.RemoveEventListener<InteractableSceneObj>(E_EventType.E_PlayerExitInteractableSceneObjFront, OnPlayerExitInteractableSceneObjFront);
     }
-    
+    #endregion
+
     void Move()
     {
-        //如果要到的区域不能够行走,不动
-        if (theRoom.unWalkableAreas.Contains(new Vector2Int((int)toPos.x,(int)toPos.z)))
+        if (theRoom.unWalkableWorldCoor.Contains(toWorldCoor))
         {
-            toPos = transform.position;
+            toWorldCoor = MapMgr.Instance.WorldPosToWorldCoor(transform.position);
             return;
         }
-        transform.DOMove(toPos, 0.2f).SetEase(Ease.OutCubic);
+        transform.DOMove(MapMgr.Instance.WorldCoorToWorldPos(toWorldCoor), 0.2f).SetEase(Ease.OutCubic);
     }
-    //事件响应
+
     public void OnPlayerEnterInteractableSceneObjFront(InteractableSceneObj toSceneObj)
     {
         isToSceneObj = true;
         this.toSceneObj = toSceneObj;
     }
+
     public void OnPlayerExitInteractableSceneObjFront(InteractableSceneObj toSceneObj)
     {
         isToSceneObj = false;
-        if(this.toSceneObj == toSceneObj)
+        if (this.toSceneObj == toSceneObj)
             this.toSceneObj = null;
     }
-    //输入事件
-    void OnMove(InputValue value)
+    public void OnMove(InputValue value)
     {
-        bool isForward = value.Get<float>() > 0;
-        
+        // 获取输入值，例如按键的浮点值
+        float moveValue = value.Get<float>();
+        bool isForward = moveValue > 0;
+        MoveInternal(isForward);
+    }
 
-        if (inSceneObj!=null)
+    private bool isFrontMove = false;
+    private bool isBackMove = false;
+    public void OnHoldMoveFront(InputAction.CallbackContext context)
+    {
+        // 检查是否处于 Canceled 阶段
+        if (context.canceled)
+        {
+            isFrontMove = false;
+        }
+        else if (context.performed)
+        {
+            isFrontMove = true;
+            isBackMove = false;
+        }
+    }
+    public void OnHoldMoveBack(InputAction.CallbackContext context)
+    {
+        // 检查是否处于 Canceled 阶段
+        if (context.canceled)
+        {
+            isBackMove = false;
+        }
+        else if (context.performed)
+        {
+            isBackMove = true;
+            isFrontMove = false;
+            
+        }
+    }
+    private void MoveInternal(bool isForward)
+    {
+        if (inSceneObj != null)
         {
             if (isForward)
             {
-                toSceneObj.Enter();
+                inSceneObj.Enter();
             }
             else
             {
-                toSceneObj.Exit();
-                if(toSceneObj.EnterLevel == 0)
+                inSceneObj.Exit();
+                if (toSceneObj.EnterLevel == 0)
                 {
                     inSceneObj = null;
                 }
             }
             return;
         }
+
         if (isToSceneObj)
         {
             bool isFaceToSceneObj = Vector3.Dot((toSceneObj.transform.position - transform.position).normalized, transform.forward) > 0.7;
@@ -83,21 +137,19 @@ public class PlayerMove : MonoBehaviour
                 }
                 else
                 {
-                    toPos = transform.position - transform.forward;
+                    toWorldCoor = MapMgr.Instance.WorldPosToWorldCoor(transform.position) - MapMgr.Instance.WorldPosToWorldCoor(transform.forward);
                     Move();
                 }
             }
             else
             {
-                toPos = transform.position + (isForward?1:-1)*transform.forward;
+                toWorldCoor = MapMgr.Instance.WorldPosToWorldCoor(transform.position) + (isForward ? 1 : -1) * MapMgr.Instance.WorldPosToWorldCoor(transform.forward);
                 Move();
             }
             return;
         }
-        toPos = transform.position + (isForward ? 1 : -1) * transform.forward;
+
+        toWorldCoor = MapMgr.Instance.WorldPosToWorldCoor(transform.position) + (isForward ? 1 : -1) * MapMgr.Instance.WorldPosToWorldCoor(transform.forward);
         Move();
     }
 }
-
-
-    

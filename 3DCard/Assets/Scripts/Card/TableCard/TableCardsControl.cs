@@ -8,15 +8,18 @@ using UnityEngine.Events;
 /// </summary>
 public class TableCardsControl : MonoBehaviour
 {
-    public List<TableCardBase> tableCards = new List<TableCardBase>();
+    public List<TableCardBase> tableRootCards = new List<TableCardBase>();
     public TableCardBase currentDragCard;
 
-    public HandCardDeck handCardDeck;
+    public HandCardDeck handCardDeck=>currentDragCard.thehandCardBase.handCardDeck;
 
     //放回相关
     public float toHandY;
 
     #region 生命周期函数
+    private void Awake()
+    {
+    }
     private void Update()
     {
         //print(AboutToCreateSlotIndex(Input.mousePosition));
@@ -121,6 +124,12 @@ public class TableCardsControl : MonoBehaviour
             print(theTableCard.name + " translate to hand card");
             currentDragCard.TranslateToHandCard(currentToSlot);
         }
+        else if(currentDragCard!=null && currentToSlot == null)
+        {
+            
+            
+        }
+        
 
 
 

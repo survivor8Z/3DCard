@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandCard_Be_Attack : HandCardBase,IAttack
+public class HandCard_Be_Attack : HandCard_Behavior, IAttack
 {
 
 

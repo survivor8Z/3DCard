@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8902244134601343165}
   - component: {fileID: 8735172549784635503}
   - component: {fileID: 5552714113101523434}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: HandCard_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,9 +101,10 @@ MonoBehaviour:
       Entry: 6
       Data: 
   cardSO: {fileID: 11400000, guid: 3d9519fcc503cb341ae38bd122bdeb49, type: 2}
-  table: {fileID: 0}
   theTableCardVisual: {fileID: 0}
   thehandCardBase: {fileID: 0}
+  offset: {x: 1, y: 0, z: 0}
+  offsetK: 0.2
   isDragging: 0
   toSlot: {fileID: 0}
 --- !u!114 &8661088312676932292
@@ -166,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3678c4bb02be8674cb275427847ca801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxNum: 10
+  maxNum: 30
 --- !u!1001 &2695589859446469098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -275,16 +276,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3871963506120801130, guid: 1ba5da75b2b3a704d88d8657f82736c0,
-        type: 3}
-      propertyPath: m_SortingLayer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5421832885804702315, guid: 1ba5da75b2b3a704d88d8657f82736c0,
         type: 3}
       propertyPath: m_Name
       value: CardView
       objectReference: {fileID: 0}
+    - target: {fileID: 7970216051554013916, guid: 1ba5da75b2b3a704d88d8657f82736c0,
+        type: 3}
+      propertyPath: cardSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 3d9519fcc503cb341ae38bd122bdeb49,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

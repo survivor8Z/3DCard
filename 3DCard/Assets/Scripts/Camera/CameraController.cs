@@ -10,16 +10,19 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float cameraViewKX;
     [SerializeField] private float cameraViewKY;
     [SerializeField] private Transform viewDirPoint;
-    void OnMousePosition(InputValue value)
+    public void MousePosition(InputAction.CallbackContext context)
     {
-        mouseScreenPos = value.Get<Vector2>();
-        cameraViewOffset = new Vector2(
-            2*(mouseScreenPos.x / Screen.width - 0.5f),
-            2*(mouseScreenPos.y / Screen.height - 0.5f)
-        );
-        //这里直接硬编码了
-        viewDirPoint.localPosition = new Vector3(0 + cameraViewOffset.x * cameraViewKX,
-                                            1.45f + cameraViewOffset.y * cameraViewKY,
-                                            1);
+        if (context.performed)
+        {
+            mouseScreenPos = context.ReadValue<Vector2>();
+            cameraViewOffset = new Vector2(
+                2 * (mouseScreenPos.x / Screen.width - 0.5f),
+                2 * (mouseScreenPos.y / Screen.height - 0.5f)
+            );
+            //这里直接硬编码了
+            viewDirPoint.localPosition = new Vector3(0 + cameraViewOffset.x * cameraViewKX,
+                                                1.45f + cameraViewOffset.y * cameraViewKY,
+                                                1);
+        }
     }
 }

@@ -29,6 +29,7 @@ Material:
     m_Floats:
     - _EnvironmentReflections: 1
     - _ReceiveShadows: 0
+    - _SpecularHighlights: 1
     m_Colors:
     - _BaseColor: {r: 0.36477977, g: 0.36477977, b: 0.36477977, a: 1}
     - _Color: {r: 0.36477974, g: 0.36477974, b: 0.36477974, a: 1}

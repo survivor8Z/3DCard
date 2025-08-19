@@ -36,6 +36,7 @@ public class DActionNode : DialogueNodeBase
     public override void OnEnter()
     {
         enterTime = 0f;
+        HidePreviousDialogue();
         ShowDialogue();
     }
     public override E_DialogueNodeStaus Evaluate(Dialogueable theDialogueable)
@@ -51,15 +52,24 @@ public class DActionNode : DialogueNodeBase
             case E_DialogueActionExitType.E_Wait:
                 enterTime += Time.deltaTime;
                 if (enterTime >= waitTime)
+                {
+                    HidePreviousDialogue();
                     return E_DialogueNodeStaus.E_Success;
+                }
                 return E_DialogueNodeStaus.E_Running;
             case E_DialogueActionExitType.E_Click:
                 if (Input.GetMouseButtonDown(0))
+                {
+                    HidePreviousDialogue();
                     return E_DialogueNodeStaus.E_Success;
+                }
                 return E_DialogueNodeStaus.E_Running;
             case E_DialogueActionExitType.E_Condition:
-                if(conditionCheck())
+                if (conditionCheck())
+                {
+                    HidePreviousDialogue();
                     return E_DialogueNodeStaus.E_Success;
+                }
                 return E_DialogueNodeStaus.E_Running;
             case E_DialogueActionExitType.E_DontExit:
                 return E_DialogueNodeStaus.E_Running;
@@ -95,7 +105,15 @@ public class DActionNode : DialogueNodeBase
 
     public void ShowDialogue()
     {
-        Debug.Log("Show Dialogue: " + dialogueText);
+        UIMgr.Instance.ShowPanel<DialoguePanel>(E_UILayer.Middle, (panel) =>
+        {
+            panel.GetDialogueData(new(dialogueText, audioClipName));
+        });
+    }
+
+    public void HidePreviousDialogue()
+    {
+        UIMgr.Instance.HidePanel<DialoguePanel>();
     }
 
 

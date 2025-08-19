@@ -45,7 +45,7 @@ public class Boss : InteractableObject,IDamageable
     }
     #endregion
 
-    public void Init()
+    public override void Init()
     {
         currentHP = maxHP;
     }

@@ -4,17 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //在哪个房间
-    public Room currentRoom;
-    public Vector2Int coordinatesInRoom
-    {
-        get
-        {
-            Vector3 RelativePos = transform.position -currentRoom.transform.position;
-            return new Vector2Int((int)(RelativePos.x),(int)(RelativePos.z));
-        }
-    }
-
     public PlayerInteract playerInteract;
     public PlayerMove playerMove;
     public PlayerTurn playerTurn;
@@ -29,6 +18,14 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        
+        //设置当前房间
+        MapMgr.Instance.currentRoom 
+            = MapMgr.Instance.roomsDict[MapMgr.Instance.WorldPosToRoomWorldCoorBig(transform.position)];
+
+        //test
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            MapMgr.Instance.currentRoom.door.ToggleDoor();
+        }
     }
 }

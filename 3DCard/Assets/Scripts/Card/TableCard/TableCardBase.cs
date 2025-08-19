@@ -13,10 +13,14 @@ public class TableCardBase : CardBase,IInteractable
     , IPointerUpHandler
     , IPointerDownHandler
 {
-    public Table table;
+    public Table table=>MapMgr.Instance.currentRoom.table;
     [HideInInspector]public TableCardVisual theTableCardVisual;
     [HideInInspector]public HandCardBase thehandCardBase;
 
+
+    //堆叠相关
+    public Vector3 offset = new Vector3(1, 0, 0);
+    public float offsetK = 0.2f;
 
 
     //与拖拽相关
@@ -59,10 +63,10 @@ public class TableCardBase : CardBase,IInteractable
     }
     #endregion
 
+    //只涉及组件的启用和事件监听
     protected void Init()
     {
         transform.SetParent(MapMgr.Instance.currentRoom.table.tableCardTransformParent);
-        table = MapMgr.Instance.currentRoom.table;
 
         OnEndDragEvent += table.tableCardsControl.OnTheTableCardEndDrag;
         OnDragEvent += table.tableCardsControl.OnTheTableCardDrag;
@@ -132,4 +136,14 @@ public class TableCardBase : CardBase,IInteractable
     }
 
     #endregion
+
+    /// <summary>
+    /// 在子类完成
+    /// </summary>
+    /// <param name="theTableCard"></param>
+    public virtual void TryStackToTheTableCard(TableCardBase theTableCard)
+    {
+        
+        
+    }
 }
