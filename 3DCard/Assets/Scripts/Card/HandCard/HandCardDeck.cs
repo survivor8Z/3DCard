@@ -45,23 +45,39 @@ public class HandCardDeck : SerializedMonoBehaviour
     #region 生命周期函数
     private void Awake()
     {
-
         theRectTransform = GetComponent<RectTransform>();
         handCardDeckVisual = GetComponent<HandCardDeckVisual>();
     }
     private void OnEnable()
     {
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardPointUp, OnHandCardClick);
+        EventCenter.Instance.AddEventListener(E_EventType.E_HandCardCancel, ResetCardState);
     }
 
-    public CardSO testCardSO;
     private void Update()
     {
-        
+        ////实时创建Entity预览
+        //if(selectedCard!=null&&selectedCard is HandCard_Entity handCard_Entity)
+        //{
+        //    handCard_Entity.TryCreateEntityInGround(handCard_Entity.entityPrefabName);
+        //}
+
+
+
         //test
         if (Input.GetKeyDown(KeyCode.K))
         {
-            AddCard(testCardSO);
+            AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("打击", (SO) =>
+            {
+                AddCard(SO.Result);
+            });
+        }
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("石头", (SO) =>
+            {
+                AddCard(SO.Result);
+            });
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
@@ -76,6 +92,7 @@ public class HandCardDeck : SerializedMonoBehaviour
     private void OnDisable()
     {
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardPointUp, OnHandCardClick);
+        EventCenter.Instance.RemoveEventListener(E_EventType.E_HandCardCancel, ResetCardState);
     }
     private void OnDestroy()
     {
@@ -132,7 +149,7 @@ public class HandCardDeck : SerializedMonoBehaviour
     }
     #endregion
 
-
+    #region 增删卡牌/槽位,设置卡牌index,状态
     /// <summary>
     /// 添加一张手牌,一般是与interactableObject交互添加
     /// </summary>
@@ -302,7 +319,7 @@ public class HandCardDeck : SerializedMonoBehaviour
             dragedCard = null;
         }
     }
-
+    #endregion
 
     #region 事件响应
 
@@ -354,10 +371,10 @@ public class HandCardDeck : SerializedMonoBehaviour
 
     #endregion
 
-
-    //输入函数
+    #region Inputsystem
     void OnMousePosition(InputValue value)
     {
         mousePositionViewport = new Vector2(value.Get<Vector2>().x / Screen.width, value.Get<Vector2>().y / Screen.height);
     }
+    #endregion
 }

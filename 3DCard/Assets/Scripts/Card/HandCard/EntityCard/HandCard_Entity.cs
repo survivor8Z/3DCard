@@ -4,26 +4,59 @@ using UnityEngine;
 
 public class HandCard_Entity : HandCardBase
 {
-    //1
-    //将手牌转换为桌牌
-    public void PlaceCard()
+    public InteractableObject toCreateEntity;
+    public string entityPrefabName;
+    public bool canCreate = true;
+    
+    
+    /// <summary>
+    /// 创建实时预览实体,用于拖拽放置,在Select事件后执行
+    /// </summary>
+    public void CreatePreviewEntity(string entityPrefabName)
     {
-        Debug.Log("PlaceCard");
-        //先是通知手牌库有一个index卡牌离开了,手牌库接着通知HandCardBase离开完了,触发TranslateToTableCard,将手牌转换为桌牌
-        handCardDeck.TheCardLeaveHandDeck(index);
-        EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
+        GameObject obj = PoolMgr.Instance.GetObjSync(entityPrefabName);
+        obj.transform.SetParent(MapMgr.Instance.currentRoom.transform);
+        obj.transform.rotation = handCardDeck.player.transform.rotation;
+        obj.transform.SetParent(handCardDeck.player.transform);//跟着玩家旋转
 
-        handCardDeck.table.tableCardsControl.tableRootCards.Add(theTableCardBase);
+        toCreateEntity = obj.GetComponent<InteractableObject>();
     }
 
-    //2
-    //在1将手牌转换为桌牌基础上,放置到桌牌上
-    public void PlaceToTableCard(TableCardBase theTableCard)
+    /// <summary>
+    /// 创建实时预览实体,用于拖拽放置,update执行
+    /// </summary>
+    public void TryCreateEntityInGround(string entityPrefabName)
     {
-        handCardDeck.TheCardLeaveHandDeck(index);
-        EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
+        Vector2Int pivotCoor = MapMgr.Instance.WorldPosToWorldCoor(playerInteract.hitPosition);
+        toCreateEntity.transform.position = MapMgr.Instance.WorldCoorToWorldPos(pivotCoor);
+        canCreate = true;
+        foreach (var relativeCoor in toCreateEntity.obstacleRelativeCoor)
+        {
+            Vector2Int worldCoor = MapMgr.Instance.RelativeCoorToWorldCoor(
+                relativeCoor,
+                pivotCoor, 
+                MapMgr.Instance.GetDirectionFromRotation(transform.rotation));
+            if (MapMgr.Instance.allUnwalkableCoor.Contains(worldCoor))
+            {
+                canCreate = false;
+                break;
+            }
+        }
+        //设置材质 
+        if (canCreate)
+        {
 
-        //设置成为这个桌牌的子对象
-        this.theTableCardBase.TryStackToTheTableCard(theTableCard);
+        }
+        else
+        {
+
+        }
     }
+
+
+    public void CreateEntity(Vector2Int pivotFront)
+    {
+
+    }
+
 }

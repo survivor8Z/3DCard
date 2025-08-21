@@ -72,7 +72,9 @@ public class HandCardVisual : MonoBehaviour
             return;
         }
 
-        if(theHandCard.isDragging&&theHandCard.cardSO.cardType == E_CardType.E_Entity && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
+        if(theHandCard.isDragging
+            /*&&theHandCard.cardSO.cardType == E_CardType.E_Entity*/ 
+            && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
         {
             transform.rotation = theHandCard.handCardDeck.player.playerMove.inSceneObj.pickPoint.rotation;
             return;
@@ -105,11 +107,13 @@ public class HandCardVisual : MonoBehaviour
             return;
         }
 
-        if(theHandCard.isDragging&&theHandCard.cardSO.cardType == E_CardType.E_Entity && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
+        if(theHandCard.isDragging
+            //&&theHandCard.cardSO.cardType == E_CardType.E_Entity 
+            && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
         {
             theRectTransform.position = Vector3.SmoothDamp(
             theRectTransform.position,
-            table.dragPoint.position,
+            table.dragPoint.position+0.1f*Vector3.up,
             ref followVelocity,
             0.1f
         );

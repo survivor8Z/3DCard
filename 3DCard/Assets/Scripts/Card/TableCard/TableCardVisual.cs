@@ -6,7 +6,10 @@ public class TableCardVisual : MonoBehaviour
 {
     private TableCardsControl tableCardControl=>thaTableCard.table.tableCardsControl;
     private TableCardBase thaTableCard;
+    public Transform stackPointTransform;//堆叠的点,用于设置toPos
     public Vector3 toPos;
+    public float offsetDragAbove=0.1f;//在面板配置
+    [HideInInspector]public float offsetDragAboveK;//拖拽时上下的偏移量
     [HideInInspector] public HandCardVisual theHandCardVisual;
 
 
@@ -23,6 +26,7 @@ public class TableCardVisual : MonoBehaviour
     }
     private void Update()
     {
+        SetToPos();
         SetPositon();
     }
     #endregion
@@ -44,13 +48,16 @@ public class TableCardVisual : MonoBehaviour
 
         transform.position = Vector3.SmoothDamp(
             transform.position,
-            toPos,
+            toPos+ offsetDragAboveK * Vector3.up,
             ref followVelocity,
             0.1f
         );
     }
-    public void SetToPosition()
+    public void SetToPos()
     {
-
+        if (stackPointTransform != null)
+        {
+            toPos = stackPointTransform.position;
+        }
     }
 }

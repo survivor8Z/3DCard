@@ -12,6 +12,7 @@ public class TableCardsControl : MonoBehaviour
     public TableCardBase currentDragCard;
 
     public HandCardDeck handCardDeck=>currentDragCard.thehandCardBase.handCardDeck;
+    public PlayerInteract playerInteract => handCardDeck.player.playerInteract;
 
     //放回相关
     public float toHandY;
@@ -114,6 +115,7 @@ public class TableCardsControl : MonoBehaviour
         TryInsertSlot(Input.mousePosition);
     }
 
+    
     public void OnTheTableCardEndDrag(TableCardBase theTableCard)
     {
         //如果插入了slot,这个就是直接执行转换了
@@ -121,13 +123,20 @@ public class TableCardsControl : MonoBehaviour
         if(currentDragCard != null&&currentToSlot!=null)
         {
             //开始正式转换桌牌到手牌
-            print(theTableCard.name + " translate to hand card");
+            //print(theTableCard.name + " translate to hand card");
             currentDragCard.TranslateToHandCard(currentToSlot);
         }
-        else if(currentDragCard!=null && currentToSlot == null)
+
+        else if(currentDragCard!=null && currentToSlot == null)//这个就是桌牌触发相关了
         {
-            
-            
+            //print("UGUI事件触发");
+            if (playerInteract.pointCard is TableCardBase toStackTableCard)
+            {
+                currentDragCard.TryStackToTheTableCard(toStackTableCard);
+            }else if(playerInteract.pointInteractableObject is Table)
+            {
+                currentDragCard.ToRootTableCard();
+            }
         }
         
 

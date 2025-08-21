@@ -231,18 +231,18 @@ public class MapMgr : SingletonMono<MapMgr>
 
         Gizmos.color = gridColor;
 
-        //水平线
-        for (float x = -gridSize.x / 2-cellSize/2; x <= gridSize.x / 2 - cellSize/2; x++)
+
+        for (float x = -gridSize.x / 2-0.5f; x <= gridSize.x / 2- 0.5f;  x++)
         {
-            Vector3 start = new Vector3(x * cellSize, 0, -gridSize.y / 2 * cellSize);
-            Vector3 end = new Vector3(x * cellSize, 0, gridSize.y / 2 * cellSize);
+            Vector3 start = new Vector3(x  , 0, -gridSize.y / 2 * cellSize - cellSize / 2);
+            Vector3 end = new Vector3(x , 0, gridSize.y / 2 * cellSize - cellSize / 2);
             Gizmos.DrawLine(start, end);
         }
-        //垂直线
-        for (float z = -gridSize.y / 2 - cellSize/2; z <= gridSize.y / 2 - cellSize/2; z++)
+
+        for (float z = -gridSize.y / 2-0.5f; z <= gridSize.y / 2 ; z++)
         {
-            Vector3 start = new Vector3(-gridSize.x / 2 * cellSize, 0, z * cellSize);
-            Vector3 end = new Vector3(gridSize.x / 2 * cellSize, 0, z * cellSize);
+            Vector3 start = new Vector3(-gridSize.x / 2 * cellSize, 0, z );
+            Vector3 end = new Vector3(gridSize.x / 2 * cellSize, 0, z );
             Gizmos.DrawLine(start, end);
         }
 

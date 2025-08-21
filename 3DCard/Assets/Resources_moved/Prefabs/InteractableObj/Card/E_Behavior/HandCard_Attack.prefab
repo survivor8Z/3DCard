@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8586990428001489160}
   - component: {fileID: 5661156701828881362}
+  - component: {fileID: 1898598039799203085}
   - component: {fileID: 8661088312676932292}
+  - component: {fileID: 8175732033414931252}
+  - component: {fileID: 3906977445223968331}
   - component: {fileID: 6046567206537516587}
   - component: {fileID: 3058627483261546944}
   - component: {fileID: 5059708396159196376}
@@ -63,6 +66,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   cardSO: {fileID: 11400000, guid: a1a28c2b43916b74d9478c523790b7df, type: 2}
+  canvasGroup: {fileID: 0}
   handCardDeck: {fileID: 0}
   slotRectTrans: {fileID: 0}
   index: 0
@@ -71,6 +75,43 @@ MonoBehaviour:
   isDragging: 0
   theTableCardBase: {fileID: 0}
   theHandCardVisual: {fileID: 0}
+--- !u!114 &1898598039799203085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232921330516096948}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a33e70569224f76458586a3ce2353f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnDragEvent
+      Entry: 6
+      Data: 
+    - Name: OnEndDragEvent
+      Entry: 6
+      Data: 
+  cardSO: {fileID: 11400000, guid: a1a28c2b43916b74d9478c523790b7df, type: 2}
+  canvasGroup: {fileID: 0}
+  theTableCardVisual: {fileID: 0}
+  thehandCardBase: {fileID: 0}
+  cardView: {fileID: 0}
+  childStackTransform: {fileID: 0}
+  parentTableCard: {fileID: 0}
+  childTableCard: {fileID: 0}
+  isDragging: 0
+  toSlot: {fileID: 0}
 --- !u!114 &8661088312676932292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +126,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curveParameters: {fileID: 11400000, guid: b3443e50ea5e9364680d75cfbbdca8c6, type: 2}
   followVelocity: {x: 0, y: 0, z: 0}
+--- !u!114 &8175732033414931252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232921330516096948}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd7b2ef2bfb962743aa97353887c7dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stackPointTransform: {fileID: 0}
+  toPos: {x: 0, y: 0, z: 0}
+  offsetDragAbove: 0.1
+  offsetDragAboveK: 0
+  theHandCardVisual: {fileID: 0}
+--- !u!225 &3906977445223968331
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232921330516096948}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!210 &6046567206537516587
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -226,10 +296,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3180594054090856057, guid: 1ba5da75b2b3a704d88d8657f82736c0,
+        type: 3}
+      propertyPath: m_text
+      value: "\u9020\u6210x\u70B9\u7269\u7406\u4F24\u5BB3"
+      objectReference: {fileID: 0}
     - target: {fileID: 5421832885804702315, guid: 1ba5da75b2b3a704d88d8657f82736c0,
         type: 3}
       propertyPath: m_Name
       value: CardView
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792302413592310893, guid: 1ba5da75b2b3a704d88d8657f82736c0,
+        type: 3}
+      propertyPath: m_text
+      value: "\u6253\u51FB"
       objectReference: {fileID: 0}
     - target: {fileID: 7970216051554013916, guid: 1ba5da75b2b3a704d88d8657f82736c0,
         type: 3}

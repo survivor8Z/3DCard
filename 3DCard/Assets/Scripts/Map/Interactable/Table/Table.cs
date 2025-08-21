@@ -24,6 +24,7 @@ public class Table : InteractableSceneObj
         EnterLevel++;
         if (EnterLevel == 1)
         {
+            EventCenter.Instance.EventTrigger(E_EventType.E_HandCardCancel);
             EventCenter.Instance.EventTrigger<InteractableSceneObj>(E_EventType.E_PlayerEnterInteractableSceneObj, this);
         }
         Set();

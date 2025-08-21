@@ -8,16 +8,32 @@ public class HandCard_Be_Attack : HandCard_Behavior, IAttack
 
     public override void TryCardDragPlay(IInteractable pointInteractableObject)
     {
-        switch(pointInteractableObject)
+        if (handCardDeck.player.playerMove.inSceneObj == null)
         {
-            case IDamageable damageable:
-                SingleAttack(damageable);
-                break;
+            switch (pointInteractableObject)
+            {
+                case IDamageable damageable:
+                    SingleAttack(damageable);
+                    break;
 
-            default:
-                FailDragPlay();
-                break;
+                default:
+                    FailDragPlay();
+                    break;
+            }
         }
+        else if(handCardDeck.player.playerMove.inSceneObj is Table)
+        {
+            switch (pointInteractableObject)
+            {
+                case Table://如果是桌子拖到桌面
+                    PlaceCard();
+                    break;
+                case TableCardBase://如果是拖到桌牌上
+                    PlaceToTableCard(pointInteractableObject as TableCardBase);
+                    break;
+            }
+        }
+        
 
         base.TryCardDragPlay(pointInteractableObject);
     }

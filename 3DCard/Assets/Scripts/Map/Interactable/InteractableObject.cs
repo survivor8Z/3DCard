@@ -10,7 +10,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
     public Vector2Int pivotFront => MapMgr.Instance.GetDirectionFromRotation(transform.rotation);
     public List<Vector2Int> obstacleRelativeCoor = new List<Vector2Int>();//相对自己的坐标
 
-    public Transform pivotTransform;
+    public Transform pivotTransform;//
 
     public int id;
     public int InteractableID

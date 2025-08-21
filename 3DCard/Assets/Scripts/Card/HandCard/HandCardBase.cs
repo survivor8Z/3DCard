@@ -19,11 +19,12 @@ public class HandCardBase : CardBase
     , IPointerUpHandler
     , IPointerDownHandler
 {
-    
+    public CanvasGroup canvasGroup;//用于拖拽时不遮挡射线
 
     public HandCardDeck handCardDeck;
     public RectTransform slotRectTrans;
     public Transform selectedToPos=>handCardDeck.handCardDeckVisual.handCardSelectedToPos;
+    public PlayerInteract playerInteract=>handCardDeck.player.playerInteract;
     public int index;
     public bool isHovered = false;
     public bool isSelected = false; 
@@ -38,7 +39,7 @@ public class HandCardBase : CardBase
     #region 生命周期函数
     private void Awake()
     {
-
+        canvasGroup = GetComponent<CanvasGroup>();
         theHandCardVisual = GetComponent<HandCardVisual>();
         theTableCardBase = GetComponent<TableCardBase>();
     }
@@ -120,6 +121,32 @@ public class HandCardBase : CardBase
     }
     #endregion
     #endregion
+    #region 卡牌打出方法
+    //1
+    //将手牌转换为桌牌
+    public void PlaceCard()
+    {
+        Debug.Log("PlaceCard");
+        //先是通知手牌库有一个index卡牌离开了,手牌库接着通知HandCardBase离开完了,触发TranslateToTableCard,将手牌转换为桌牌
+        handCardDeck.TheCardLeaveHandDeck(index);
+        EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
+
+        //加入到桌牌根库
+        handCardDeck.table.tableCardsControl.tableRootCards.Add(theTableCardBase);
+    }
+
+    //2
+    //在1将手牌转换为桌牌基础上,放置到桌牌上
+    public void PlaceToTableCard(TableCardBase toStackTableCard)
+    {
+        Debug.Log("PlaceToTableCard");
+        handCardDeck.TheCardLeaveHandDeck(index);
+        EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
+
+        //设置成为这个桌牌的子对象
+        this.theTableCardBase.TryStackToTheTableCard(toStackTableCard);
+    }
+    #endregion
 
     //事件响应
 
@@ -151,27 +178,35 @@ public class HandCardBase : CardBase
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        canvasGroup.blocksRaycasts = false; 
         if (isSelected) return;
-        if(cardSO.cardType == E_CardType.E_Entity)
+        if (cardSO.cardType == E_CardType.E_Entity)
         {
-            if(handCardDeck.player.playerMove.inSceneObj is Table)
+            if (handCardDeck.player.playerMove.inSceneObj is Table)
             {
                 EventCenter.Instance.EventTrigger(E_EventType.E_HandCardStartDrag, index);
                 handCardDeck.dragedCard = this; // 设置当前拖拽的手牌
                 isDragging = true;
             }
         }
-        else if(cardSO.cardType == E_CardType.E_Modificatory)
+        else if (cardSO.cardType == E_CardType.E_Modificatory)
         {
+            EventCenter.Instance.EventTrigger(E_EventType.E_HandCardStartDrag, index);
+
+            handCardDeck.dragedCard = this; // 设置当前拖拽的手牌
+            isDragging = true;
             return;
         }
-        else if(cardSO.cardType == E_CardType.E_Behavior)
+        else if (cardSO.cardType == E_CardType.E_Behavior)
         {
+            
+            EventCenter.Instance.EventTrigger(E_EventType.E_HandCardStartDrag, index);
             
             handCardDeck.dragedCard = this; // 设置当前拖拽的手牌
             isDragging = true;
         }
-        else if(cardSO.cardType == E_CardType.E_Condition)
+
+        else if (cardSO.cardType == E_CardType.E_Condition)
         {
             return;
         }
@@ -186,6 +221,7 @@ public class HandCardBase : CardBase
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        canvasGroup.blocksRaycasts = true;
         if (isSelected) return;
         EventCenter.Instance.EventTrigger(E_EventType.E_HandCardEndDrag, index);
         isDragging = false;
@@ -235,28 +271,5 @@ public class HandCardBase : CardBase
     }
     #endregion
 
-    #region 卡牌打出方法
-    //1
-    //将手牌转换为桌牌
-    public void PlaceCard()
-    {
-        Debug.Log("PlaceCard");
-        //先是通知手牌库有一个index卡牌离开了,手牌库接着通知HandCardBase离开完了,触发TranslateToTableCard,将手牌转换为桌牌
-        handCardDeck.TheCardLeaveHandDeck(index);
-        EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
-
-        handCardDeck.table.tableCardsControl.tableRootCards.Add(theTableCardBase);
-    }
-
-    //2
-    //在1将手牌转换为桌牌基础上,放置到桌牌上
-    public void PlaceToTableCard(TableCardBase theTableCard)
-    {
-        handCardDeck.TheCardLeaveHandDeck(index);
-        EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
-
-        //设置成为这个桌牌的子对象
-        this.theTableCardBase.TryStackToTheTableCard(theTableCard);
-    }
-    #endregion
+    
 }

@@ -249,7 +249,7 @@ Transform:
   m_GameObject: {fileID: 1204133352671843016}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.50000006}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -671,7 +671,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2.46851, y: 0.08210242, z: 1.3538331}
-  m_Center: {x: 0, y: 1.1, z: 0}
+  m_Center: {x: 0, y: 1.1, z: 0.5}
 --- !u!114 &4107917954220087493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd36c383a90776345895a0bc159e6809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tableCards: []
+  tableRootCards: []
   currentDragCard: {fileID: 0}
   toHandY: 0.25
 --- !u!1 &3309498336217938879
@@ -896,7 +896,7 @@ Transform:
   m_GameObject: {fileID: 3522073249482850365}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 0.944, z: -0.797}
+  m_LocalPosition: {x: -0.1, y: 0.944, z: -0.509}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1391,6 +1391,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   cardSO: {fileID: 0}
+  canvasGroup: {fileID: 0}
   handCardDeck: {fileID: 0}
   slotRectTrans: {fileID: 0}
   index: 0
@@ -1399,6 +1400,9 @@ MonoBehaviour:
   isDragging: 0
   theTableCardBase: {fileID: 3900244498448064504}
   theHandCardVisual: {fileID: 0}
+  toCreateEntity: {fileID: 0}
+  entityPrefabName: 
+  canCreate: 1
 --- !u!114 &3900244498448064504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1427,8 +1431,13 @@ MonoBehaviour:
       Entry: 6
       Data: 
   cardSO: {fileID: 0}
+  canvasGroup: {fileID: 0}
   theTableCardVisual: {fileID: 0}
   thehandCardBase: {fileID: 0}
+  cardView: {fileID: 0}
+  childStackTransform: {fileID: 0}
+  parentTableCard: {fileID: 0}
+  childTableCard: {fileID: 0}
   isDragging: 0
   toSlot: {fileID: 0}
 --- !u!114 &1530141893472553014
@@ -1443,7 +1452,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7b2ef2bfb962743aa97353887c7dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stackPointTransform: {fileID: 0}
   toPos: {x: 0, y: 0, z: 0}
+  offsetDragAbove: 0.1
+  offsetDragAboveK: 0
   theHandCardVisual: {fileID: 5378118296627827126}
 --- !u!1 &5803652348378916099
 GameObject:
@@ -2777,7 +2789,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ea4a6acde4ff27548a7f8f334574c375, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ea4a6acde4ff27548a7f8f334574c375, type: 3}
       propertyPath: m_LocalRotation.w

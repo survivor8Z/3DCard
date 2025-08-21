@@ -5,11 +5,16 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     public Player player;
+    //手牌创建Entity相关
+    public Transform toCreateEntityTransform;
+
     //手牌
     public HandCardDeck handCardDeck;
     //射线检测
     [SerializeField] private GameObject hitObject;
+    public Vector3 hitPosition;//射线检测点,基本是用来生成Entity
     public IInteractable pointInteractableObject;//不包含桌牌等卡牌
+    public IInteractable pointCard;//包含桌牌,手牌不包含,手牌不继承IInteractable,通过桌牌的UGUI事件赋值
     public LayerMask interactableLayerMask;
     public Vector3 MouseWorldPosition => Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
     public Vector2 MouseViewPortPosition => new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
@@ -52,11 +57,24 @@ public class PlayerInteract : MonoBehaviour
     #endregion
     public void Interact()
     {
-
+        
         //在桌子视角
         if (player.playerMove.inSceneObj is Table table)
         {
-            if (table.tableCardsControl.currentDragCard != null) return;
+            if (pointCard != null)//将手牌直接拖拽到桌牌
+            {
+                if (handCardDeck.dragedCard != null)
+                {
+                    if (MouseViewPortPosition.y < PlayableMouseY)
+                    {
+                        handCardDeck.ResetCardState();
+                        return;
+                    }
+
+                    handCardDeck.dragedCard.TryCardDragPlay(pointCard);
+                    return;
+                }
+            }
             
         }
 
@@ -145,5 +163,13 @@ public class PlayerInteract : MonoBehaviour
             pointInteractableObject = null;
         }
     }
-    
+
+    /// <summary>
+    /// 旋转将要创建的Entity的Pivot
+    /// </summary>
+    public void RotateToCreateEntityPivot()
+    {
+        //顺时针旋转90
+        toCreateEntityTransform.rotation *= Quaternion.Euler(0, 90, 0);
+    }
 }

@@ -28,7 +28,8 @@ public enum E_EventType
     E_HandCardPointDown,
     //传入index
     E_HandCardPointUp,
-
+    //不传入
+    E_HandCardCancel,//用于取消所有选中
 
     //传入HandCardBase
     E_HandCardToTableCard,

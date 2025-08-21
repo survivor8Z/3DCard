@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -7761671404106299969}
   - component: {fileID: 8661088312676932292}
   - component: {fileID: -1577759581718954599}
+  - component: {fileID: 4866278582110113114}
   - component: {fileID: 8902244134601343165}
   - component: {fileID: 8735172549784635503}
   - component: {fileID: 5552714113101523434}
@@ -65,6 +66,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   cardSO: {fileID: 11400000, guid: 3d9519fcc503cb341ae38bd122bdeb49, type: 2}
+  canvasGroup: {fileID: 0}
   handCardDeck: {fileID: 0}
   slotRectTrans: {fileID: 0}
   index: 0
@@ -73,6 +75,9 @@ MonoBehaviour:
   isDragging: 0
   theTableCardBase: {fileID: 0}
   theHandCardVisual: {fileID: 0}
+  toCreateEntity: {fileID: 0}
+  entityPrefabName: 
+  canCreate: 1
 --- !u!114 &-7761671404106299969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,10 +106,13 @@ MonoBehaviour:
       Entry: 6
       Data: 
   cardSO: {fileID: 11400000, guid: 3d9519fcc503cb341ae38bd122bdeb49, type: 2}
+  canvasGroup: {fileID: 0}
   theTableCardVisual: {fileID: 0}
   thehandCardBase: {fileID: 0}
-  offset: {x: 1, y: 0, z: 0}
-  offsetK: 0.2
+  cardView: {fileID: 0}
+  childStackTransform: {fileID: 0}
+  parentTableCard: {fileID: 0}
+  childTableCard: {fileID: 0}
   isDragging: 0
   toSlot: {fileID: 0}
 --- !u!114 &8661088312676932292
@@ -133,8 +141,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7b2ef2bfb962743aa97353887c7dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stackPointTransform: {fileID: 0}
   toPos: {x: 0, y: 0, z: 0}
+  offsetDragAbove: 0.1
+  offsetDragAboveK: 0
   theHandCardVisual: {fileID: 0}
+--- !u!225 &4866278582110113114
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232921330516096948}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!210 &8902244134601343165
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -275,6 +298,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180594054090856057, guid: 1ba5da75b2b3a704d88d8657f82736c0,
+        type: 3}
+      propertyPath: m_text
+      value: Ek = 1/2mv^2
       objectReference: {fileID: 0}
     - target: {fileID: 5421832885804702315, guid: 1ba5da75b2b3a704d88d8657f82736c0,
         type: 3}

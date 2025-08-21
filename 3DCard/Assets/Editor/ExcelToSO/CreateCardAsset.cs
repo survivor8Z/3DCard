@@ -6,6 +6,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class CreateCardAsset : Editor
 {
@@ -137,10 +138,13 @@ public class CreateCardAsset : Editor
                 break;
             case E_CardType.E_Behavior:
                 AddComponentIfFound(cardPrefab, $"HandCard_Be_{cardSO.cardEnglishName}");
+                AddComponentIfFound(cardPrefab, $"TableCard_Be_{cardSO.cardEnglishName}");
 
                 cardPrefab.AddComponent<HandCardVisual>();
+                cardPrefab.AddComponent<TableCardVisual>();
 
                 cardPrefab.GetComponent<HandCardBase>().cardSO = cardSO;
+                cardPrefab.GetComponent<TableCardBase>().cardSO = cardSO;
                 break;
             case E_CardType.E_Condition:
                 AddComponentIfFound(cardPrefab, $"HandCard_Co_{cardSO.cardEnglishName}");
@@ -158,37 +162,39 @@ public class CreateCardAsset : Editor
                 return;
         }
 
-        if (cardSO.cardType == E_CardType.E_Behavior)
-        {
-            HandCardBase handCardBase = cardPrefab.GetComponent<HandCardBase>();
-            handCardBase.cardSO = cardSO;
-            HandCardVisual handCardVisual = cardPrefab.GetComponent<HandCardVisual>();
-            handCardVisual.curveParameters 
-                = AddressablesMgr.Instance.LoadAsset<CurveParameters>("CurveParameters");
-        }
-        else
-        {
-            HandCardBase handCardBase = cardPrefab.GetComponent<HandCardBase>();
-            TableCardBase tableCardBase = cardPrefab.GetComponent<TableCardBase>();
-            handCardBase.cardSO = cardSO;
-            tableCardBase.cardSO = cardSO;
-            HandCardVisual handCardVisual = cardPrefab.GetComponent<HandCardVisual>();
-            TableCardVisual tableCardVisual = cardPrefab.GetComponent<TableCardVisual>();
-            handCardVisual.curveParameters
-                = AddressablesMgr.Instance.LoadAsset<CurveParameters>("CurveParameters");
+        //if (cardSO.cardType == E_CardType.E_Behavior)
+        //{
+        //    HandCardBase handCardBase = cardPrefab.GetComponent<HandCardBase>();
+        //    handCardBase.cardSO = cardSO;
+        //    HandCardVisual handCardVisual = cardPrefab.GetComponent<HandCardVisual>();
+        //    handCardVisual.curveParameters 
+        //        = AddressablesMgr.Instance.LoadAsset<CurveParameters>("CurveParameters");
+        //}
+        
+        HandCardBase handCardBase = cardPrefab.GetComponent<HandCardBase>();
+        TableCardBase tableCardBase = cardPrefab.GetComponent<TableCardBase>();
+        handCardBase.cardSO = cardSO;
+        tableCardBase.cardSO = cardSO;
+        HandCardVisual handCardVisual = cardPrefab.GetComponent<HandCardVisual>();
+        TableCardVisual tableCardVisual = cardPrefab.GetComponent<TableCardVisual>();
+        handCardVisual.curveParameters
+            = AddressablesMgr.Instance.LoadAsset<CurveParameters>("CurveParameters");
 
-            tableCardBase.enabled = false;
-            tableCardVisual.enabled = false;
-        }
+        tableCardBase.enabled = false;
+        tableCardVisual.enabled = false;
+        
 
         RectTransform rectTransform= cardPrefab.AddComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(200,300);
         rectTransform.eulerAngles = new Vector3(0, 90, 0);
 
+        cardPrefab.AddComponent<CanvasGroup>();
         cardPrefab.AddComponent<SortingGroup>();
         cardPrefab.AddComponent<CanvasRenderer>();
 
         cardPrefab.AddComponent<PoolObj>().maxNum = 30;
+
+
 
         //设置CardView为子对象
         GameObject cardViewPrefab = AddressablesMgr.Instance.LoadAsset<GameObject>("CardView");
@@ -198,6 +204,8 @@ public class CreateCardAsset : Editor
                 = (GameObject)PrefabUtility.InstantiatePrefab(cardViewPrefab, cardPrefab.transform);
             CardView theCardView = instantiatedCardView.GetComponent<CardView>();
             theCardView.cardSO = cardSO;
+            theCardView.title.text = cardSO.cardName;
+            theCardView.description.text = cardSO.cardDescription;
 
         }
         else

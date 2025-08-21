@@ -378,9 +378,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4043050072947726196}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -150}
   m_SizeDelta: {x: 140, y: 300}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!210 &2124509484740545303
@@ -393,7 +393,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_SortAtRoot: 0
 --- !u!114 &417644200745074589
 MonoBehaviour:
@@ -715,7 +715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: c71630f40a290fb479a092eaf8531eee,
     type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -726,7 +726,95 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2928909053483269192}
+        m_TargetAssemblyTypeName: PlayerTurn, Assembly-CSharp
+        m_MethodName: TurnLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 81360f0b-7d4d-4f15-88e7-9e7906a6a250
+    m_ActionName: Player/Turn[/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 201211605199088430}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: MousePosition
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5d4e86f5-38e4-43fb-affc-3a358a43360d
+    m_ActionName: Player/MousePosition[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9096646341209023375}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: OnHoldMoveFront
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0a5058c5-bbe6-4d3f-939c-866477b1ce39
+    m_ActionName: Player/HoldMoveStart[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40f34ae3-6383-4929-b192-dd2a006c19f4
+    m_ActionName: Card/MousePosition[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36bedfdb-9ad8-48fe-b12a-81674ee0b37d
+    m_ActionName: Card/CanclSelect[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9096646341209023375}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: OnHoldMoveBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 036d6385-0e3c-4c0f-8386-524694a09823
+    m_ActionName: Player/HoldMoveBack[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2928909053483269192}
+        m_TargetAssemblyTypeName: PlayerTurn, Assembly-CSharp
+        m_MethodName: TurnRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f7163e34-80fa-430e-968c-0c471ecb541e
+    m_ActionName: Player/TurnRight[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -759,7 +847,7 @@ MonoBehaviour:
   cameraViewOffset: {x: 0, y: 0}
   mouseScreenPos: {x: 0, y: 0}
   cameraViewKX: 0.15
-  cameraViewKY: 0.2
+  cameraViewKY: 0.4
   viewDirPoint: {fileID: 2424591803458827495}
 --- !u!95 &5898524196331761908
 Animator:
@@ -769,7 +857,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2503352424810591992}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
@@ -794,8 +882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 723f7f1e03d681a4494964ccadfef036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theRoom: {fileID: 0}
-  toPos: {x: 0, y: 0, z: 0}
+  toWorldCoor: {x: 0, y: 0}
   isToSceneObj: 0
   toSceneObj: {fileID: 0}
   inSceneObj: {fileID: 0}
@@ -811,12 +898,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b30135596369ee41be498c98ed2d1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 2348558526476278927}
+  entityPivot: {fileID: 0}
   handCardDeck: {fileID: 157738813077117071}
   hitObject: {fileID: 0}
-  pointInteractableObject: {fileID: 0}
+  hitPosition: {x: 0, y: 0, z: 0}
   interactableLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  PlayableMouseY: 0.3
 --- !u!114 &2348558526476278927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6811adab2fe7f64cb32d00d636784a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRoom: {fileID: 0}
   playerInteract: {fileID: 0}
   playerMove: {fileID: 0}
   playerTurn: {fileID: 0}
@@ -1006,9 +1095,9 @@ RectTransform:
   - {fileID: 619696250232741662}
   m_Father: {fileID: 2245416989769143011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -540}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &157738813077117071
@@ -1023,6 +1112,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f22a3e3136ea84080680064472ce57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   player: {fileID: 2348558526476278927}
   currentPointInteractableObject: {fileID: 0}
   maxCount: 10
@@ -1036,7 +1134,7 @@ MonoBehaviour:
   slots: {fileID: 5791911456166549984}
   slotPre: {fileID: 7398089050688717946, guid: fed9dcc5de633d9438f43412cd519bb3, type: 3}
   isCancel: 0
-  testCardSO: {fileID: 11400000, guid: a1a28c2b43916b74d9478c523790b7df, type: 2}
+  currentIndex: 0
 --- !u!114 &493591890710704557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,6 +1178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ce2396c7fc3164b93f893994a778e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isHide: 0
+  HandCardDeckHideTransform: {fileID: 533531266069292974}
   playerMove: {fileID: 9096646341209023375}
   firstVCStateSlotsTransform: {fileID: 0}
   otherVCStateSlotsTransform: {fileID: 0}
@@ -1121,7 +1221,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: 0.000000119209275, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 0.0010691672, y: 0.0010691672, z: 0.0010691672}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2245416989769143011}
   - {fileID: 7688013239734936114}
@@ -1152,7 +1252,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 1478544345
+  m_SortingLayerID: 0
   m_SortingOrder: 28
   m_TargetDisplay: 0
 --- !u!114 &6891763492954203899
@@ -1195,6 +1295,41 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 268435767
+--- !u!1 &4240158132953434327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 533531266069292974}
+  m_Layer: 5
+  m_Name: HandCardDeckHideTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &533531266069292974
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4240158132953434327}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1000}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2245416989769143011}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -1500}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4559577136954202705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,6 +1532,7 @@ RectTransform:
   - {fileID: 3532732902228991483}
   - {fileID: 323525122253418323}
   - {fileID: 2438236950112562860}
+  - {fileID: 533531266069292974}
   m_Father: {fileID: 9219415361539238765}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

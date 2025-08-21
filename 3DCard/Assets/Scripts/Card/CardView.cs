@@ -24,7 +24,6 @@ public class CardView : MonoBehaviour
     }
     private void Start()
     {
-        title.text = cardSO.cardName;
-        description.text = cardSO.cardDescription;
+        
     }
 }
