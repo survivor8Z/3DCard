@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Base (RGB)", 2D) = "white" {}
+        _MainTex ("Base (RGB)", 2D) = "red" {}
         _LineWidth ("Edge Width", Range(0.001, 10)) = 0.005
         _EdgeColor ("Edge Color", Color) = (1,1,1,1)
         _BackgroundColor ("Background Color", Color) = (0,0,0,1)

@@ -642,6 +642,7 @@ MonoBehaviour:
   - {x: 1, y: 1}
   - {x: -1, y: 1}
   pivotTransform: {fileID: 1045880659143492263}
+  boxCollider: {fileID: 0}
   id: 10002
   pickPoint: {fileID: 2072384593258126032}
   EnterLevel: 0
@@ -649,7 +650,7 @@ MonoBehaviour:
   theVC: {fileID: 6454403996485678442}
   dragPoint: {fileID: 6088942447028392292}
   tableCardTransformParent: {fileID: 3478070122926726954}
-  dragPointK: 0.97
+  dragPointK: 1
   tableCardsControl: {fileID: 4107917954220087493}
 --- !u!65 &1462813482181671516
 BoxCollider:
@@ -670,8 +671,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.46851, y: 0.08210242, z: 1.3538331}
-  m_Center: {x: 0, y: 1.1, z: 0.5}
+  m_Size: {x: 2.71, y: 0.08210254, z: 1.4789085}
+  m_Center: {x: -8.887129e-16, y: 1.1, z: 0.43746227}
 --- !u!114 &4107917954220087493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,6 +688,7 @@ MonoBehaviour:
   tableRootCards: []
   currentDragCard: {fileID: 0}
   toHandY: 0.25
+  table: {fileID: 0}
 --- !u!1 &3309498336217938879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,7 +1101,7 @@ Transform:
   m_GameObject: {fileID: 3656633992594362227}
   serializedVersion: 2
   m_LocalRotation: {x: 0.67559016, y: -0, z: -0, w: 0.73727745}
-  m_LocalPosition: {x: 0, y: 2.36, z: -0.40000015}
+  m_LocalPosition: {x: 0, y: 2.45, z: 0.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1321,7 +1323,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5262693604697558004}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: -328}
+  m_LocalPosition: {x: 0, y: 0, z: -284}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1332,7 +1334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 153, y: 1338}
+  m_AnchoredPosition: {x: 121, y: 1338}
   m_SizeDelta: {x: 200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5543090320510458181
@@ -1430,6 +1432,9 @@ MonoBehaviour:
     - Name: OnEndDragEvent
       Entry: 6
       Data: 
+    - Name: OnStackToTheTableCardEvent
+      Entry: 6
+      Data: 
   cardSO: {fileID: 0}
   canvasGroup: {fileID: 0}
   theTableCardVisual: {fileID: 0}
@@ -1457,6 +1462,8 @@ MonoBehaviour:
   offsetDragAbove: 0.1
   offsetDragAboveK: 0
   theHandCardVisual: {fileID: 5378118296627827126}
+  isInThePlayerRoom: 0
+  nearByTableCardCenterList: []
 --- !u!1 &5803652348378916099
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,7 +1526,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 18ff0a49af484f84d8f3ff8833439b16, type: 2}
+  - {fileID: 2100000, guid: 2d27eb12249915843b5a2813c5e8a90c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2119,13 +2126,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8156745256232663223}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2551160093109011247}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &8314679811297918457
 GameObject:
   m_ObjectHideFlags: 0

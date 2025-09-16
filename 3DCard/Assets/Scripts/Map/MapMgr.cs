@@ -145,7 +145,14 @@ public class MapMgr : SingletonMono<MapMgr>
     }
     #endregion
 
-    public void AddTheRoom(string roomName, Vector2Int roomBigCoor,Vector2Int roomFront)
+    #region 生成房间
+    /// <summary>
+    /// roomFront是大坐标系下的方向
+    /// </summary>
+    /// <param name="roomName"></param>
+    /// <param name="roomBigCoor"></param>
+    /// <param name="roomFront"></param>
+    public void AddTheSmallRoom(string roomName, Vector2Int roomBigCoor,Vector2Int roomFront)
     {
         if (roomsDict.ContainsKey(roomBigCoor))
         {
@@ -162,7 +169,7 @@ public class MapMgr : SingletonMono<MapMgr>
         });
     }
 
-    public void RandomAddTheRoom(string roomName, Vector2Int roomBigCoor)
+    public void RandomAddTheSmallRoom(string roomName, Vector2Int roomBigCoor)
     {
         if (roomsDict.ContainsKey(roomBigCoor))
         {
@@ -205,6 +212,82 @@ public class MapMgr : SingletonMono<MapMgr>
             theRoom.Init();
         });
     }
+
+    #endregion
+
+    #region 添加物体
+    public void AddInteractableObject(InteractableObject interactableObject)
+    {
+
+    }
+    
+
+    /// <summary>
+    /// 用于需要动态添加障碍物的情况`
+    /// </summary>
+    /// <param name="interactableObject"></param>
+    public void AddTheObstacle(InteractableObject interactableObject)
+    {
+        foreach (var coor in interactableObject.obstacleRelativeCoor)
+        {
+            Vector2Int obstacleWorldCoor = RelativeCoorToWorldCoor
+            (
+                coor,
+                interactableObject.worldPivotCoor,
+                interactableObject.pivotFront
+            );
+            allUnwalkableCoor.Add(obstacleWorldCoor);
+        }
+    }
+
+    /// <summary>
+    /// 用于需要动态删除障碍物的情况
+    /// </summary>
+    /// <param name="interactableObject"></param>
+    public void DelTheObstacle(InteractableObject interactableObject)
+    {
+
+        foreach (var coor in interactableObject.obstacleRelativeCoor)
+        {
+            Vector2Int obstacleWorldCoor = RelativeCoorToWorldCoor
+            (
+                coor,
+                interactableObject.worldPivotCoor,
+                interactableObject.pivotFront
+            );
+            allUnwalkableCoor.Remove(obstacleWorldCoor);
+        }
+    }
+
+    /// <summary>
+    /// 用于需要动态移动障碍物的情况
+    /// </summary>
+    /// <param name="interactableObject"></param>
+    /// <param name="worldCoor"></param>
+    public void TheObstacleMoveTo(InteractableObject interactableObject,Vector2Int worldCoor)
+    {
+        foreach (var coor in interactableObject.obstacleRelativeCoor)
+        {
+            Vector2Int obstacleWorldCoor = RelativeCoorToWorldCoor
+            (
+                coor,
+                interactableObject.worldPivotCoor,
+                interactableObject.pivotFront
+            );
+            allUnwalkableCoor.Remove(obstacleWorldCoor);
+        }
+        foreach (var coor in interactableObject.obstacleRelativeCoor)
+        {
+            Vector2Int obstacleWorldCoor = RelativeCoorToWorldCoor
+            (
+                coor,
+                worldCoor,
+                interactableObject.pivotFront
+            );
+            allUnwalkableCoor.Add(obstacleWorldCoor);
+        }
+    }
+    #endregion
 
     #region 生命周期函数
     private void OnEnable()

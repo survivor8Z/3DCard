@@ -37,6 +37,91 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f254ea535ecca1d459031fe9e5aedbea
+    m_Address: HandCard_Campfire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df5b2272a110aba44be147e8d937b44c
+    m_Address: HandCard_Fire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc4b0fa7121168d478aa643c6f368302
+    m_Address: HandCard_Grass
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e39221c8e63629143b8d5ebe7c975a84
+    m_Address: HandCard_Iron
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b90a82ba748e7a6459565272ae464672
+    m_Address: HandCard_IronShield
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee6be406d1fff9541b66b8aad7994104
+    m_Address: HandCard_IronSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19687d97e67545e49aef6c85a78408d9
+    m_Address: HandCard_Leather
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f6aa99ca1a9d0049b597a58b905c78e
+    m_Address: HandCard_LeatherShoes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 315f66bab9ce8d14199546374b42a278
+    m_Address: HandCard_RockShield
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d87e212e6a5e0e459bb02720df24fca
+    m_Address: HandCard_Rope
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93aba3f9881b7cd47aa93bb24020655b
+    m_Address: HandCard_StoneSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da4dac208567bc44292e0e35ebf3bc8e
+    m_Address: HandCard_StrawSandals
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cbc690557582cf46b9df0583e9c710e
+    m_Address: HandCard_Wood
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 939f52b6706ab784cb2481e367614fc6
+    m_Address: HandCard_WoodShield
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5400a29ca0900a54598078aa2b7dd68b
+    m_Address: HandCard_WoodSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e027274128e360c4a8a5634714f969bc
+    m_Address: HandCard_Defend
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e667d030010969d4b83809a76b223a3f
+    m_Address: HandCard_Dismantle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1cda97fb84f9c824b88139327f41ea2f, type: 2}
   m_SchemaSet:

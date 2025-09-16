@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -23,18 +24,18 @@ public class HandCardBase : CardBase
 
     public HandCardDeck handCardDeck;
     public RectTransform slotRectTrans;
-    public Transform selectedToPos=>handCardDeck.handCardDeckVisual.handCardSelectedToPos;
-    public PlayerInteract playerInteract=>handCardDeck.player.playerInteract;
+    public Transform selectedToPos => handCardDeck.handCardDeckVisual.handCardSelectedToPos;
+    public PlayerInteract playerInteract => handCardDeck.player.playerInteract;
     public int index;
     public bool isHovered = false;
-    public bool isSelected = false; 
+    public bool isSelected = false;
     public bool isDragging = false;
 
 
     //与TableCard转换相关
-    [HideInInspector]public TableCardBase theTableCardBase; //如果是实体卡牌,则有对应的TableCardBase..
+    [HideInInspector] public TableCardBase theTableCardBase; //如果是实体卡牌,则有对应的TableCardBase..
 
-    [HideInInspector]public HandCardVisual theHandCardVisual;
+    [HideInInspector] public HandCardVisual theHandCardVisual;
 
     #region 生命周期函数
     private void Awake()
@@ -66,24 +67,31 @@ public class HandCardBase : CardBase
     public void Deleted(int index)
     {
         if (this.index != index) return;
-        //Destroy(gameObject);//TODO:对象池之后再说
-        PoolMgr.Instance.PushObj(gameObject);
+        ClearToInit();
+        PoolMgr.Instance.PushObj(this.gameObject);
     }
 
     public void TranslateToTableCard(int index)
     {
         if (this.index != index) return;
-        //TODO:将此卡牌设置成TableCard
+        //将此卡牌设置成TableCard
         
-
         this.enabled = false;
 
         theTableCardBase.enabled = true;
+    }
+    public override void ClearToInit()
+    {
+        theTableCardBase.ClearToInit();
     }
 
 
     public void ResetState()
     {
+        if (this is HandCard_Entity handCard_Entity)
+        {
+            handCard_Entity.DelPreViewEntity();
+        }
         isDragging = false;
         isSelected = false;
         ExecuteEvents.ExecuteHierarchy<IEndDragHandler>(
@@ -93,16 +101,15 @@ public class HandCardBase : CardBase
         );
     }
 
+
     #region 实际卡牌打出效果相关
     #region DragedPlay
     public virtual void TryCardDragPlay(IInteractable pointInteractableObject)
     {
-        handCardDeck.dragedCard = null;
-        isDragging = false;
+        handCardDeck.ResetCardState();
     }
     public void FailDragPlay()
     {
-        //UNDONE
         print("FailDragPlay");
     }
     #endregion
@@ -111,12 +118,14 @@ public class HandCardBase : CardBase
     #region SelectedPlay
     public virtual void TryCardSelectedPlay(IInteractable pointInteractableObject)
     {
-        handCardDeck.selectedCard = null;
-        isSelected = false;
+        handCardDeck.ResetCardState();
     }
     public void FailSelectedPlay()
     {
-        //UNDONE
+        if (this is HandCard_Entity handCard_Entity)
+        {
+            handCard_Entity.DelPreViewEntity();
+        }
         print("FailSelectedPlay");
     }
     #endregion
@@ -130,9 +139,12 @@ public class HandCardBase : CardBase
         //先是通知手牌库有一个index卡牌离开了,手牌库接着通知HandCardBase离开完了,触发TranslateToTableCard,将手牌转换为桌牌
         handCardDeck.TheCardLeaveHandDeck(index);
         EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
+        //通知handCardVisual缩放到原大小
+        EventCenter.Instance.EventTrigger<int>(E_EventType.E_HandCardVisualScaleToNormal, index);
 
         //加入到桌牌根库
         handCardDeck.table.tableCardsControl.tableRootCards.Add(theTableCardBase);
+        MusicMgr.Instance.PlaySound("card#1", transform);
     }
 
     //2
@@ -143,14 +155,13 @@ public class HandCardBase : CardBase
         handCardDeck.TheCardLeaveHandDeck(index);
         EventCenter.Instance.EventTrigger<HandCardBase>(E_EventType.E_HandCardToTableCard, this);
 
+        //通知handCardVisual缩放到原大小
+        EventCenter.Instance.EventTrigger<int>(E_EventType.E_HandCardVisualScaleToNormal, index);
+
         //设置成为这个桌牌的子对象
-        this.theTableCardBase.TryStackToTheTableCard(toStackTableCard);
+        this.theTableCardBase.TryStackToTheTableCard(toStackTableCard);//这里包含音效
     }
     #endregion
-
-    //事件响应
-
-
     #region ugui输入接口
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -161,8 +172,7 @@ public class HandCardBase : CardBase
         isHovered = true;
         handCardDeck.hoveredCard = this; // 设置当前悬停的手牌
         //音效
-        MusicMgr.Instance.PlaySound("card#"+UnityEngine.Random.Range(7, 9).ToString(),
-                                    transform);
+        MusicMgr.Instance.PlaySound("card#8", transform);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -178,8 +188,12 @@ public class HandCardBase : CardBase
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = false; 
+        canvasGroup.blocksRaycasts = false;
         if (isSelected) return;
+        if (handCardDeck.selectedCard is HandCard_Entity handCard_Entity)
+        {
+            handCard_Entity.DelPreViewEntity();
+        }
         if (cardSO.cardType == E_CardType.E_Entity)
         {
             if (handCardDeck.player.playerMove.inSceneObj is Table)
@@ -199,9 +213,9 @@ public class HandCardBase : CardBase
         }
         else if (cardSO.cardType == E_CardType.E_Behavior)
         {
-            
+
             EventCenter.Instance.EventTrigger(E_EventType.E_HandCardStartDrag, index);
-            
+
             handCardDeck.dragedCard = this; // 设置当前拖拽的手牌
             isDragging = true;
         }
@@ -210,13 +224,12 @@ public class HandCardBase : CardBase
         {
             return;
         }
-        
+
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (isSelected) return;
-        //EventCenter.Instance.EventTrigger(E_EventType.E_HandCardOnDrag, index);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -243,7 +256,7 @@ public class HandCardBase : CardBase
         }
         else if (cardSO.cardType == E_CardType.E_Condition)
         {
-            
+
         }
         EventCenter.Instance.EventTrigger(E_EventType.E_HandCardPointDown, index);
     }
@@ -270,6 +283,15 @@ public class HandCardBase : CardBase
         EventCenter.Instance.EventTrigger(E_EventType.E_HandCardPointUp, index);
     }
     #endregion
+    #region 事件响应
+    protected virtual void OnSelectedAddBuff()
+    {
 
-    
+    }
+    protected virtual void OnDisselectedRemoveBuff()
+    {
+
+    }
+    #endregion
+
 }

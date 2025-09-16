@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee5405781663ab4ca01d087e3f144d1, type: 3}
+  m_Name: Strength
+  m_EditorClassIdentifier: 
+  id: 101
+  buffName: "\u529B\u91CF"
+  description: "\u589E\u52A0x\u70B9\u653B\u51FB\u4F24\u5BB3"
+  iconName: 
+  priority: 1
+  maxStack: 999
+  isVisible: 1
+  tags: []
+  isForever: 1
+  duration: 999
+  tickTime: 1
+  buffUpdateTime: 2
+  buffRemoveStackUpdate: 1
+  triggerTickOnCreate: 0
+  buffModuleList:
+  - {fileID: 11400000, guid: db280954bb4657647aa31e3cd149aca7, type: 2}
+  - {fileID: 11400000, guid: a0a7e71658fe2dc499bf34c8f49810de, type: 2}
+  - {fileID: 11400000, guid: 9a508081754c6124c98e17d00b99718c, type: 2}
+  - {fileID: 11400000, guid: 4055428ec5513b7438edef83596f7c84, type: 2}

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76376772162ada49a38d94204da19b9, type: 3}
+  m_Name: "\u94C1\u5251Rule_11008"
+  m_EditorClassIdentifier: 
+  requiredCards:
+  - {fileID: 11400000, guid: b48aba3273c725d4d912092d27cc16b6, type: 2}
+  - {fileID: 11400000, guid: b48aba3273c725d4d912092d27cc16b6, type: 2}
+  - {fileID: 11400000, guid: 18c299856909fc64bbc3543b0553e14c, type: 2}
+  resultCard: {fileID: 11400000, guid: fcf9254328e5cc648bb42b355e96d905, type: 2}
+  id: 11008
+  priority: 8

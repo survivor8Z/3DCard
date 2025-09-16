@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HandCardDeckVisual : MonoBehaviour
 {
@@ -98,12 +99,19 @@ public class HandCardDeckVisual : MonoBehaviour
     {
         handCardSelectedToPos = firstVCStatePickPointTransform;
     }
-    //public void OnHandCardStartDrag(int index)
-    //{
-        
-    //}
-    //public void OnHandCardEndDrag(int index)
-    //{
-        
-    //}
+    #region InputSystem
+    public void OnHideOrShowHandCardDeck(InputAction.CallbackContext context)
+    {
+        float axisValue = context.ReadValue<float>();
+
+        if (axisValue > 0)
+        {
+            isHide = false;
+        }
+        else if (axisValue < 0)
+        {
+            isHide = true;
+        }
+    }
+    #endregion
 }

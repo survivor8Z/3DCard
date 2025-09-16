@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: "\u77F3\u5934"
   cardEnglishName: Rock
-  cardID: 1
+  cardID: 2
   cardType: 0
-  cardDescription: Ek = 1/2mv^2
+  cardDescription: "\u65E0\u7528\u4E4B\u77F3"
+  values: 

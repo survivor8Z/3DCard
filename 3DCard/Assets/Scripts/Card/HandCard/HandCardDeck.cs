@@ -23,14 +23,14 @@ public class HandCardDeck : SerializedMonoBehaviour
     public int CurrentHandCardCount => handCards.Count;
 
     public Vector2 mousePositionViewport;
-   
+
 
     private RectTransform theRectTransform;
 
     public HandCardDeckVisual handCardDeckVisual;
-    
+
     public Slots slots;//槽位盘
-    [SerializeField]private GameObject slotPre;
+    [SerializeField] private GameObject slotPre;
 
     //用于取消
     public bool isCancel = false;
@@ -56,23 +56,35 @@ public class HandCardDeck : SerializedMonoBehaviour
 
     private void Update()
     {
-        ////实时创建Entity预览
-        //if(selectedCard!=null&&selectedCard is HandCard_Entity handCard_Entity)
-        //{
-        //    handCard_Entity.TryCreateEntityInGround(handCard_Entity.entityPrefabName);
-        //}
+        //实时创建Entity预览
+        if (selectedCard != null
+            && selectedCard is HandCard_Entity handCard_Entity)
+        {
+            if (handCard_Entity.toCreateEntity != null)
+            {
+                handCard_Entity.TryCreateEntityInGround();
+                if (!handCardDeckVisual.isHide)
+                    handCard_Entity.DelPreViewEntity();
+            }
+            else
+            {
+                if (handCardDeckVisual.isHide)
+                    handCard_Entity.CreatePreviewEntity();
+            }
+        }
+
 
 
 
         //test
         if (Input.GetKeyDown(KeyCode.K))
         {
-            AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("打击", (SO) =>
+            AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("防御", (SO) =>
             {
                 AddCard(SO.Result);
             });
         }
-        if(Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("石头", (SO) =>
             {
@@ -83,12 +95,102 @@ public class HandCardDeck : SerializedMonoBehaviour
         {
             DelTheCard(1);
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             ResetCardState();
         }
-
     }
+
+    private bool showGUI = false;
+    private string inputStr = "";
+
+
+
+
+    // GUI 调试变量
+    private bool showDebugPanel = true;
+    private string cardNameInput = "";
+    private string removeIndexInput = "1";
+    private void OnGUI()
+    {
+        // 使用 GUILayout 自动布局生成调试按钮
+        GUILayout.BeginArea(new Rect(10, 10, 250, 500));
+
+        // 创建一个可折叠的面板
+        showDebugPanel = GUILayout.Toggle(showDebugPanel, showDebugPanel ? "隐藏手牌调试面板" : "显示手牌调试面板", "Button");
+
+        if (showDebugPanel)
+        {
+            GUILayout.BeginVertical("Box");
+
+            GUILayout.Label("卡牌操作", new GUIStyle { fontStyle = FontStyle.Bold });
+
+            // 添加卡牌区域
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("添加卡牌:", GUILayout.Width(70));
+            cardNameInput = GUILayout.TextField(cardNameInput, GUILayout.Width(100));
+            if (GUILayout.Button("添加"))
+            {
+                if (!string.IsNullOrEmpty(cardNameInput))
+                {
+                    AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>(cardNameInput, (SO) =>
+                    {
+                        if (SO.Result != null)
+                        {
+                            AddCard(SO.Result);
+                            Debug.Log($"成功添加卡牌: {SO.Result.cardName}");
+                        }
+                        else
+                        {
+                            Debug.LogError($"无法找到名为 '{cardNameInput}' 的卡牌。");
+                        }
+                    });
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            // 删除卡牌区域
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("删除索引:", GUILayout.Width(70));
+            removeIndexInput = GUILayout.TextField(removeIndexInput, GUILayout.Width(100));
+            if (GUILayout.Button("删除"))
+            {
+                if (int.TryParse(removeIndexInput, out int index))
+                {
+                    DelTheCard(index);
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            // 一些预设的快速测试按钮
+            GUILayout.Space(10);
+            if (GUILayout.Button("快速添加 '打击' 卡牌 "))
+            {
+                AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("打击", (SO) => AddCard(SO.Result));
+            }
+            if (GUILayout.Button("快速添加 '木头' 卡牌 "))
+            {
+                AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("木头", (SO) => AddCard(SO.Result));
+            }
+            if (GUILayout.Button("快速添加 '石头' 卡牌 "))
+            {
+                AddressablesMgr.Instance.LoadAssetCoroutine<CardSO>("石头", (SO) => AddCard(SO.Result));
+            }
+            if (GUILayout.Button("删除第一张卡牌 (J)"))
+            {
+                DelTheCard(1);
+            }
+            if (GUILayout.Button("重置卡牌状态 (P)"))
+            {
+                ResetCardState();
+            }
+
+            GUILayout.EndVertical();
+        }
+
+        GUILayout.EndArea();
+    }
+
     private void OnDisable()
     {
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardPointUp, OnHandCardClick);
@@ -96,7 +198,7 @@ public class HandCardDeck : SerializedMonoBehaviour
     }
     private void OnDestroy()
     {
-        
+
     }
 
     #endregion
@@ -107,14 +209,15 @@ public class HandCardDeck : SerializedMonoBehaviour
     /// </summary>
     public void TryCardCombinationPlay(IInteractable pointInteractableObject)
     {
+        print("组合打出");
         switch (dragedCard)
         {
-            case IAttack attack:
-                if(pointInteractableObject is IDamageable damageable)
+            case IAttack iattack:
+                if (pointInteractableObject is IDamageable damageable)
                 {
                     if (selectedCard is IAddDamage addDamage)
                     {
-                        attack.AttackWithAddDamage(damageable, addDamage);
+                        iattack.Attack(damageable);
                     }
                     else
                     {
@@ -144,7 +247,6 @@ public class HandCardDeck : SerializedMonoBehaviour
 
     public void FailCombinationPlay()
     {
-        //UNDONE
         print("FailCombinationPlay");
     }
     #endregion
@@ -161,21 +263,25 @@ public class HandCardDeck : SerializedMonoBehaviour
             Debug.Log("HandCardDeck: AddCard: Hand card count exceeds max limit");
             return;
         }
-        //GameObject slotObj = Instantiate(slotPre, slots.transform);
+
         GameObject slotObj = PoolMgr.Instance.GetObjSync("Slot");
         slotObj.transform.SetParent(slots.transform);
         slotObj.transform.localPosition = Vector3.zero;
         slotObj.transform.localScale = Vector3.one;
 
-        //GameObject card = Instantiate(cardPreDic[cardSO], transform);
-        GameObject card = PoolMgr.Instance.GetObjSync("HandCard_" + cardSO.cardEnglishName);
+        GameObject card = PoolMgr.Instance.GetObjSync("HandCard_" + cardSO.cardEnglishName);//这里的名字固定,之后桌牌也是HandCard
 
         card.transform.position = slots.transform.position;
         card.transform.SetParent(transform);
         card.transform.localScale = Vector3.one;
-        //card.name = "Card" + (handCards.Count + 1);
+
+        TableCardBase tableCardBase = card.GetComponent<TableCardBase>();
+        TableCardVisual tableCardVisual = card.GetComponent<TableCardVisual>();
+        tableCardBase.enabled = false;
+        tableCardVisual.enabled = false;
 
         HandCardBase theHandCard = card.GetComponent<HandCardBase>();
+        HandCardVisual handCardVisual = card.GetComponent<HandCardVisual>();
         Slot theSlot = slotObj.GetComponent<Slot>();
 
         handCards.Add(theHandCard);
@@ -187,9 +293,10 @@ public class HandCardDeck : SerializedMonoBehaviour
         theHandCard.handCardDeck = this;
         theHandCard.slotRectTrans = slotObj.GetComponent<RectTransform>();
         theHandCard.index = handCards.Count;
+        theHandCard.enabled = true;
 
+        handCardVisual.enabled = true;
     }
-    
 
     /// <summary>
     /// 插入一个Slot,返回其引用
@@ -208,15 +315,15 @@ public class HandCardDeck : SerializedMonoBehaviour
         slotObj.transform.localScale = Vector3.one;
         Slot theSlot = slotObj.GetComponent<Slot>();
 
-        slots.slotsList.Insert(listIndex,theSlot);
+        slots.slotsList.Insert(listIndex, theSlot);
         slotObj.transform.SetSiblingIndex(listIndex);//
         ResetSlotsIndex();
         return theSlot;
     }
 
-    public void SetTheSlotPos(Slot slot,int insertSlotListIndex)
+    public void SetTheSlotPos(Slot slot, int insertSlotListIndex)
     {
-        if(insertSlotListIndex == slots.slotsList.Count)
+        if (insertSlotListIndex == slots.slotsList.Count)
         {
             Debug.Log("SetTheSlotPos: insertSlotListIndex out of range");
             return;
@@ -248,7 +355,7 @@ public class HandCardDeck : SerializedMonoBehaviour
     /// <param name="index"></param>
     public void DelTheCard(int index)
     {
-        if(index <=0 || index > handCards.Count)
+        if (index <= 0 || index > handCards.Count)
         {
             Debug.Log("DelTheCard: index out of range");
             return;
@@ -279,16 +386,16 @@ public class HandCardDeck : SerializedMonoBehaviour
 
     public void ResetSlotsIndex()
     {
-        for(int i = 0;i < slots.slotsList.Count; i++)
+        for (int i = 0; i < slots.slotsList.Count; i++)
         {
             slots.slotsList[i].index = i + 1;
             slots.slotsList[i].layoutElement.flexibleWidth = 1f;
-        }   
+        }
     }
 
     public void ResetCardIndex()
     {
-        for(int i = 0; i < handCards.Count; i++)
+        for (int i = 0; i < handCards.Count; i++)
         {
             handCards[i].index = i + 1;
             slots.slotsList[i].index = i + 1;
@@ -299,7 +406,7 @@ public class HandCardDeck : SerializedMonoBehaviour
     {
         for (int i = 0; i < handCards.Count; i++)
         {
-            handCards[i].transform.SetSiblingIndex(i+1);
+            handCards[i].transform.SetSiblingIndex(i + 1);
             slots.slotsList[i].transform.SetSiblingIndex(i);
             slots.slotsList[i].layoutElement.flexibleWidth = 1f;
         }
@@ -308,6 +415,7 @@ public class HandCardDeck : SerializedMonoBehaviour
 
     public void ResetCardState()
     {
+        //print("ResetCardState");
         if (selectedCard != null)
         {
             selectedCard.ResetState();
@@ -325,32 +433,45 @@ public class HandCardDeck : SerializedMonoBehaviour
 
     public void OnHandCardClick(int index)
     {
-        if(isCancel)return;
+        if (isCancel) return;
         if (index <= 0 || index > handCards.Count) return;
         HandCardBase theHandCard = handCards[index - 1];
-        if (theHandCard == selectedCard&&theHandCard.isSelected)
+        if (theHandCard == selectedCard && theHandCard.isSelected)
         {
-            
+
             theHandCard.isSelected = false; // 清除选中状态+
 
             selectedCard.transform.SetParent(transform);
             selectedCard = null; // 清除选中引用
+            if (selectedCard is HandCard_Entity handCard_Entity)
+            {
+                handCard_Entity.DelPreViewEntity();
+            }
         }
         else
         {
             if (selectedCard != null)
             {
                 selectedCard.isSelected = false;
+                if (selectedCard is HandCard_Entity selectedCardHandCard_Entity)
+                {
+                    selectedCardHandCard_Entity.DelPreViewEntity();//删除之前的预览
+                }
             }
 
             theHandCard.isSelected = true; // 设置为选中状态
             selectedCard = theHandCard; // 更新选中引用
 
-            
+
             EventCenter.Instance.EventTrigger(E_EventType.E_HandCardSelected, index);
-            
-            
-            
+
+            if (theHandCard is HandCard_Entity handCard_Entity
+               && handCardDeckVisual.isHide)//创建预览
+            {
+                handCard_Entity.CreatePreviewEntity();
+            }
+
+
 
             //更新slot
             Slot theSlot = slots.slotsList[index - 1];
@@ -359,22 +480,29 @@ public class HandCardDeck : SerializedMonoBehaviour
 
             handCards.RemoveAt(index - 1);
             handCards.Add(theHandCard);
-            
+
             ResetCardIndex();
             slots.ResetSlots();
 
         }
-
-
     }
-
-
     #endregion
 
     #region Inputsystem
     void OnMousePosition(InputValue value)
     {
         mousePositionViewport = new Vector2(value.Get<Vector2>().x / Screen.width, value.Get<Vector2>().y / Screen.height);
+    }
+
+    public void OnRotateToCreateEntity(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (selectedCard is HandCard_Entity handCard_Entity)
+            {
+                handCard_Entity.RotateToCreateEntity();
+            }
+        }
     }
     #endregion
 }

@@ -32,8 +32,12 @@ public class HandCard_En_Rock : HandCard_Entity,IAddDamage
 
     public override void TryCardSelectedPlay(IInteractable pointInteractableObject)
     {
-        switch(pointInteractableObject)
+        print("TryCardSelectedPlay");
+        switch (pointInteractableObject)
         {
+            case Floor:
+                TryCreateEntity();
+                break;
             default:
                 FailSelectedPlay();
                 break;

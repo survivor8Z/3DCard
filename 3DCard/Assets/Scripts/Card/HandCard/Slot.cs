@@ -40,12 +40,9 @@ public class Slot : MonoBehaviour
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardSlotDel, Deleted);
     }
 
-
-    //TODO:对象池之后再说
     public void Deleted(int index)
     {
         if (this.index != index) return;
-        //Destroy(gameObject);
         PoolMgr.Instance.PushObj(gameObject);
     }
     //事件响应

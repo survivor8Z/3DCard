@@ -9,7 +9,7 @@ public class RoomStart : RoomBase
         //遍历四周房间
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(transform.forward)))
         {
-            AddWall("DoorWall", Vector2Int.up * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("DoorWall", Vector2Int.up * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
         else
         {
@@ -19,15 +19,15 @@ public class RoomStart : RoomBase
         }
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(transform.right)))
         {
-            AddWall("NormalWall", Vector2Int.right * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("NormalWall", Vector2Int.right * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(-transform.forward)))
         {
-            AddWall("NormalWall", Vector2Int.down * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("NormalWall", Vector2Int.down * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(-transform.right)))
         {
-            AddWall("NormalWall", Vector2Int.left * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("NormalWall", Vector2Int.left * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
 
 

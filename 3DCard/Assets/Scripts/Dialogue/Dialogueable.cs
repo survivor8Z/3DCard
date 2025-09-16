@@ -137,4 +137,23 @@ public class Dialogueable : MonoBehaviour
         return ifWaitForLong;
     }
     #endregion
+
+    private void OnGUI()
+    {
+        //×óÉÏ°´Å¥
+        GUIStyle guiStyle = new GUIStyle();
+        guiStyle.fontSize = 24;
+        if (GUI.Button(new Rect(10, 10, 50, 20), "Start Dialogue"))
+        {
+            StartDialogue();
+        }
+        if (GUI.Button(new Rect(10, 40, 50, 20), "Stop Dialogue"))
+        {
+            StopDialogue();
+        }
+        if(GUI.Button(new Rect(10, 70, 150, 20), "Reset Dialogue"))
+        {
+            ResetDialogue();
+        }
+    }
 }

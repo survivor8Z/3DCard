@@ -50,8 +50,15 @@ public class PostOutLineRF : ScriptableRendererFeature
 
             RenderTextureDescriptor desc = renderingData.cameraData.cameraTargetDescriptor;
             //边缘检测
-            m_EdgeDetect.SetTexture("_MainTex", cameraColorTarget);
+            //m_EdgeDetect.SetTexture("_MainTex", cameraColorTarget);
+            //Blitter.BlitCameraTexture(cmd, cameraColorTarget, tempRT1);
+            //Blitter.BlitCameraTexture(cmd, tempRT1, cameraColorTarget, m_EdgeDetect, 0);
             Blitter.BlitCameraTexture(cmd, cameraColorTarget, tempRT1);
+
+            // 然后手动设置临时纹理到材质的 _MainTex 属性
+            m_EdgeDetect.SetTexture("_MainTex", tempRT1);
+
+            // 最后使用材质和正确的源纹理进行 Blit
             Blitter.BlitCameraTexture(cmd, tempRT1, cameraColorTarget, m_EdgeDetect, 0);
 
             context.ExecuteCommandBuffer(cmd);//执行

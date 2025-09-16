@@ -29,7 +29,7 @@ public interface IInteractable
 /// </summary>
 public interface IDamageable
 {
-    public void GetDamage(int damage);
+    public void GetDamage(DamageInfo damageInfo);
 }
 
 
@@ -37,7 +37,7 @@ public interface IAttack
 {
     public void Attack(IDamageable damageable);
 
-    public void AttackWithAddDamage(IDamageable damageable,IAddDamage addDamage);
+    //public void AttackWithAddDamage(IDamageable damageable,IAddDamage addDamage);
 }
 
 /// <summary>

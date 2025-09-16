@@ -7,4 +7,11 @@ using UnityEngine.EventSystems;
 public class CardBase : SerializedMonoBehaviour
 {
     public CardSO cardSO;
+    /// <summary>
+    /// 放入对象池时重置状态
+    /// </summary>
+    public virtual void ClearToInit()
+    {
+
+    }
 }

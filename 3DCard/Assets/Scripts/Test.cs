@@ -4,23 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Test : MonoBehaviour,IEndDragHandler
+public class Test : MonoBehaviour
 {
-    [SerializeField] Transform target;
-
-    
-
-    public void OnEndDrag(PointerEventData eventData)
+    private void OnEnable()
     {
-        print("OnEndDrag");
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonUp(0))
-        {
-            print("GetMouseButtonUp");
-        }
-        
+        print("testObj OnEnable µ÷ÓÃ");
     }
 }

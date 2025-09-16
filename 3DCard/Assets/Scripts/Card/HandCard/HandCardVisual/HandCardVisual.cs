@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -34,6 +35,7 @@ public class HandCardVisual : MonoBehaviour
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardSelected, OnHandCardClick);//这个事件是在handcardDeck中处理完后再触发
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardStartDrag, OnHandCardStartDrag);
         EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
+        EventCenter.Instance.AddEventListener<int>(E_EventType.E_HandCardVisualScaleToNormal, ResetScale);
 
         EventCenter.Instance.AddEventListener<HandCardBase>(E_EventType.E_HandCardToTableCard, OnTranslateToTableCard);
     }
@@ -50,6 +52,7 @@ public class HandCardVisual : MonoBehaviour
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardSelected, OnHandCardClick);
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardStartDrag, OnHandCardStartDrag);
         EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardEndDrag, OnHandCardEndDrag);
+        EventCenter.Instance.RemoveEventListener<int>(E_EventType.E_HandCardVisualScaleToNormal, ResetScale);
 
         EventCenter.Instance.RemoveEventListener<HandCardBase>(E_EventType.E_HandCardToTableCard, OnTranslateToTableCard);
 
@@ -72,8 +75,8 @@ public class HandCardVisual : MonoBehaviour
             return;
         }
 
-        if(theHandCard.isDragging
-            /*&&theHandCard.cardSO.cardType == E_CardType.E_Entity*/ 
+        if (theHandCard.isDragging
+            && theHandCard.cardSO.cardType != E_CardType.E_Behavior
             && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
         {
             transform.rotation = theHandCard.handCardDeck.player.playerMove.inSceneObj.pickPoint.rotation;
@@ -101,6 +104,10 @@ public class HandCardVisual : MonoBehaviour
     public Vector3 followVelocity;
     private void SetPosition()
     {
+        if (theHandCard.enabled == false)
+        {
+            return;
+        }
 
         if (theHandCard.isSelected)
         {
@@ -108,7 +115,7 @@ public class HandCardVisual : MonoBehaviour
         }
 
         if(theHandCard.isDragging
-            //&&theHandCard.cardSO.cardType == E_CardType.E_Entity 
+            && theHandCard.cardSO.cardType != E_CardType.E_Behavior
             && theHandCard.handCardDeck.player.playerMove.inSceneObj is Table table)
         {
             theRectTransform.position = Vector3.SmoothDamp(
@@ -196,7 +203,7 @@ public class HandCardVisual : MonoBehaviour
                 transform.DOMove(theHandCard.selectedToPos.position,0.2f).SetEase(Ease.OutBack);
                 transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
                 //如果在InteractableSceneObj中,还需调整旋转
-                //TODO:因为不想和桌牌混淆所以不要水平放置
+                //因为不想和桌牌混淆所以不要水平放置
                 if (theHandCard.handCardDeck.player.playerMove.inSceneObj != null)
                 {
                     transform.DORotateQuaternion(
@@ -252,5 +259,20 @@ public class HandCardVisual : MonoBehaviour
         if (theHandCardBase != theHandCard) return;
         this.enabled = false;
     }
-    #endregion
+
+    private void ResetScale(int index)
+    {
+        if(index != theHandCard.index)
+        {
+            return;
+        }
+        if (tween != null && tween.IsActive() && tween.IsPlaying())
+        {
+            tween.Kill();
+        }
+        theRectTransform.localScale = Vector3.one;
+
+
+    }
 }
+#endregion

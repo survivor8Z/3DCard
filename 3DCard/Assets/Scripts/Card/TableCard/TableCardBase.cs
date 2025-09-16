@@ -19,19 +19,21 @@ public class TableCardBase : CardBase,IInteractable
     [HideInInspector]public TableCardVisual theTableCardVisual;
     [HideInInspector]public HandCardBase thehandCardBase;
     [HideInInspector]public CardView cardView;
+    public Dictionary<CardSO, int> RootCardContains => GetRootCardContains();//如果是堆叠的根节点,则记录所有子节点的CardSO和数量
 
 
     //堆叠相关
     public Transform childStackTransform;//这个只是用来设置toPos的,不设置父子关系
     public TableCardBase parentTableCard;
     public TableCardBase childTableCard;
-
-
+    
     //与拖拽相关
     public bool isDragging = false;
-    //public UnityAction<TableCardBase> OnBeginDragEvent;
     public UnityAction<TableCardBase> OnDragEvent;
     public UnityAction<TableCardBase> OnEndDragEvent;
+
+    //拖拽到堆叠相关
+    public UnityAction<TableCardBase> OnStackToTheTableCardEvent;
 
     //拖拽到手牌相关
     public Slot toSlot;
@@ -67,28 +69,25 @@ public class TableCardBase : CardBase,IInteractable
     {
         OnEndDragEvent -= table.tableCardsControl.OnTheTableCardEndDrag;
         OnDragEvent -= table.tableCardsControl.OnTheTableCardDrag;
+        OnStackToTheTableCardEvent -= table.tableCardsControl.OnTheTableCardStackToTheTableCard;
     }
     #endregion
 
 
-    //只涉及组件的启用和事件监听
+    /// <summary>
+    /// 只涉及组件的启用和事件监听
+    /// </summary>
     protected void Init()
     {
         transform.SetParent(MapMgr.Instance.currentRoom.table.tableCardTransformParent);
 
         OnEndDragEvent += table.tableCardsControl.OnTheTableCardEndDrag;
         OnDragEvent += table.tableCardsControl.OnTheTableCardDrag;
+        OnStackToTheTableCardEvent += table.tableCardsControl.OnTheTableCardStackToTheTableCard;
 
         theTableCardVisual.enabled = true;
         theTableCardVisual.Init();
     }
-
-    //#region 拖拽打出相关
-    //public virtual void TryDragPlay()
-    //{
-
-    //}
-    //#endregion
 
     public void TranslateToHandCard(Slot currentToSlot)
     {
@@ -103,6 +102,13 @@ public class TableCardBase : CardBase,IInteractable
         thehandCardBase.index = currentToSlot.index;
         thehandCardBase.slotRectTrans = currentToSlot.transform as RectTransform;
 
+        
+        //如果是root节点
+        if (parentTableCard == null)
+        {
+            table.tableCardsControl.tableRootCards.Remove(this);
+        }
+        
 
         thehandCardBase.handCardDeck.handCards.Insert(thehandCardBase.index-1, thehandCardBase);
         thehandCardBase.handCardDeck.ResetCardIndex();
@@ -111,13 +117,36 @@ public class TableCardBase : CardBase,IInteractable
 
     }
 
+    public Dictionary<CardSO,int> GetRootCardContains()
+    {
+        Dictionary<CardSO, int> res = new();
+        AddContains(res, this);
+        if (childTableCard != null)
+        {
+            AddContains(res, childTableCard);
+        }
+        return res;
+    }
+    private void AddContains(Dictionary<CardSO,int> res,TableCardBase theTableCard)
+    {
+        if(res.ContainsKey(theTableCard.cardSO))
+        {
+            res[theTableCard.cardSO]++;
+        }
+        else
+        {
+            res[theTableCard.cardSO] = 1;
+        }
+    }
+
     /// <summary>
-    /// 在子类完成
+    /// 是否能够拖拽到在子类完成,现在的想法是全部都可以拖拽堆叠
+    /// OnStackToTheTableCardEvent在此处触发
     /// </summary>
     /// <param name="toStackTableCard"></param>
     public virtual void TryStackToTheTableCard(TableCardBase toStackTableCard)
     {
-        if(toStackTableCard == this)
+        if(IsMyDescendant(toStackTableCard))
         {
             return;
         }
@@ -129,7 +158,26 @@ public class TableCardBase : CardBase,IInteractable
         toStackTableCard.childTableCard = this;
         this.parentTableCard = toStackTableCard;
         theTableCardVisual.stackPointTransform = toStackTableCard.childStackTransform;
-
+        MusicMgr.Instance.PlaySound("card#5", transform);
+        OnStackToTheTableCardEvent?.Invoke(this);
+    }
+    /// <summary>
+    /// 检查给定的卡牌是否是当前卡牌的子孙卡牌（包括自身）。
+    /// </summary>
+    /// <param name="potentialDescendant">需要检查的卡牌</param>
+    /// <returns>如果是，则返回 true；否则返回 false。</returns>
+    private bool IsMyDescendant(TableCardBase potentialDescendant)
+    {
+        TableCardBase currentCard = this;
+        while (currentCard != null)
+        {
+            if (currentCard == potentialDescendant)
+            {
+                return true;
+            }
+            currentCard = currentCard.childTableCard;
+        }
+        return false;
     }
 
     public void ToRootTableCard()
@@ -165,38 +213,73 @@ public class TableCardBase : CardBase,IInteractable
             table.tableCardsControl.tableRootCards.Add(this);
         }
     }
-
+    /// <summary>
+    /// 设置自己和所有子节点为最上层
+    /// </summary>
     private void SetLastSlibing()
     {
-        //print("SetLastSlibing");
         transform.SetAsLastSibling();
         if(childTableCard != null)
         {
+            if (childTableCard == parentTableCard
+                || childTableCard == this
+                || parentTableCard == this)
+            {
+                Debug.LogError("TableCardBase 有环");
+                return;
+            }
             childTableCard.SetLastSlibing();
         }
     }
-
+    /// <summary>
+    /// 设置自己和所有子节点不阻挡射线
+    /// </summary>
     private void SetNotBlockRaycast()
     {
         canvasGroup.blocksRaycasts = false;
         if (childTableCard != null)
         {
+            if (childTableCard == parentTableCard
+                || childTableCard == this
+                || parentTableCard == this)
+            {
+                Debug.LogError("TableCardBase 有环");
+                return;
+            }
             childTableCard.SetNotBlockRaycast();
         }
     }
+    /// <summary>
+    /// 设置自己和所有子节点阻挡射线
+    /// </summary>
     private void SetBlockRaycast()
     {
         canvasGroup.blocksRaycasts = true;
         if (childTableCard != null)
         {
+            if (childTableCard == parentTableCard
+                || childTableCard == this
+                || parentTableCard == this)
+            {
+                Debug.LogError("TableCardBase 有环");
+                return;
+            }
             childTableCard.SetBlockRaycast();
         }
 
     }
     private TableCardBase GetLastTableCard()
     {
+        
         if (childTableCard != null)
         {
+            if (childTableCard == parentTableCard
+                ||childTableCard == this
+                ||parentTableCard==this)
+            {
+                Debug.LogError("TableCardBase 有环");
+                return null;
+            }
             return childTableCard.GetLastTableCard();
         }
         return this;
@@ -205,9 +288,59 @@ public class TableCardBase : CardBase,IInteractable
     {
         if (parentTableCard != null)
         {
+            if (childTableCard == parentTableCard
+                || childTableCard == this
+                || parentTableCard == this)
+            {
+                Debug.LogError("TableCardBase 有环");
+                return null;
+            }
             return parentTableCard.GetRootTableCard();
         }
         return this;
+    }
+    /// <summary>
+    /// 从堆叠链表删除
+    /// </summary>
+    public void Deleted()
+    {
+        if(parentTableCard!= null)//设置父亲的child为自己的child
+            parentTableCard.childTableCard = childTableCard;
+        if (childTableCard != null)
+        {
+            
+            if (parentTableCard == null)
+            {
+                childTableCard.parentTableCard = null;
+                childTableCard.theTableCardVisual.stackPointTransform = null;
+                table.tableCardsControl.tableRootCards.Add(childTableCard);
+            }
+            else
+            {
+                childTableCard.parentTableCard = parentTableCard;
+                childTableCard.theTableCardVisual.stackPointTransform = parentTableCard.childStackTransform;
+            }
+        }
+
+        if(parentTableCard == null)
+        {
+            table.tableCardsControl.tableRootCards.Remove(this);
+        }
+
+        ClearToInit();
+        PoolMgr.Instance.PushObj(this.gameObject);
+    }
+
+    public override void ClearToInit()
+    {
+        thehandCardBase.enabled = true;
+        thehandCardBase.theHandCardVisual.enabled = true;
+        parentTableCard = null;
+        childTableCard = null;
+
+        enabled = false;
+        theTableCardVisual.enabled = false;
+        theTableCardVisual.stackPointTransform = null;
     }
 
     #region ugui事件
@@ -215,13 +348,12 @@ public class TableCardBase : CardBase,IInteractable
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //print("OnPointerEnter TableCardBase");
         thehandCardBase.handCardDeck.player.playerInteract.pointCard = GetLastTableCard();
+        //MusicMgr.Instance.PlaySound("card#8", transform);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        //print("OnPointerExit TableCardBase");
         thehandCardBase.handCardDeck.player.playerInteract.pointCard = null;
     }
 

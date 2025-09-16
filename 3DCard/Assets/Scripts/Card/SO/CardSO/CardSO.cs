@@ -18,4 +18,5 @@ public class CardSO : ScriptableObject
     public int cardID;
     public E_CardType cardType;
     public string cardDescription;
+    public List<int> values;
 }

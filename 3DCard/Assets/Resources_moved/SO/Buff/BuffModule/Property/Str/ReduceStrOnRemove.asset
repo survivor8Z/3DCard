@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5daf2487db1407349b1969cd4b7aa17e, type: 3}
+  m_Name: ReduceStrOnRemove
+  m_EditorClassIdentifier: 
+  buffCallBackType: 3
+  MStr: -1
+  MDef: 0
+  MDex: 0

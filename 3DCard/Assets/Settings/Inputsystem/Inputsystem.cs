@@ -71,6 +71,24 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RotateToCreateEntity"",
+                    ""type"": ""Button"",
+                    ""id"": ""965f3b61-2c75-4f24-a311-1bc667f04f45"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HideOrShowHandCardDeck"",
+                    ""type"": ""Value"",
+                    ""id"": ""038c00da-ab6a-476b-a0da-3e0854db4f1c"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -128,6 +146,50 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
                     ""action"": ""TurnRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0984fa0-4501-4d7a-bdb5-bf4eebc15242"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateToCreateEntity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""8b137e4d-d0f8-4e82-94c2-a71cf9cd0c39"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HideOrShowHandCardDeck"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""9b0a7cca-788c-4fd3-ad4c-3fd3fafa4b7b"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HideOrShowHandCardDeck"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""b26dc825-8e0c-4f7a-896c-a4c77a58cb2f"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HideOrShowHandCardDeck"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -250,6 +312,8 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
         m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         m_Player_HoldMoveFront = m_Player.FindAction("HoldMoveFront", throwIfNotFound: true);
         m_Player_HoldMoveBack = m_Player.FindAction("HoldMoveBack", throwIfNotFound: true);
+        m_Player_RotateToCreateEntity = m_Player.FindAction("RotateToCreateEntity", throwIfNotFound: true);
+        m_Player_HideOrShowHandCardDeck = m_Player.FindAction("HideOrShowHandCardDeck", throwIfNotFound: true);
         // Card
         m_Card = asset.FindActionMap("Card", throwIfNotFound: true);
         m_Card_MousePosition = m_Card.FindAction("MousePosition", throwIfNotFound: true);
@@ -320,6 +384,8 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_HoldMoveFront;
     private readonly InputAction m_Player_HoldMoveBack;
+    private readonly InputAction m_Player_RotateToCreateEntity;
+    private readonly InputAction m_Player_HideOrShowHandCardDeck;
     public struct PlayerActions
     {
         private @Inputsystem m_Wrapper;
@@ -329,6 +395,8 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
         public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputAction @HoldMoveFront => m_Wrapper.m_Player_HoldMoveFront;
         public InputAction @HoldMoveBack => m_Wrapper.m_Player_HoldMoveBack;
+        public InputAction @RotateToCreateEntity => m_Wrapper.m_Player_RotateToCreateEntity;
+        public InputAction @HideOrShowHandCardDeck => m_Wrapper.m_Player_HideOrShowHandCardDeck;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -353,6 +421,12 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
             @HoldMoveBack.started += instance.OnHoldMoveBack;
             @HoldMoveBack.performed += instance.OnHoldMoveBack;
             @HoldMoveBack.canceled += instance.OnHoldMoveBack;
+            @RotateToCreateEntity.started += instance.OnRotateToCreateEntity;
+            @RotateToCreateEntity.performed += instance.OnRotateToCreateEntity;
+            @RotateToCreateEntity.canceled += instance.OnRotateToCreateEntity;
+            @HideOrShowHandCardDeck.started += instance.OnHideOrShowHandCardDeck;
+            @HideOrShowHandCardDeck.performed += instance.OnHideOrShowHandCardDeck;
+            @HideOrShowHandCardDeck.canceled += instance.OnHideOrShowHandCardDeck;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -372,6 +446,12 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
             @HoldMoveBack.started -= instance.OnHoldMoveBack;
             @HoldMoveBack.performed -= instance.OnHoldMoveBack;
             @HoldMoveBack.canceled -= instance.OnHoldMoveBack;
+            @RotateToCreateEntity.started -= instance.OnRotateToCreateEntity;
+            @RotateToCreateEntity.performed -= instance.OnRotateToCreateEntity;
+            @RotateToCreateEntity.canceled -= instance.OnRotateToCreateEntity;
+            @HideOrShowHandCardDeck.started -= instance.OnHideOrShowHandCardDeck;
+            @HideOrShowHandCardDeck.performed -= instance.OnHideOrShowHandCardDeck;
+            @HideOrShowHandCardDeck.canceled -= instance.OnHideOrShowHandCardDeck;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -495,6 +575,8 @@ public partial class @Inputsystem: IInputActionCollection2, IDisposable
         void OnMousePosition(InputAction.CallbackContext context);
         void OnHoldMoveFront(InputAction.CallbackContext context);
         void OnHoldMoveBack(InputAction.CallbackContext context);
+        void OnRotateToCreateEntity(InputAction.CallbackContext context);
+        void OnHideOrShowHandCardDeck(InputAction.CallbackContext context);
     }
     public interface ICardActions
     {

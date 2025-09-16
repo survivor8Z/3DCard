@@ -27,7 +27,7 @@ public class Table : InteractableSceneObj
             EventCenter.Instance.EventTrigger(E_EventType.E_HandCardCancel);
             EventCenter.Instance.EventTrigger<InteractableSceneObj>(E_EventType.E_PlayerEnterInteractableSceneObj, this);
         }
-        Set();
+        SetVC();
     }
 
     public override void Exit()
@@ -41,9 +41,9 @@ public class Table : InteractableSceneObj
         {
             EventCenter.Instance.EventTrigger<InteractableSceneObj>(E_EventType.E_PlayerExitInteractableSceneObj, this);
         }
-        Set();
+        SetVC();
     }
-    public void Set()
+    public void SetVC()
     {
         switch (EnterLevel)
         {

@@ -12,10 +12,9 @@ public class HandCard_Entity : HandCardBase
     /// <summary>
     /// 创建实时预览实体,用于拖拽放置,在Select事件后执行
     /// </summary>
-    public void CreatePreviewEntity(string entityPrefabName)
+    public void CreatePreviewEntity()
     {
         GameObject obj = PoolMgr.Instance.GetObjSync(entityPrefabName);
-        obj.transform.SetParent(MapMgr.Instance.currentRoom.transform);
         obj.transform.rotation = handCardDeck.player.transform.rotation;
         obj.transform.SetParent(handCardDeck.player.transform);//跟着玩家旋转
 
@@ -23,9 +22,19 @@ public class HandCard_Entity : HandCardBase
     }
 
     /// <summary>
+    /// 顺时针旋转预览实体
+    /// </summary>
+    public void RotateToCreateEntity()
+    {
+        if(toCreateEntity == null) return;
+        toCreateEntity.transform.rotation *= Quaternion.Euler(0, 90, 0);
+    }
+
+
+    /// <summary>
     /// 创建实时预览实体,用于拖拽放置,update执行
     /// </summary>
-    public void TryCreateEntityInGround(string entityPrefabName)
+    public void TryCreateEntityInGround()
     {
         Vector2Int pivotCoor = MapMgr.Instance.WorldPosToWorldCoor(playerInteract.hitPosition);
         toCreateEntity.transform.position = MapMgr.Instance.WorldCoorToWorldPos(pivotCoor);
@@ -53,10 +62,37 @@ public class HandCard_Entity : HandCardBase
         }
     }
 
-
-    public void CreateEntity(Vector2Int pivotFront)
+    public void DelPreViewEntity()
     {
+        if (toCreateEntity != null)
+        {
+            PoolMgr.Instance.PushObj(toCreateEntity.gameObject);
+            toCreateEntity = null;
+            canCreate = false;
+        }
+    }
 
+    /// <summary>
+    /// 实际打出时执行
+    /// </summary>
+    public void TryCreateEntity()
+    {
+        print("TryCreateEntity");
+        if (!canCreate ||toCreateEntity==null)
+        {
+            DelPreViewEntity();
+            FailSelectedPlay();
+            return;
+        }
+        
+        Vector2Int createInRoomCoorBig = MapMgr.Instance.WorldPosToRoomWorldCoorBig(toCreateEntity.transform.position);
+        print(createInRoomCoorBig);
+        RoomBase createInRoom = MapMgr.Instance.roomsDict[createInRoomCoorBig];
+        createInRoom.AddInteractableObject(toCreateEntity);
+        //还要设置材质
+
+
+        handCardDeck.DelTheCard(index);
     }
 
 }

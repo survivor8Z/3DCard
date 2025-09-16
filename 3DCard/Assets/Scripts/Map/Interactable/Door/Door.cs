@@ -1,32 +1,49 @@
-using DG.Tweening;
+ï»¿using DG.Tweening;
 using UnityEngine;
 
 public class Door : InteractableObject
 {
     private Tween rotateTween;
-    private bool isOpen = false; // ¸ú×ÙÃÅµÄ×´Ì¬
+    private bool isOpen = false; // è·Ÿè¸ªé—¨çš„çŠ¶æ€
+    public GameObject doorModel;
+
+    //public Transform rotatePoint;
 
     public void ToggleDoor()
     {
-        // Èç¹ûµ±Ç°ÓĞÆäËûĞı×ªÕıÔÚ½øĞĞ£¬ÏÈÍ£Ö¹Ëü
-        rotateTween?.Kill();
+
+Â  Â  Â  Â  // å¦‚æœå½“å‰æœ‰å…¶ä»–æ—‹è½¬æ­£åœ¨è¿›è¡Œï¼Œå…ˆåœæ­¢å®ƒ
+
+Â  Â  Â  Â  rotateTween?.Kill();
 
         if (isOpen)
+
         {
-            // Èç¹ûÃÅÊÇ¿ª×ÅµÄ£¬ÈÃËüÏà¶ÔµØĞı×ª +90 ¶È¹ØÉÏ
-            rotateTween = transform.DORotate(new Vector3(0, 120, 0), 1f, RotateMode.LocalAxisAdd);
-            inRoom.AddTheObstacle(this);
+
+Â  Â  Â  Â  Â  Â  // å¦‚æœé—¨æ˜¯å¼€ç€çš„ï¼Œè®©å®ƒç›¸å¯¹åœ°æ—‹è½¬ +90 åº¦å…³ä¸Š
+
+Â  Â  Â  Â  Â  Â  rotateTween = doorModel.transform.DORotate(new Vector3(0, 120, 0), 1f, RotateMode.LocalAxisAdd);
+
+            MapMgr.Instance.AddTheObstacle(this);
+
             isOpen = false;
+
         }
+
         else
+
         {
-            // Èç¹ûÃÅÊÇ¹Ø×ÅµÄ£¬ÈÃËüÏà¶ÔµØĞı×ª -90 ¶È´ò¿ª
-            rotateTween = transform.DORotate(new Vector3(0, -120, 0), 1f, RotateMode.LocalAxisAdd);
-            inRoom.DelTheObstacle(this);
+
+Â  Â  Â  Â  Â  Â  // å¦‚æœé—¨æ˜¯å…³ç€çš„ï¼Œè®©å®ƒç›¸å¯¹åœ°æ—‹è½¬ -90 åº¦æ‰“å¼€
+
+Â  Â  Â  Â  Â  Â  rotateTween = doorModel.transform.DORotate(new Vector3(0, -120, 0), 1f, RotateMode.LocalAxisAdd);
+
+            MapMgr.Instance.DelTheObstacle(this);
+
             isOpen = true;
 
-            MapMgr.Instance.RandomAddTheRoom("RoomStart", inRoom.roomBigWorldPivotCoor + pivotFront);
-            //MapMgr.Instance.AddTheRoom("RoomStart", inRoom.roomBigWorldPivotCoor + pivotFront,Vector2Int.down);
-        }
+            MapMgr.Instance.AddTheSmallRoom("RoomStart", inRoom.roomBigWorldPivotCoor + pivotFront,Vector2Int.up); 
+Â  Â  Â  Â  }
+
     }
 }

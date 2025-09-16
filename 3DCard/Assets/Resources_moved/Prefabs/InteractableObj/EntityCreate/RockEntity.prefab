@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7971170744803830498}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2062616738813404401}
-  m_Layer: 0
+  - component: {fileID: -1539260580181075472}
+  - component: {fileID: 3217041061564989690}
+  - component: {fileID: 1486062180041949231}
+  m_Layer: 8
   m_Name: RockEntity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,3 +172,55 @@ Transform:
   - {fileID: 7971170744803830498}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-1539260580181075472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5672132886148426419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3678c4bb02be8674cb275427847ca801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxNum: 30
+--- !u!114 &3217041061564989690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5672132886148426419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66d0772d0e4e3c846b60a48ddac0273f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inRoom: {fileID: 0}
+  obstacleRelativeCoor:
+  - {x: 0, y: 0}
+  pivotTransform: {fileID: 7971170744803830498}
+  boxCollider: {fileID: 0}
+  id: 0
+--- !u!65 &1486062180041949231
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5672132886148426419}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}

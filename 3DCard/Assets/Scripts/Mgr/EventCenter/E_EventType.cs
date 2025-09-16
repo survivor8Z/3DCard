@@ -28,6 +28,8 @@ public enum E_EventType
     E_HandCardPointDown,
     //传入index
     E_HandCardPointUp,
+    //传入index
+    E_HandCardVisualScaleToNormal,
     //不传入
     E_HandCardCancel,//用于取消所有选中
 
@@ -68,6 +70,16 @@ public enum E_EventType
     //传入InteractableSceneObj
     E_PlayerExitInteractableSceneObj,
     //传入InteractableSceneObj
-    E_PlayerExitInteractableSceneObjFront
+    E_PlayerExitInteractableSceneObjFront,
+
+
+
+
+
+
+
+    //传入Player
+    E_PlayerEndTurn,
+
 }
 

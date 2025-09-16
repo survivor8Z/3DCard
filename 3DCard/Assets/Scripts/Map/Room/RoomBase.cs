@@ -11,19 +11,20 @@ public class RoomBase : MonoBehaviour
     [HideInInspector]public static int INDEX = 1;
     public int index;
     //对于地图上
-    public List<Vector2Int> roomRelativeOccupyCoor = new();//是大坐标
+    public List<Vector2Int> roomRelativeOccupyCoorBig = new();//是大坐标
     public Vector2Int roomBigWorldPivotCoor =>MapMgr.Instance.WorldPosToRoomWorldCoorBig(pivotTransform.position); //大坐标
 
     public Vector2Int roomFront => MapMgr.Instance.GetDirectionFromRotation(transform.rotation); //房间前方的方向,大坐标系下的方向
 
     //房间内
     public Vector2Int roomWorldPivotCoor => MapMgr.Instance.WorldPosToWorldCoor(pivotTransform.position);
-    [ShowInInspector] public HashSet<Vector2Int> unWalkableWorldCoor = new HashSet<Vector2Int>();
     public List<InteractableObject> roomInteractableObjects = new List<InteractableObject>();
     //锚点
     public Transform pivotTransform;
     //墙的父物体
     public Transform wallParent;
+
+    //敌人管理
 
     //一些固定场景物体
     public Table table;
@@ -46,6 +47,7 @@ public class RoomBase : MonoBehaviour
     }
     #endregion
 
+    #region 初始化相关
     public void SetPivot()
     {
         pivotTransform = transform.Find("Pivot");
@@ -57,7 +59,7 @@ public class RoomBase : MonoBehaviour
     /// </summary>
     public void SetBigOccupy()
     {
-        foreach(var bigCoor in roomRelativeOccupyCoor)
+        foreach(var bigCoor in roomRelativeOccupyCoorBig)
         {
             Vector2Int temp = MapMgr.Instance.RelativeCoorToWorldCoor(
                 bigCoor,
@@ -73,6 +75,19 @@ public class RoomBase : MonoBehaviour
         }
         
     }
+    /// <summary>
+    /// 删除房间的占用坐标,大坐标
+    /// </summary>
+    public void DelBigOccupy()
+    {
+        foreach (var bigCoor in roomRelativeOccupyCoorBig)
+        {
+            MapMgr.Instance.roomsDict.Remove(MapMgr.Instance.RelativeCoorToWorldCoor(
+                bigCoor
+                , roomBigWorldPivotCoor,
+                MapMgr.Instance.GetDirectionFromRotation(transform.rotation)));
+        }
+    }
 
     #region 墙相关
 
@@ -85,22 +100,22 @@ public class RoomBase : MonoBehaviour
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(transform.forward)))
         {
             print("forward");
-            AddWall("NormalWall",Vector2Int.up * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("NormalWall",Vector2Int.up * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(transform.right)))
         {
             print("right");
-            AddWall("NormalWall", Vector2Int.right * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("NormalWall", Vector2Int.right * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(-transform.forward)))
         {
             print("back");
-            AddWall("NormalWall", Vector2Int.down * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("NormalWall", Vector2Int.down * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
         if (!MapMgr.Instance.roomsDict.ContainsKey(roomBigWorldPivotCoor + MapMgr.Instance.WorldPosToWorldCoor(-transform.right)))
         {
             print("left");
-            AddWall("NormalWall", Vector2Int.left * 5, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("NormalWall", Vector2Int.left * 5, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
     }
 
@@ -162,7 +177,7 @@ public class RoomBase : MonoBehaviour
         }
         else
         {
-            AddWall("DoorWall", wallRelativeRoomPivotCoor, (wallBase) => AddTheObstacle(wallBase));
+            AddWall("DoorWall", wallRelativeRoomPivotCoor, (wallBase) => MapMgr.Instance.AddTheObstacle(wallBase));
         }
     }
     #endregion
@@ -171,20 +186,16 @@ public class RoomBase : MonoBehaviour
         table = GetComponentInChildren<Table>();
         door = GetComponentInChildren<Door>();
 
-        
+        AddInteractableObject(table);
+        AddInteractableObject(door);
+
     }
-    /// <summary>
-    /// 删除房间的占用坐标,大坐标
-    /// </summary>
-    public void DelBigOccupy()
+    public virtual void SetEnemy()
     {
-        foreach (var bigCoor in roomRelativeOccupyCoor)
-        {
-            MapMgr.Instance.roomsDict.Remove(MapMgr.Instance.RelativeCoorToWorldCoor(
-                bigCoor
-                , roomBigWorldPivotCoor,
-                MapMgr.Instance.GetDirectionFromRotation(transform.rotation)));
-        }
+        //如果需要添加则添加,现在是测试
+        //RandomAddEnemy("TestEnemy");
+        if(MapMgr.Instance.roomsDict.Count > 1)
+            AddTheEnemy("TestEnemy", Vector2Int.zero);
     }
     public virtual void Init()
     {
@@ -192,40 +203,17 @@ public class RoomBase : MonoBehaviour
         SetBigOccupy();
         SetWall();
         SetInteractableObject();
-        for (int i = 0; i < roomInteractableObjects.Count; i++)
-        {
-            RegisterInteractableObject(roomInteractableObjects[i]);
-        }
+        SetEnemy();
     }
+    #endregion
 
-    
 
+    #region 可交互物体相关
     /// <summary>
-    /// 添加一个可交互的物体到房间中
-    /// 通过Addressables加载
+    /// 注册一个可交互物体到房间中,并设置其所在房间
     /// </summary>
-    /// <param name="name"></param>
-    public void AddInteractableObject(string name,Vector2Int roomRelativeCellCoor)
-    {
-        AddressablesMgr.Instance.LoadAssetAsync<GameObject>(name, (handle) =>
-        {
-            GameObject interactableObj = handle.Result;
-            if (interactableObj != null)
-            {
-                GameObject obj = Instantiate(interactableObj, transform);
-                obj.transform.localPosition = MapMgr.Instance.WorldCoorToWorldPos(roomRelativeCellCoor);
-                InteractableObject interactable = obj.GetComponent<InteractableObject>();
-                RegisterInteractableObject(interactable);
-            }
-            else
-            {
-                Debug.LogWarning("Failed to load interactable object: " + name);
-            }
-        });
-
-    }
-
-    private void RegisterInteractableObject(InteractableObject obj)
+    /// <param name="obj"></param>
+    public void AddInteractableObject(InteractableObject obj)
     {
         if (obj == null)
         {
@@ -233,10 +221,17 @@ public class RoomBase : MonoBehaviour
             return;
         }
 
+        print("添加可交互物体: " + obj.name + " 到房间: " + gameObject.name);
         obj.inRoom = this; //设置所在房间
+        obj.transform.SetParent(transform); //设置父物体为房间
         if (!roomInteractableObjects.Contains(obj))
         {
             roomInteractableObjects.Add(obj);
+            
+        }
+        else
+        {
+            Debug.LogWarning("重复添加");
         }
 
         for (int j = 0; j < obj.obstacleRelativeCoor.Count; j++)
@@ -249,7 +244,6 @@ public class RoomBase : MonoBehaviour
                 );
 
             MapMgr.Instance.allUnwalkableCoor.Add(obstacleWorldCoor);
-            unWalkableWorldCoor.Add(obstacleWorldCoor);
         }
     }
 
@@ -271,9 +265,8 @@ public class RoomBase : MonoBehaviour
                     interactableObj.pivotFront
                 );
                 MapMgr.Instance.allUnwalkableCoor.Remove(obstacleWorldCoor);
-                unWalkableWorldCoor.Remove(obstacleWorldCoor);
             }
-            Destroy(interactableObj.gameObject);
+            interactableObj.Delete();
         }
         else
         {
@@ -281,48 +274,43 @@ public class RoomBase : MonoBehaviour
         }
     }
 
+    #endregion
+
+
+    #region 敌人管理
     /// <summary>
-    /// 用于需要动态删除障碍物的情况
+    /// 创建一个敌人并添加到房间中
     /// </summary>
-    /// <param name="interactableObject"></param>
-    public void DelTheObstacle(InteractableObject interactableObject)
+    /// <param name="name"></param>
+    /// <param name="relativeRoomCoor"></param>
+    public void AddTheEnemy(string name,Vector2Int relativeRoomCoor)
     {
-
-        foreach (var coor in interactableObject.obstacleRelativeCoor)
+        PoolMgr.Instance.GetObjByCoroutine(name, (obj) =>
         {
-            Vector2Int obstacleWorldCoor = MapMgr.Instance.RelativeCoorToWorldCoor
-            (
-                coor,
-                interactableObject.worldPivotCoor,
-                interactableObject.pivotFront
-            );
-            MapMgr.Instance.allUnwalkableCoor.Remove(obstacleWorldCoor);
-            unWalkableWorldCoor.Remove(obstacleWorldCoor);
-        }
-        
+            obj.transform.SetParent(transform);
+            Vector2Int enemyWorldCoor = MapMgr.Instance.RelativeCoorToWorldCoor(
+                relativeRoomCoor,
+                roomWorldPivotCoor,
+                MapMgr.Instance.WorldPosToWorldCoor(transform.forward));
+            obj.transform.position = MapMgr.Instance.WorldCoorToWorldPos(enemyWorldCoor);
+            EnemyBase enemy = obj.GetComponent<EnemyBase>();
+            enemy.inRoom = this;
+            enemy.Init();
+            AddInteractableObject(enemy);
+        });
+    }
 
+    public void RandomAddEnemy(string name)
+    {
+        //在大坐标获取一个随机坐标
+        int randomBigIndex = Random.Range(0, roomRelativeOccupyCoorBig.Count);
+        Vector2Int roomBigCoor = roomRelativeOccupyCoorBig[randomBigIndex];
+        //在大坐标所指的格子中随机一个格子
+        //现在直接现在0,1生成
+        AddTheEnemy(name,
+            MapMgr.Instance.WorldPosToWorldCoor(MapMgr.Instance.RoomWorldCoorToWorldPosBig(roomBigCoor))+Vector2Int.up);
 
     }
 
-    /// <summary>
-    /// 用于需要动态添加障碍物的情况`
-    /// </summary>
-    /// <param name="interactableObject"></param>
-    public void AddTheObstacle(InteractableObject interactableObject)
-    {
-        foreach (var coor in interactableObject.obstacleRelativeCoor)
-        {
-            Vector2Int obstacleWorldCoor = MapMgr.Instance.RelativeCoorToWorldCoor
-            (
-                coor,
-                interactableObject.worldPivotCoor,
-                interactableObject.pivotFront
-            );
-            MapMgr.Instance.allUnwalkableCoor.Add(obstacleWorldCoor);
-            unWalkableWorldCoor.Add(obstacleWorldCoor);
-        }
-    }
-
-    
-    
+    #endregion
 }

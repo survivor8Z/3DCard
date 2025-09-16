@@ -24,8 +24,8 @@ public class LineDraw : MonoBehaviour
 
     private void DrawLine()
     {
-        if (handCardDeck.dragedCard!=null 
-            //&& handCardDeck.dragedCard.cardSO.cardType == E_CardType.E_Entity 
+        if (handCardDeck.dragedCard!=null
+            && handCardDeck.dragedCard.cardSO.cardType != E_CardType.E_Behavior
             && handCardDeck.dragedCard.handCardDeck.player.playerMove.inSceneObj is Table)
         {
             return;

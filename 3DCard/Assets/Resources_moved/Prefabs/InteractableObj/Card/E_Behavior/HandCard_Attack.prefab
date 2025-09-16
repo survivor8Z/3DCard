@@ -31,7 +31,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7232921330516096948}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  cardSO: {fileID: 11400000, guid: a1a28c2b43916b74d9478c523790b7df, type: 2}
+  cardSO: {fileID: 11400000, guid: 71408826ab9a78445be9e24bc4e3232b, type: 2}
   canvasGroup: {fileID: 0}
   handCardDeck: {fileID: 0}
   slotRectTrans: {fileID: 0}
@@ -102,7 +102,7 @@ MonoBehaviour:
     - Name: OnEndDragEvent
       Entry: 6
       Data: 
-  cardSO: {fileID: 11400000, guid: a1a28c2b43916b74d9478c523790b7df, type: 2}
+  cardSO: {fileID: 11400000, guid: 71408826ab9a78445be9e24bc4e3232b, type: 2}
   canvasGroup: {fileID: 0}
   theTableCardVisual: {fileID: 0}
   thehandCardBase: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stackPointTransform: {fileID: 0}
   toPos: {x: 0, y: 0, z: 0}
-  offsetDragAbove: 0.1
+  offsetDragAbove: 0.05
   offsetDragAboveK: 0
   theHandCardVisual: {fileID: 0}
 --- !u!225 &3906977445223968331
@@ -299,7 +299,7 @@ PrefabInstance:
     - target: {fileID: 3180594054090856057, guid: 1ba5da75b2b3a704d88d8657f82736c0,
         type: 3}
       propertyPath: m_text
-      value: "\u9020\u6210x\u70B9\u7269\u7406\u4F24\u5BB3"
+      value: "\u9020\u6210\u4F24\u5BB3"
       objectReference: {fileID: 0}
     - target: {fileID: 5421832885804702315, guid: 1ba5da75b2b3a704d88d8657f82736c0,
         type: 3}
@@ -315,7 +315,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cardSO
       value: 
-      objectReference: {fileID: 11400000, guid: a1a28c2b43916b74d9478c523790b7df,
+      objectReference: {fileID: 11400000, guid: 71408826ab9a78445be9e24bc4e3232b,
         type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

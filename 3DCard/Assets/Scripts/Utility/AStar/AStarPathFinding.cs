@@ -40,7 +40,7 @@ public static class AStarPathFinding
     }
     public static List<Vector2Int> FindPath(Vector2Int startCoor, Vector2Int endCoor)
     {
-        if (allUnwalkableCoor.Contains(startCoor) || allUnwalkableCoor.Contains(endCoor))
+        if (/*allUnwalkableCoor.Contains(startCoor) ||*/ allUnwalkableCoor.Contains(endCoor))
         {
             return null;
         }
